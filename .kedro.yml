@@ -1,0 +1,6 @@
+context_path: deep_nlp.run.ProjectContext
+project_name: "deepnlp"
+project_version: "0.16.6"
+package_name: "deep_nlp"
+hooks:
+  - deep_nlp.hooks.project_hooks
