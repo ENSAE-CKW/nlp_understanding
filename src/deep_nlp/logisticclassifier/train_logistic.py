@@ -94,36 +94,35 @@ def evaluation(model, valid_data, num_batch):
     accuracy = 100 * corrects / size # avg acc per obs
 
     # AUC
-    auroc_eval= auroc(torch.exp(logit)[:,1], target)
-    print(auroc_eval)
+    auroc_eval = auroc(torch.exp(logit)[:, 1], target)
 
     if params["cuda_allow"]:
-        auroc_eval= auroc_eval.cpu().numpy()
+        auroc_eval = auroc_eval.cpu().numpy()
     else:
-        auroc_eval= auroc_eval.numpy()
+        auroc_eval = auroc_eval.numpy()
 
+    print(auroc_eval)
     model.train()
 
     return {"loss": avg_loss, "accuracy": accuracy, "auroc": auroc_eval}
 
 
-def train(params, continue_train= None):
+def train(params, stt_params, continue_train= None):
     # Set up CUDA
     if params["cuda_allow"]:
         torch.cuda.empty_cache()
         torch.cuda.set_device(0)
 
     # Train load
-    # train_data = sentenceToTensor(params["train_path"], params["valid_path"], params["train_path"], max_bow= 50000)
-    train_data = sentenceToTensor(params["train_path"], params["train_path"], params["valid_path"], max_bow= 5000)
-    bow = train_data.bow()
+    train_data = sentenceToTensor(params= stt_params
+                                  , data_path= params["train_path"])
 
-    # Adding vocabulary size to model dictionnary
-    vocab_size = train_data.len_vocab()
-    num_class = params["num_class"]
+    stt_params["vocabulary"] = train_data.get_vectorizer().vocabulary_
+    valid_data = sentenceToTensor(params=stt_params
+                                   , data_path=params["valid_path"])
 
-    # Valid load
-    valid_data = sentenceToTensor(params["train_path"], params["valid_path"], params["valid_path"], bag_of_words=bow)
+    vocab_size= len(train_data.get_vectorizer().get_feature_names())
+    num_class= params["num_class"]
 
     # Call our model
     model = LogisticClassifier({"feature_num": vocab_size, "num_class": num_class})
@@ -135,7 +134,7 @@ def train(params, continue_train= None):
     model.train()
 
     # Optimizer definition
-    optimizer = torch.optim.SGD(model.parameters(), lr=params["lr"])
+    optimizer = optim.Adam(model.parameters(), lr=params["lr"])#torch.optim.SGD(model.parameters(), lr=params["lr"])
 
     # If we start training from an older model
     if continue_train is None:
@@ -265,37 +264,17 @@ def train(params, continue_train= None):
 
 if __name__ == "__main__":
 
-    params = {"lr": 0.02, "num_epochs": 50, "num_class": 2, "size_batch": 64
-        , "verbose": False, "freq_verbose": 500, "cuda_allow": True, "patience": 5
-        , "model_path": r"../data/06_models/logisticclassifier/allocine_classification"
-        , "train_path": r"../data/01_raw/allocine_train.csv"
-        , "valid_path": r"../data/01_raw/allocine_valid.csv"
+    params = {"lr": 0.001, "num_epochs": 50, "num_class": 2, "size_batch": 86
+        , "verbose": False, "freq_verbose": 86, "cuda_allow": True, "patience": 5
+        , "model_path": r"../../../data/06_models/logisticclassifier/allocine_classification"
+        , "train_path": r"../../../data/01_raw/allocine_train.csv"
+        , "valid_path": r"../../../data/01_raw/allocine_valid.csv"
         , "model_saved_name": "/model_allocine.pth.tar"
         , "log_file_name": "/train_log.txt"}
 
-    # # Train load
-    # # train_data = sentenceToTensor(params["train_path"], params["valid_path"], params["train_path"], max_bow= 50000)
-    # train_data = sentenceToTensor(params["train_path"], params["train_path"], params["valid_path"], max_bow= 50000)
-    # bow = train_data.bow()
-    #
-    # # print(bow)
-    # # print(len(bow))
-    #
-    # # Adding vocabulary size to model dictionnary
-    # vocab_size = train_data.len_vocab()
-    # num_class = params["num_class"]
-    #
-    # # Valid load
-    # valid_data = sentenceToTensor(params["train_path"], params["valid_path"], params["valid_path"], bag_of_words=bow)
-    #
-    # # Call our model
-    # model = LogisticClassifier({"feature_num": vocab_size, "num_class": num_class})
-    # model = torch.nn.DataParallel(model)
-    #
-    # # Optimizer definition
-    # optimizer = torch.optim.SGD(model.parameters(), lr=params["lr"])
-    #
-    # # Loss function definition
-    # loss_func= torch.nn.NLLLoss()
+    stt_params = {"train_path": params["train_path"]
+        , "valid_path": params["valid_path"]
+        , "max_features": 10000
+        , "vocabulary": None}
 
-    train(params) # change path into model
+    train(params, stt_params) # change path into model

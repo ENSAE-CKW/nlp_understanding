@@ -1,0 +1,2 @@
+from .logisticclassifier import LogisticClassifier
+from .dataset_load_logistic import sentenceToTensor

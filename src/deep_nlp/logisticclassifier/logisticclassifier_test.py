@@ -1,5 +1,5 @@
-from deep_nlp.cnncharclassifier import charToTensor
-from deep_nlp.cnncharclassifier import CNNCharClassifier
+from deep_nlp.logisticclassifier import LogisticClassifier
+from deep_nlp.logisticclassifier.dataset_load_logistic import sentenceToTensor
 from torch.utils.data import DataLoader
 from torch import optim
 from torch.autograd import Variable
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from deep_nlp.utils.utils import *
 
 
-def cnn_test(model, params, test_data):
+def logisticclassi_test(model, params, test_data):
     model.eval()
 
     corrects, avg_loss, epoch_loss, size = 0, 0, 0, 0
@@ -72,33 +72,27 @@ def cnn_test(model, params, test_data):
 
     pass
 
-
 if __name__ == "__main__":
-    params = {"lr": 0.0001, "num_epochs": 50, "size_batch": 64, "sentence_max_size": 1014
-        , "num_threads": 4, "clip": 400, "verbose": False, "freq_verbose": 50
-        , "cuda_allow": True, "patience": 3
-        , "model_path": r"../../../data/06_models/cnn_char_classifier/allocine_classification/small_model"
-        , "test_path": r"../../../data/01_raw/allocine_test.csv"
+    params = {"lr": 0.001, "num_epochs": 50, "num_class": 2, "size_batch": 86
+        , "verbose": False, "freq_verbose": 86, "cuda_allow": True, "patience": 5
+        , "model_path": r"../../../data/06_models/logisticclassifier/allocine_classification"
+        , "train_path": r"../../../data/01_raw/allocine_train.csv"
         , "valid_path": r"../../../data/01_raw/allocine_valid.csv"
-        , "model_saved_name": "/small_model_allocine.pth.tar"
-        }
+        , "test_path": r"../../../data/01_raw/allocine_test.csv"
+        , "model_saved_name": "/model_allocine.pth.tar"
+        , "log_file_name": "/train_log.txt"}
 
-    small_model_params = {"feature_size": 256, "kernel_one": 7
-        , "kernel_two": 3, "stride_one": 1, "stride_two": 3, "seq_len": 1014
-        , "output_linear": 1024, "dropout": 0.5, "num_class": 2}
+    stt_params = {"train_path": params["train_path"]
+        , "valid_path": params["valid_path"]
+        , "max_features": 10000
+        , "vocabulary": None}
 
-    large_model_params = {"feature_size": 1024, "kernel_one": 7
-        , "kernel_two": 3, "stride_one": 1, "stride_two": 3, "seq_len": 1014
-        , "output_linear": 2048, "dropout": 0.5, "num_class": 2}
+    test_data = sentenceToTensor(params=stt_params
+                                  , data_path=params["test_path"])
 
-    test_data = charToTensor(params["test_path"], params["sentence_max_size"])
-
-    # Adding vocabulary size to model dictionnary
-    vocab_size = len(test_data.get_alphabet())
-    small_model_params["feature_num"] = vocab_size
 
     # Call our model
-    model = CNNCharClassifier(small_model_params)
+    model = LogisticClassifier({"feature_num": stt_params["max_features"], "num_class": params["num_class"]})
     if params["cuda_allow"]:
         model = torch.nn.DataParallel(model).cuda()
     else:
@@ -109,4 +103,4 @@ if __name__ == "__main__":
     model, optimizer = load(model, optimizer, params)
     model.eval()  # We never know
 
-    cnn_test(model, params, test_data)
+    logisticclassi_test(model, params, test_data)

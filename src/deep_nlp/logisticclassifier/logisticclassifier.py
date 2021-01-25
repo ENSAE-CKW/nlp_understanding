@@ -1,4 +1,5 @@
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 class LogisticClassifier(nn.Module):
@@ -11,11 +12,10 @@ class LogisticClassifier(nn.Module):
 
         # Architecture
         self.linear= nn.Linear(self.feature_num, self.num_class)
-        self.log_softmax= nn.LogSoftmax(dim= 1)
         pass
 
     def forward(self, x):
         x= x.view(x.size(0), -1)
         x= self.linear(x)
-        x= self.log_softmax(x)
+        x= F.log_softmax(x, dim=1)
         return x

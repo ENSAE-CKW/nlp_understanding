@@ -30,3 +30,15 @@ def save_checkpoint(model, state, filename):
 def load_checkpoint(filename):
     # Load our model
     return torch.load(filename)
+
+
+def load(model, optimizer, params):
+    checkpoint = load_checkpoint(params["model_path"] + params["model_saved_name"])
+
+    model.load_state_dict(checkpoint["state_dict"])
+
+    model.eval()
+
+    optimizer.load_state_dict(checkpoint["optimizer"])
+
+    return model, optimizer
