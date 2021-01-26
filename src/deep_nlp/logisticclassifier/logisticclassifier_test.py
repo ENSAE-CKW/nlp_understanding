@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     stt_params = {"train_path": params["train_path"]
         , "valid_path": params["valid_path"]
-        , "max_features": 10000
+        , "max_features": 100
         , "vocabulary": None}
 
     test_data = sentenceToTensor(params=stt_params
