@@ -9,7 +9,8 @@ class charToTensor(Dataset):
     def __init__(self, data_csv_path, sentence_max_size
                  , alphabet=None):
 
-        self.data_csv_path= data_csv_path
+        self.data_df= data_csv_path # this is not a path but a pd.Dataframe
+        # self.data_csv_path= data_csv_path
         self.sentence_max_size= sentence_max_size
 
         # Alphabet definition
@@ -30,9 +31,9 @@ class charToTensor(Dataset):
         return len(self.label)
 
     def load(self):
-        data= pd.read_csv(self.data_csv_path)
-        self.data= np.array(data["review"])
-        self.label= np.array(data["label"])
+        # data= pd.read_csv(self.data_csv_path)
+        self.data= np.array(self.data_df["review"]) # care self.
+        self.label= np.array(self.data_df["label"])
         self.y= torch.LongTensor(self.label)
         pass
 

@@ -264,8 +264,8 @@ def train(params, stt_params, continue_train= None):
 
 if __name__ == "__main__":
 
-    params = {"lr": 0.001, "num_epochs": 50, "num_class": 2, "size_batch": 86
-        , "verbose": False, "freq_verbose": 86, "cuda_allow": True, "patience": 5
+    params = {"lr": 0.0001, "num_epochs": 50, "num_class": 2, "size_batch": 86
+        , "verbose": False, "freq_verbose": 86, "cuda_allow": True, "patience": 10
         , "model_path": r"../../../data/06_models/logisticclassifier/allocine_classification"
         , "train_path": r"../../../data/01_raw/allocine_train.csv"
         , "valid_path": r"../../../data/01_raw/allocine_valid.csv"

@@ -1,241 +1,683 @@
 Training Statement CNNCharClassifier
 ------------------------------------
-Epoch[1] Batch[0] - loss: 0.716871(batch)  acc: 51.163% (44/86)
-Epoch[1] Batch[86] - loss: 0.651094(batch)  acc: 61.628% (53/86)
-Epoch[1] Batch[172] - loss: 0.641655(batch)  acc: 65.116% (56/86)
-Epoch[1] Batch[258] - loss: 0.535558(batch)  acc: 70.930% (61/86)
-Epoch[1] Batch[344] - loss: 0.525580(batch)  acc: 80.233% (69/86)
-Epoch[1] Batch[430] - loss: 0.559298(batch)  acc: 73.256% (63/86)
-Epoch[1] Batch[516] - loss: 0.543415(batch)  acc: 74.419% (64/86)
-Epoch[1] Batch[602] - loss: 0.506136(batch)  acc: 76.744% (66/86)
-Epoch[1] Batch[688] - loss: 0.502908(batch)  acc: 76.744% (66/86)
-Epoch[1] Batch[774] - loss: 0.475755(batch)  acc: 80.233% (69/86)
-Epoch[1] Batch[860] - loss: 0.450012(batch)  acc: 82.558% (71/86)
-Epoch[1] Batch[946] - loss: 0.586819(batch)  acc: 73.256% (63/86)
-Epoch[1] Batch[1032] - loss: 0.546084(batch)  acc: 69.767% (60/86)
-Epoch[1] Batch[1118] - loss: 0.484565(batch)  acc: 75.581% (65/86)
-Epoch[1] Batch[1204] - loss: 0.491374(batch)  acc: 77.907% (67/86)
-Epoch[1] Batch[1290] - loss: 0.376822(batch)  acc: 82.558% (71/86)
-Epoch[1] Batch[1376] - loss: 0.625028(batch)  acc: 68.605% (59/86)
-Epoch[1] Batch[1462] - loss: 0.562136(batch)  acc: 69.767% (60/86)
-Epoch[1] Batch[1548] - loss: 0.548243(batch)  acc: 75.581% (65/86)
-Epoch[1] Batch[1634] - loss: 0.531813(batch)  acc: 70.930% (61/86)
-Epoch[1] Batch[1720] - loss: 0.441771(batch)  acc: 81.395% (70/86)
-Epoch[1] Batch[1806] - loss: 0.504502(batch)  acc: 74.419% (64/86)
-Model Saved Epoch: 01 | Best Val. Loss: 0.510365(m per batch) | Acc: 75.446% | AUROC: 0.852353
+Epoch[1] Batch[0] - loss: 0.690644(batch)  acc: 59.302% (51/86)
+Epoch[1] Batch[86] - loss: 0.685843(batch)  acc: 52.326% (45/86)
+Epoch[1] Batch[172] - loss: 0.666357(batch)  acc: 61.628% (53/86)
+Epoch[1] Batch[258] - loss: 0.686383(batch)  acc: 51.163% (44/86)
+Epoch[1] Batch[344] - loss: 0.618450(batch)  acc: 72.093% (62/86)
+Epoch[1] Batch[430] - loss: 0.645886(batch)  acc: 67.442% (58/86)
+Epoch[1] Batch[516] - loss: 0.692958(batch)  acc: 46.512% (40/86)
+Epoch[1] Batch[602] - loss: 0.646229(batch)  acc: 65.116% (56/86)
+Epoch[1] Batch[688] - loss: 0.651121(batch)  acc: 67.442% (58/86)
+Epoch[1] Batch[774] - loss: 0.651524(batch)  acc: 66.279% (57/86)
+Epoch[1] Batch[860] - loss: 0.644857(batch)  acc: 65.116% (56/86)
+Epoch[1] Batch[946] - loss: 0.666551(batch)  acc: 61.628% (53/86)
+Epoch[1] Batch[1032] - loss: 0.618578(batch)  acc: 69.767% (60/86)
+Epoch[1] Batch[1118] - loss: 0.634304(batch)  acc: 67.442% (58/86)
+Epoch[1] Batch[1204] - loss: 0.630206(batch)  acc: 63.953% (55/86)
+Epoch[1] Batch[1290] - loss: 0.619649(batch)  acc: 68.605% (59/86)
+Epoch[1] Batch[1376] - loss: 0.582608(batch)  acc: 73.256% (63/86)
+Epoch[1] Batch[1462] - loss: 0.615301(batch)  acc: 72.093% (62/86)
+Epoch[1] Batch[1548] - loss: 0.570594(batch)  acc: 72.093% (62/86)
+Epoch[1] Batch[1634] - loss: 0.609862(batch)  acc: 68.605% (59/86)
+Epoch[1] Batch[1720] - loss: 0.591319(batch)  acc: 73.256% (63/86)
+Epoch[1] Batch[1806] - loss: 0.596198(batch)  acc: 74.419% (64/86)
+Model Saved Epoch: 01 | Best Val. Loss: 0.580249(m per batch) | Acc: 73.607% | AUROC: 0.704705
 
-Epoch: 01 | Time: 0m 7s
-	Train Loss: 0.53240
-	 Val. Loss: 0.51036 |  Accuracy:  75.446 | AUROC: 0.85235
+Epoch: 01 | Time: 0m 6s
+	Train Loss: 0.62997
+	 Val. Loss: 0.58025 |  Accuracy:  73.607 | AUROC: 0.70471
 
-	 Best Val. encountered Loss: 0.51036 |  Accuracy:  75.446 | AUROC: 0.85235
+	 Best Val. encountered Loss: 0.58025 |  Accuracy:  73.607 | AUROC: 0.70471
 
-Epoch[2] Batch[0] - loss: 0.478662(batch)  acc: 80.233% (69/86)
-Epoch[2] Batch[86] - loss: 0.555181(batch)  acc: 69.767% (60/86)
-Epoch[2] Batch[172] - loss: 0.552163(batch)  acc: 68.605% (59/86)
-Epoch[2] Batch[258] - loss: 0.443048(batch)  acc: 76.744% (66/86)
-Epoch[2] Batch[344] - loss: 0.418296(batch)  acc: 79.070% (68/86)
-Epoch[2] Batch[430] - loss: 0.506592(batch)  acc: 70.930% (61/86)
-Epoch[2] Batch[516] - loss: 0.549306(batch)  acc: 73.256% (63/86)
-Epoch[2] Batch[602] - loss: 0.460073(batch)  acc: 74.419% (64/86)
-Epoch[2] Batch[688] - loss: 0.523146(batch)  acc: 74.419% (64/86)
-Epoch[2] Batch[774] - loss: 0.487433(batch)  acc: 72.093% (62/86)
-Epoch[2] Batch[860] - loss: 0.534195(batch)  acc: 76.744% (66/86)
-Epoch[2] Batch[946] - loss: 0.524039(batch)  acc: 75.581% (65/86)
-Epoch[2] Batch[1032] - loss: 0.507640(batch)  acc: 72.093% (62/86)
-Epoch[2] Batch[1118] - loss: 0.568797(batch)  acc: 73.256% (63/86)
-Epoch[2] Batch[1204] - loss: 0.405181(batch)  acc: 83.721% (72/86)
-Epoch[2] Batch[1290] - loss: 0.482125(batch)  acc: 80.233% (69/86)
-Epoch[2] Batch[1376] - loss: 0.506661(batch)  acc: 74.419% (64/86)
-Epoch[2] Batch[1462] - loss: 0.489159(batch)  acc: 76.744% (66/86)
-Epoch[2] Batch[1548] - loss: 0.544498(batch)  acc: 73.256% (63/86)
-Epoch[2] Batch[1634] - loss: 0.566244(batch)  acc: 73.256% (63/86)
-Epoch[2] Batch[1720] - loss: 0.589437(batch)  acc: 68.605% (59/86)
-Epoch[2] Batch[1806] - loss: 0.562620(batch)  acc: 72.093% (62/86)
-Model Saved Epoch: 02 | Best Val. Loss: 0.508985(m per batch) | Acc: 75.446% | AUROC: 0.876159
+Epoch[2] Batch[0] - loss: 0.553648(batch)  acc: 73.256% (63/86)
+Epoch[2] Batch[86] - loss: 0.574373(batch)  acc: 73.256% (63/86)
+Epoch[2] Batch[172] - loss: 0.611206(batch)  acc: 62.791% (54/86)
+Epoch[2] Batch[258] - loss: 0.531392(batch)  acc: 79.070% (68/86)
+Epoch[2] Batch[344] - loss: 0.539663(batch)  acc: 75.581% (65/86)
+Epoch[2] Batch[430] - loss: 0.568503(batch)  acc: 70.930% (61/86)
+Epoch[2] Batch[516] - loss: 0.561926(batch)  acc: 69.767% (60/86)
+Epoch[2] Batch[602] - loss: 0.532748(batch)  acc: 79.070% (68/86)
+Epoch[2] Batch[688] - loss: 0.591997(batch)  acc: 76.744% (66/86)
+Epoch[2] Batch[774] - loss: 0.577802(batch)  acc: 73.256% (63/86)
+Epoch[2] Batch[860] - loss: 0.528218(batch)  acc: 87.209% (75/86)
+Epoch[2] Batch[946] - loss: 0.530878(batch)  acc: 77.907% (67/86)
+Epoch[2] Batch[1032] - loss: 0.509450(batch)  acc: 76.744% (66/86)
+Epoch[2] Batch[1118] - loss: 0.500125(batch)  acc: 79.070% (68/86)
+Epoch[2] Batch[1204] - loss: 0.516918(batch)  acc: 76.744% (66/86)
+Epoch[2] Batch[1290] - loss: 0.541237(batch)  acc: 74.419% (64/86)
+Epoch[2] Batch[1376] - loss: 0.486516(batch)  acc: 77.907% (67/86)
+Epoch[2] Batch[1462] - loss: 0.590076(batch)  acc: 69.767% (60/86)
+Epoch[2] Batch[1548] - loss: 0.535675(batch)  acc: 75.581% (65/86)
+Epoch[2] Batch[1634] - loss: 0.526050(batch)  acc: 76.744% (66/86)
+Epoch[2] Batch[1720] - loss: 0.512017(batch)  acc: 80.233% (69/86)
+Epoch[2] Batch[1806] - loss: 0.567593(batch)  acc: 69.767% (60/86)
+Model Saved Epoch: 02 | Best Val. Loss: 0.540894(m per batch) | Acc: 75.165% | AUROC: 0.866883
 
-Epoch: 02 | Time: 0m 6s
-	Train Loss: 0.50705
-	 Val. Loss: 0.50898 |  Accuracy:  75.446 | AUROC: 0.87616
+Epoch: 02 | Time: 0m 5s
+	Train Loss: 0.55825
+	 Val. Loss: 0.54089 |  Accuracy:  75.165 | AUROC: 0.86688
 
-	 Best Val. encountered Loss: 0.50898 |  Accuracy:  75.446 | AUROC: 0.87616
+	 Best Val. encountered Loss: 0.54089 |  Accuracy:  75.165 | AUROC: 0.86688
 
-Epoch[3] Batch[0] - loss: 0.468162(batch)  acc: 76.744% (66/86)
-Epoch[3] Batch[86] - loss: 0.569248(batch)  acc: 74.419% (64/86)
-Epoch[3] Batch[172] - loss: 0.451491(batch)  acc: 80.233% (69/86)
-Epoch[3] Batch[258] - loss: 0.539443(batch)  acc: 70.930% (61/86)
-Epoch[3] Batch[344] - loss: 0.459925(batch)  acc: 81.395% (70/86)
-Epoch[3] Batch[430] - loss: 0.458734(batch)  acc: 83.721% (72/86)
-Epoch[3] Batch[516] - loss: 0.443053(batch)  acc: 81.395% (70/86)
-Epoch[3] Batch[602] - loss: 0.449990(batch)  acc: 80.233% (69/86)
-Epoch[3] Batch[688] - loss: 0.497748(batch)  acc: 73.256% (63/86)
-Epoch[3] Batch[774] - loss: 0.489494(batch)  acc: 75.581% (65/86)
-Epoch[3] Batch[860] - loss: 0.479286(batch)  acc: 79.070% (68/86)
-Epoch[3] Batch[946] - loss: 0.458637(batch)  acc: 76.744% (66/86)
-Epoch[3] Batch[1032] - loss: 0.542010(batch)  acc: 69.767% (60/86)
-Epoch[3] Batch[1118] - loss: 0.429554(batch)  acc: 76.744% (66/86)
-Epoch[3] Batch[1204] - loss: 0.524969(batch)  acc: 79.070% (68/86)
-Epoch[3] Batch[1290] - loss: 0.567896(batch)  acc: 73.256% (63/86)
-Epoch[3] Batch[1376] - loss: 0.468686(batch)  acc: 77.907% (67/86)
-Epoch[3] Batch[1462] - loss: 0.530169(batch)  acc: 77.907% (67/86)
-Epoch[3] Batch[1548] - loss: 0.552864(batch)  acc: 76.744% (66/86)
-Epoch[3] Batch[1634] - loss: 0.551182(batch)  acc: 72.093% (62/86)
-Epoch[3] Batch[1720] - loss: 0.639973(batch)  acc: 69.767% (60/86)
-Epoch[3] Batch[1806] - loss: 0.427248(batch)  acc: 83.721% (72/86)
-Model Saved Epoch: 03 | Best Val. Loss: 0.508550(m per batch) | Acc: 75.551% | AUROC: 0.694627
+Epoch[3] Batch[0] - loss: 0.517653(batch)  acc: 80.233% (69/86)
+Epoch[3] Batch[86] - loss: 0.575878(batch)  acc: 75.581% (65/86)
+Epoch[3] Batch[172] - loss: 0.645832(batch)  acc: 68.605% (59/86)
+Epoch[3] Batch[258] - loss: 0.554785(batch)  acc: 74.419% (64/86)
+Epoch[3] Batch[344] - loss: 0.511080(batch)  acc: 74.419% (64/86)
+Epoch[3] Batch[430] - loss: 0.515242(batch)  acc: 76.744% (66/86)
+Epoch[3] Batch[516] - loss: 0.519502(batch)  acc: 77.907% (67/86)
+Epoch[3] Batch[602] - loss: 0.547627(batch)  acc: 75.581% (65/86)
+Epoch[3] Batch[688] - loss: 0.578058(batch)  acc: 70.930% (61/86)
+Epoch[3] Batch[774] - loss: 0.479499(batch)  acc: 79.070% (68/86)
+Epoch[3] Batch[860] - loss: 0.512692(batch)  acc: 80.233% (69/86)
+Epoch[3] Batch[946] - loss: 0.527983(batch)  acc: 76.744% (66/86)
+Epoch[3] Batch[1032] - loss: 0.554291(batch)  acc: 69.767% (60/86)
+Epoch[3] Batch[1118] - loss: 0.541241(batch)  acc: 70.930% (61/86)
+Epoch[3] Batch[1204] - loss: 0.597126(batch)  acc: 69.767% (60/86)
+Epoch[3] Batch[1290] - loss: 0.551192(batch)  acc: 70.930% (61/86)
+Epoch[3] Batch[1376] - loss: 0.623891(batch)  acc: 67.442% (58/86)
+Epoch[3] Batch[1462] - loss: 0.534958(batch)  acc: 70.930% (61/86)
+Epoch[3] Batch[1548] - loss: 0.567652(batch)  acc: 75.581% (65/86)
+Epoch[3] Batch[1634] - loss: 0.546590(batch)  acc: 70.930% (61/86)
+Epoch[3] Batch[1720] - loss: 0.532891(batch)  acc: 77.907% (67/86)
+Epoch[3] Batch[1806] - loss: 0.555160(batch)  acc: 73.256% (63/86)
+Model Saved Epoch: 03 | Best Val. Loss: 0.524264(m per batch) | Acc: 75.366% | AUROC: 0.810840
 
-Epoch: 03 | Time: 0m 6s
-	Train Loss: 0.50685
-	 Val. Loss: 0.50855 |  Accuracy:  75.551 | AUROC: 0.69463
+Epoch: 03 | Time: 0m 5s
+	Train Loss: 0.53161
+	 Val. Loss: 0.52426 |  Accuracy:  75.366 | AUROC: 0.81084
 
-	 Best Val. encountered Loss: 0.50855 |  Accuracy:  75.551 | AUROC: 0.69463
+	 Best Val. encountered Loss: 0.52426 |  Accuracy:  75.366 | AUROC: 0.81084
 
-Epoch[4] Batch[0] - loss: 0.460863(batch)  acc: 77.907% (67/86)
-Epoch[4] Batch[86] - loss: 0.426102(batch)  acc: 81.395% (70/86)
-Epoch[4] Batch[172] - loss: 0.562505(batch)  acc: 68.605% (59/86)
-Epoch[4] Batch[258] - loss: 0.545517(batch)  acc: 72.093% (62/86)
-Epoch[4] Batch[344] - loss: 0.522197(batch)  acc: 70.930% (61/86)
-Epoch[4] Batch[430] - loss: 0.491780(batch)  acc: 81.395% (70/86)
-Epoch[4] Batch[516] - loss: 0.496987(batch)  acc: 74.419% (64/86)
-Epoch[4] Batch[602] - loss: 0.496967(batch)  acc: 80.233% (69/86)
-Epoch[4] Batch[688] - loss: 0.495997(batch)  acc: 72.093% (62/86)
-Epoch[4] Batch[774] - loss: 0.402462(batch)  acc: 89.535% (77/86)
-Epoch[4] Batch[860] - loss: 0.506775(batch)  acc: 79.070% (68/86)
-Epoch[4] Batch[946] - loss: 0.563449(batch)  acc: 70.930% (61/86)
-Epoch[4] Batch[1032] - loss: 0.462843(batch)  acc: 77.907% (67/86)
-Epoch[4] Batch[1118] - loss: 0.494337(batch)  acc: 72.093% (62/86)
-Epoch[4] Batch[1204] - loss: 0.517141(batch)  acc: 73.256% (63/86)
-Epoch[4] Batch[1290] - loss: 0.631875(batch)  acc: 73.256% (63/86)
-Epoch[4] Batch[1376] - loss: 0.434431(batch)  acc: 79.070% (68/86)
-Epoch[4] Batch[1462] - loss: 0.443788(batch)  acc: 79.070% (68/86)
-Epoch[4] Batch[1548] - loss: 0.383187(batch)  acc: 82.558% (71/86)
-Epoch[4] Batch[1634] - loss: 0.444434(batch)  acc: 77.907% (67/86)
-Epoch[4] Batch[1720] - loss: 0.612217(batch)  acc: 68.605% (59/86)
-Epoch[4] Batch[1806] - loss: 0.615602(batch)  acc: 74.419% (64/86)
+Epoch[4] Batch[0] - loss: 0.577337(batch)  acc: 68.605% (59/86)
+Epoch[4] Batch[86] - loss: 0.544770(batch)  acc: 73.256% (63/86)
+Epoch[4] Batch[172] - loss: 0.559241(batch)  acc: 69.767% (60/86)
+Epoch[4] Batch[258] - loss: 0.525310(batch)  acc: 75.581% (65/86)
+Epoch[4] Batch[344] - loss: 0.523035(batch)  acc: 72.093% (62/86)
+Epoch[4] Batch[430] - loss: 0.496682(batch)  acc: 79.070% (68/86)
+Epoch[4] Batch[516] - loss: 0.483613(batch)  acc: 79.070% (68/86)
+Epoch[4] Batch[602] - loss: 0.506524(batch)  acc: 80.233% (69/86)
+Epoch[4] Batch[688] - loss: 0.609333(batch)  acc: 70.930% (61/86)
+Epoch[4] Batch[774] - loss: 0.507700(batch)  acc: 76.744% (66/86)
+Epoch[4] Batch[860] - loss: 0.480280(batch)  acc: 75.581% (65/86)
+Epoch[4] Batch[946] - loss: 0.511425(batch)  acc: 74.419% (64/86)
+Epoch[4] Batch[1032] - loss: 0.587232(batch)  acc: 68.605% (59/86)
+Epoch[4] Batch[1118] - loss: 0.531219(batch)  acc: 75.581% (65/86)
+Epoch[4] Batch[1204] - loss: 0.553046(batch)  acc: 81.395% (70/86)
+Epoch[4] Batch[1290] - loss: 0.498882(batch)  acc: 77.907% (67/86)
+Epoch[4] Batch[1376] - loss: 0.472801(batch)  acc: 81.395% (70/86)
+Epoch[4] Batch[1462] - loss: 0.526935(batch)  acc: 75.581% (65/86)
+Epoch[4] Batch[1548] - loss: 0.523224(batch)  acc: 76.744% (66/86)
+Epoch[4] Batch[1634] - loss: 0.513555(batch)  acc: 74.419% (64/86)
+Epoch[4] Batch[1720] - loss: 0.476727(batch)  acc: 74.419% (64/86)
+Epoch[4] Batch[1806] - loss: 0.491112(batch)  acc: 80.233% (69/86)
+Model Saved Epoch: 04 | Best Val. Loss: 0.516862(m per batch) | Acc: 75.461% | AUROC: 0.796748
 
-Epoch: 04 | Time: 0m 6s
-	Train Loss: 0.50695
-	 Val. Loss: 0.51046 |  Accuracy:  75.456 | AUROC: 0.82019
+Epoch: 04 | Time: 0m 5s
+	Train Loss: 0.51914
+	 Val. Loss: 0.51686 |  Accuracy:  75.461 | AUROC: 0.79675
 
-	 Best Val. encountered Loss: 0.50855 |  Accuracy:  75.551 | AUROC: 0.69463
+	 Best Val. encountered Loss: 0.51686 |  Accuracy:  75.461 | AUROC: 0.79675
 
-Epoch[5] Batch[0] - loss: 0.465789(batch)  acc: 75.581% (65/86)
-Epoch[5] Batch[86] - loss: 0.517430(batch)  acc: 75.581% (65/86)
-Epoch[5] Batch[172] - loss: 0.498150(batch)  acc: 77.907% (67/86)
-Epoch[5] Batch[258] - loss: 0.416657(batch)  acc: 82.558% (71/86)
-Epoch[5] Batch[344] - loss: 0.420878(batch)  acc: 79.070% (68/86)
-Epoch[5] Batch[430] - loss: 0.630331(batch)  acc: 68.605% (59/86)
-Epoch[5] Batch[516] - loss: 0.567984(batch)  acc: 74.419% (64/86)
-Epoch[5] Batch[602] - loss: 0.471663(batch)  acc: 75.581% (65/86)
-Epoch[5] Batch[688] - loss: 0.463616(batch)  acc: 76.744% (66/86)
-Epoch[5] Batch[774] - loss: 0.562053(batch)  acc: 72.093% (62/86)
-Epoch[5] Batch[860] - loss: 0.539623(batch)  acc: 70.930% (61/86)
-Epoch[5] Batch[946] - loss: 0.584300(batch)  acc: 72.093% (62/86)
-Epoch[5] Batch[1032] - loss: 0.419352(batch)  acc: 80.233% (69/86)
-Epoch[5] Batch[1118] - loss: 0.506131(batch)  acc: 73.256% (63/86)
-Epoch[5] Batch[1204] - loss: 0.534748(batch)  acc: 75.581% (65/86)
-Epoch[5] Batch[1290] - loss: 0.562234(batch)  acc: 68.605% (59/86)
-Epoch[5] Batch[1376] - loss: 0.582190(batch)  acc: 69.767% (60/86)
-Epoch[5] Batch[1462] - loss: 0.469531(batch)  acc: 76.744% (66/86)
-Epoch[5] Batch[1548] - loss: 0.526107(batch)  acc: 74.419% (64/86)
-Epoch[5] Batch[1634] - loss: 0.539330(batch)  acc: 69.767% (60/86)
-Epoch[5] Batch[1720] - loss: 0.619843(batch)  acc: 62.791% (54/86)
-Epoch[5] Batch[1806] - loss: 0.516950(batch)  acc: 73.256% (63/86)
+Epoch[5] Batch[0] - loss: 0.534350(batch)  acc: 73.256% (63/86)
+Epoch[5] Batch[86] - loss: 0.522148(batch)  acc: 73.256% (63/86)
+Epoch[5] Batch[172] - loss: 0.466671(batch)  acc: 81.395% (70/86)
+Epoch[5] Batch[258] - loss: 0.404706(batch)  acc: 87.209% (75/86)
+Epoch[5] Batch[344] - loss: 0.536607(batch)  acc: 67.442% (58/86)
+Epoch[5] Batch[430] - loss: 0.509172(batch)  acc: 69.767% (60/86)
+Epoch[5] Batch[516] - loss: 0.497987(batch)  acc: 72.093% (62/86)
+Epoch[5] Batch[602] - loss: 0.488696(batch)  acc: 75.581% (65/86)
+Epoch[5] Batch[688] - loss: 0.424224(batch)  acc: 83.721% (72/86)
+Epoch[5] Batch[774] - loss: 0.518139(batch)  acc: 75.581% (65/86)
+Epoch[5] Batch[860] - loss: 0.567014(batch)  acc: 72.093% (62/86)
+Epoch[5] Batch[946] - loss: 0.558134(batch)  acc: 75.581% (65/86)
+Epoch[5] Batch[1032] - loss: 0.566579(batch)  acc: 72.093% (62/86)
+Epoch[5] Batch[1118] - loss: 0.526923(batch)  acc: 76.744% (66/86)
+Epoch[5] Batch[1204] - loss: 0.490791(batch)  acc: 79.070% (68/86)
+Epoch[5] Batch[1290] - loss: 0.480124(batch)  acc: 70.930% (61/86)
+Epoch[5] Batch[1376] - loss: 0.501878(batch)  acc: 76.744% (66/86)
+Epoch[5] Batch[1462] - loss: 0.581126(batch)  acc: 70.930% (61/86)
+Epoch[5] Batch[1548] - loss: 0.493873(batch)  acc: 80.233% (69/86)
+Epoch[5] Batch[1634] - loss: 0.559493(batch)  acc: 76.744% (66/86)
+Epoch[5] Batch[1720] - loss: 0.525522(batch)  acc: 75.581% (65/86)
+Epoch[5] Batch[1806] - loss: 0.537270(batch)  acc: 76.744% (66/86)
+Model Saved Epoch: 05 | Best Val. Loss: 0.512263(m per batch) | Acc: 75.596% | AUROC: 0.800873
 
-Epoch: 05 | Time: 0m 7s
-	Train Loss: 0.50684
-	 Val. Loss: 0.50997 |  Accuracy:  75.461 | AUROC: 0.78409
+Epoch: 05 | Time: 0m 5s
+	Train Loss: 0.51288
+	 Val. Loss: 0.51226 |  Accuracy:  75.596 | AUROC: 0.80087
 
-	 Best Val. encountered Loss: 0.50855 |  Accuracy:  75.551 | AUROC: 0.69463
+	 Best Val. encountered Loss: 0.51226 |  Accuracy:  75.596 | AUROC: 0.80087
 
-Epoch[6] Batch[0] - loss: 0.485734(batch)  acc: 76.744% (66/86)
-Epoch[6] Batch[86] - loss: 0.414570(batch)  acc: 76.744% (66/86)
-Epoch[6] Batch[172] - loss: 0.518847(batch)  acc: 69.767% (60/86)
-Epoch[6] Batch[258] - loss: 0.472857(batch)  acc: 80.233% (69/86)
-Epoch[6] Batch[344] - loss: 0.479980(batch)  acc: 77.907% (67/86)
-Epoch[6] Batch[430] - loss: 0.526859(batch)  acc: 79.070% (68/86)
-Epoch[6] Batch[516] - loss: 0.474204(batch)  acc: 73.256% (63/86)
-Epoch[6] Batch[602] - loss: 0.568145(batch)  acc: 75.581% (65/86)
-Epoch[6] Batch[688] - loss: 0.526330(batch)  acc: 73.256% (63/86)
-Epoch[6] Batch[774] - loss: 0.423578(batch)  acc: 77.907% (67/86)
-Epoch[6] Batch[860] - loss: 0.494795(batch)  acc: 80.233% (69/86)
-Epoch[6] Batch[946] - loss: 0.571866(batch)  acc: 69.767% (60/86)
-Epoch[6] Batch[1032] - loss: 0.590381(batch)  acc: 65.116% (56/86)
-Epoch[6] Batch[1118] - loss: 0.593560(batch)  acc: 73.256% (63/86)
-Epoch[6] Batch[1204] - loss: 0.531796(batch)  acc: 76.744% (66/86)
-Epoch[6] Batch[1290] - loss: 0.489684(batch)  acc: 77.907% (67/86)
-Epoch[6] Batch[1376] - loss: 0.513864(batch)  acc: 73.256% (63/86)
-Epoch[6] Batch[1462] - loss: 0.503539(batch)  acc: 73.256% (63/86)
-Epoch[6] Batch[1548] - loss: 0.448136(batch)  acc: 73.256% (63/86)
-Epoch[6] Batch[1634] - loss: 0.512253(batch)  acc: 69.767% (60/86)
-Epoch[6] Batch[1720] - loss: 0.407330(batch)  acc: 86.047% (74/86)
-Epoch[6] Batch[1806] - loss: 0.611783(batch)  acc: 69.767% (60/86)
+Epoch[6] Batch[0] - loss: 0.505783(batch)  acc: 69.767% (60/86)
+Epoch[6] Batch[86] - loss: 0.548500(batch)  acc: 69.767% (60/86)
+Epoch[6] Batch[172] - loss: 0.559136(batch)  acc: 72.093% (62/86)
+Epoch[6] Batch[258] - loss: 0.490519(batch)  acc: 80.233% (69/86)
+Epoch[6] Batch[344] - loss: 0.564169(batch)  acc: 69.767% (60/86)
+Epoch[6] Batch[430] - loss: 0.472060(batch)  acc: 76.744% (66/86)
+Epoch[6] Batch[516] - loss: 0.466439(batch)  acc: 80.233% (69/86)
+Epoch[6] Batch[602] - loss: 0.574720(batch)  acc: 70.930% (61/86)
+Epoch[6] Batch[688] - loss: 0.487241(batch)  acc: 75.581% (65/86)
+Epoch[6] Batch[774] - loss: 0.448016(batch)  acc: 79.070% (68/86)
+Epoch[6] Batch[860] - loss: 0.580577(batch)  acc: 70.930% (61/86)
+Epoch[6] Batch[946] - loss: 0.483630(batch)  acc: 76.744% (66/86)
+Epoch[6] Batch[1032] - loss: 0.492329(batch)  acc: 80.233% (69/86)
+Epoch[6] Batch[1118] - loss: 0.539800(batch)  acc: 72.093% (62/86)
+Epoch[6] Batch[1204] - loss: 0.552077(batch)  acc: 63.953% (55/86)
+Epoch[6] Batch[1290] - loss: 0.456913(batch)  acc: 75.581% (65/86)
+Epoch[6] Batch[1376] - loss: 0.473311(batch)  acc: 76.744% (66/86)
+Epoch[6] Batch[1462] - loss: 0.487961(batch)  acc: 76.744% (66/86)
+Epoch[6] Batch[1548] - loss: 0.554043(batch)  acc: 68.605% (59/86)
+Epoch[6] Batch[1634] - loss: 0.544280(batch)  acc: 65.116% (56/86)
+Epoch[6] Batch[1720] - loss: 0.507435(batch)  acc: 74.419% (64/86)
+Epoch[6] Batch[1806] - loss: 0.515372(batch)  acc: 72.093% (62/86)
+Model Saved Epoch: 06 | Best Val. Loss: 0.510732(m per batch) | Acc: 75.637% | AUROC: 0.809156
 
-Epoch: 06 | Time: 0m 6s
-	Train Loss: 0.50683
-	 Val. Loss: 0.51025 |  Accuracy:  75.591 | AUROC: 0.78833
+Epoch: 06 | Time: 0m 5s
+	Train Loss: 0.50956
+	 Val. Loss: 0.51073 |  Accuracy:  75.637 | AUROC: 0.80916
 
-	 Best Val. encountered Loss: 0.50855 |  Accuracy:  75.551 | AUROC: 0.69463
+	 Best Val. encountered Loss: 0.51073 |  Accuracy:  75.637 | AUROC: 0.80916
 
-Epoch[7] Batch[0] - loss: 0.593692(batch)  acc: 69.767% (60/86)
-Epoch[7] Batch[86] - loss: 0.480192(batch)  acc: 80.233% (69/86)
-Epoch[7] Batch[172] - loss: 0.494834(batch)  acc: 75.581% (65/86)
-Epoch[7] Batch[258] - loss: 0.477994(batch)  acc: 80.233% (69/86)
-Epoch[7] Batch[344] - loss: 0.564599(batch)  acc: 76.744% (66/86)
-Epoch[7] Batch[430] - loss: 0.518088(batch)  acc: 76.744% (66/86)
-Epoch[7] Batch[516] - loss: 0.599764(batch)  acc: 66.279% (57/86)
-Epoch[7] Batch[602] - loss: 0.457460(batch)  acc: 76.744% (66/86)
-Epoch[7] Batch[688] - loss: 0.532960(batch)  acc: 74.419% (64/86)
-Epoch[7] Batch[774] - loss: 0.462240(batch)  acc: 77.907% (67/86)
-Epoch[7] Batch[860] - loss: 0.581865(batch)  acc: 73.256% (63/86)
-Epoch[7] Batch[946] - loss: 0.560363(batch)  acc: 72.093% (62/86)
-Epoch[7] Batch[1032] - loss: 0.495091(batch)  acc: 75.581% (65/86)
-Epoch[7] Batch[1118] - loss: 0.566690(batch)  acc: 74.419% (64/86)
-Epoch[7] Batch[1204] - loss: 0.587586(batch)  acc: 68.605% (59/86)
-Epoch[7] Batch[1290] - loss: 0.470032(batch)  acc: 76.744% (66/86)
-Epoch[7] Batch[1376] - loss: 0.541815(batch)  acc: 75.581% (65/86)
-Epoch[7] Batch[1462] - loss: 0.528134(batch)  acc: 66.279% (57/86)
-Epoch[7] Batch[1548] - loss: 0.547010(batch)  acc: 70.930% (61/86)
-Epoch[7] Batch[1634] - loss: 0.455693(batch)  acc: 80.233% (69/86)
-Epoch[7] Batch[1720] - loss: 0.510378(batch)  acc: 74.419% (64/86)
-Epoch[7] Batch[1806] - loss: 0.447446(batch)  acc: 81.395% (70/86)
+Epoch[7] Batch[0] - loss: 0.622939(batch)  acc: 61.628% (53/86)
+Epoch[7] Batch[86] - loss: 0.539453(batch)  acc: 69.767% (60/86)
+Epoch[7] Batch[172] - loss: 0.556964(batch)  acc: 70.930% (61/86)
+Epoch[7] Batch[258] - loss: 0.507854(batch)  acc: 79.070% (68/86)
+Epoch[7] Batch[344] - loss: 0.563395(batch)  acc: 76.744% (66/86)
+Epoch[7] Batch[430] - loss: 0.541130(batch)  acc: 72.093% (62/86)
+Epoch[7] Batch[516] - loss: 0.527449(batch)  acc: 76.744% (66/86)
+Epoch[7] Batch[602] - loss: 0.537270(batch)  acc: 70.930% (61/86)
+Epoch[7] Batch[688] - loss: 0.522381(batch)  acc: 73.256% (63/86)
+Epoch[7] Batch[774] - loss: 0.535939(batch)  acc: 76.744% (66/86)
+Epoch[7] Batch[860] - loss: 0.629212(batch)  acc: 67.442% (58/86)
+Epoch[7] Batch[946] - loss: 0.465536(batch)  acc: 76.744% (66/86)
+Epoch[7] Batch[1032] - loss: 0.473649(batch)  acc: 76.744% (66/86)
+Epoch[7] Batch[1118] - loss: 0.420315(batch)  acc: 84.884% (73/86)
+Epoch[7] Batch[1204] - loss: 0.562117(batch)  acc: 72.093% (62/86)
+Epoch[7] Batch[1290] - loss: 0.488513(batch)  acc: 75.581% (65/86)
+Epoch[7] Batch[1376] - loss: 0.520195(batch)  acc: 76.744% (66/86)
+Epoch[7] Batch[1462] - loss: 0.499117(batch)  acc: 75.581% (65/86)
+Epoch[7] Batch[1548] - loss: 0.469423(batch)  acc: 76.744% (66/86)
+Epoch[7] Batch[1634] - loss: 0.618061(batch)  acc: 72.093% (62/86)
+Epoch[7] Batch[1720] - loss: 0.556401(batch)  acc: 76.744% (66/86)
+Epoch[7] Batch[1806] - loss: 0.518484(batch)  acc: 68.605% (59/86)
+Model Saved Epoch: 07 | Best Val. Loss: 0.509364(m per batch) | Acc: 75.657% | AUROC: 0.847790
 
-Epoch: 07 | Time: 0m 6s
-	Train Loss: 0.50687
-	 Val. Loss: 0.50948 |  Accuracy:  75.606 | AUROC: 0.85366
+Epoch: 07 | Time: 0m 5s
+	Train Loss: 0.50784
+	 Val. Loss: 0.50936 |  Accuracy:  75.657 | AUROC: 0.84779
 
-	 Best Val. encountered Loss: 0.50855 |  Accuracy:  75.551 | AUROC: 0.69463
+	 Best Val. encountered Loss: 0.50936 |  Accuracy:  75.657 | AUROC: 0.84779
 
-Epoch[8] Batch[0] - loss: 0.496601(batch)  acc: 75.581% (65/86)
-Epoch[8] Batch[86] - loss: 0.500810(batch)  acc: 77.907% (67/86)
-Epoch[8] Batch[172] - loss: 0.478514(batch)  acc: 77.907% (67/86)
-Epoch[8] Batch[258] - loss: 0.451893(batch)  acc: 83.721% (72/86)
-Epoch[8] Batch[344] - loss: 0.416688(batch)  acc: 83.721% (72/86)
-Epoch[8] Batch[430] - loss: 0.483875(batch)  acc: 76.744% (66/86)
-Epoch[8] Batch[516] - loss: 0.485529(batch)  acc: 80.233% (69/86)
-Epoch[8] Batch[602] - loss: 0.435943(batch)  acc: 82.558% (71/86)
-Epoch[8] Batch[688] - loss: 0.391664(batch)  acc: 88.372% (76/86)
-Epoch[8] Batch[774] - loss: 0.483979(batch)  acc: 75.581% (65/86)
-Epoch[8] Batch[860] - loss: 0.482520(batch)  acc: 77.907% (67/86)
-Epoch[8] Batch[946] - loss: 0.431775(batch)  acc: 83.721% (72/86)
-Epoch[8] Batch[1032] - loss: 0.456098(batch)  acc: 77.907% (67/86)
-Epoch[8] Batch[1118] - loss: 0.512081(batch)  acc: 74.419% (64/86)
-Epoch[8] Batch[1204] - loss: 0.627843(batch)  acc: 69.767% (60/86)
-Epoch[8] Batch[1290] - loss: 0.505364(batch)  acc: 77.907% (67/86)
-Epoch[8] Batch[1376] - loss: 0.552155(batch)  acc: 72.093% (62/86)
-Epoch[8] Batch[1462] - loss: 0.550000(batch)  acc: 76.744% (66/86)
-Epoch[8] Batch[1548] - loss: 0.525157(batch)  acc: 74.419% (64/86)
-Epoch[8] Batch[1634] - loss: 0.503693(batch)  acc: 76.744% (66/86)
-Epoch[8] Batch[1720] - loss: 0.506700(batch)  acc: 67.442% (58/86)
-Epoch[8] Batch[1806] - loss: 0.545305(batch)  acc: 73.256% (63/86)
+Epoch[8] Batch[0] - loss: 0.454019(batch)  acc: 80.233% (69/86)
+Epoch[8] Batch[86] - loss: 0.609075(batch)  acc: 73.256% (63/86)
+Epoch[8] Batch[172] - loss: 0.471806(batch)  acc: 82.558% (71/86)
+Epoch[8] Batch[258] - loss: 0.479376(batch)  acc: 68.605% (59/86)
+Epoch[8] Batch[344] - loss: 0.426161(batch)  acc: 79.070% (68/86)
+Epoch[8] Batch[430] - loss: 0.491325(batch)  acc: 72.093% (62/86)
+Epoch[8] Batch[516] - loss: 0.531868(batch)  acc: 77.907% (67/86)
+Epoch[8] Batch[602] - loss: 0.521187(batch)  acc: 72.093% (62/86)
+Epoch[8] Batch[688] - loss: 0.558502(batch)  acc: 76.744% (66/86)
+Epoch[8] Batch[774] - loss: 0.386461(batch)  acc: 88.372% (76/86)
+Epoch[8] Batch[860] - loss: 0.490089(batch)  acc: 76.744% (66/86)
+Epoch[8] Batch[946] - loss: 0.498338(batch)  acc: 75.581% (65/86)
+Epoch[8] Batch[1032] - loss: 0.498362(batch)  acc: 69.767% (60/86)
+Epoch[8] Batch[1118] - loss: 0.505711(batch)  acc: 76.744% (66/86)
+Epoch[8] Batch[1204] - loss: 0.515588(batch)  acc: 73.256% (63/86)
+Epoch[8] Batch[1290] - loss: 0.469614(batch)  acc: 83.721% (72/86)
+Epoch[8] Batch[1376] - loss: 0.676535(batch)  acc: 66.279% (57/86)
+Epoch[8] Batch[1462] - loss: 0.452498(batch)  acc: 81.395% (70/86)
+Epoch[8] Batch[1548] - loss: 0.542865(batch)  acc: 79.070% (68/86)
+Epoch[8] Batch[1634] - loss: 0.560856(batch)  acc: 69.767% (60/86)
+Epoch[8] Batch[1720] - loss: 0.481388(batch)  acc: 75.581% (65/86)
+Epoch[8] Batch[1806] - loss: 0.538741(batch)  acc: 68.605% (59/86)
+Model Saved Epoch: 08 | Best Val. Loss: 0.509240(m per batch) | Acc: 75.627% | AUROC: 0.797697
 
-Epoch: 08 | Time: 0m 6s
-	Train Loss: 0.50687
-	 Val. Loss: 0.50984 |  Accuracy:  75.471 | AUROC: 0.76856
+Epoch: 08 | Time: 0m 5s
+	Train Loss: 0.50691
+	 Val. Loss: 0.50924 |  Accuracy:  75.627 | AUROC: 0.79770
 
-	 Best Val. encountered Loss: 0.50855 |  Accuracy:  75.551 | AUROC: 0.69463
+	 Best Val. encountered Loss: 0.50924 |  Accuracy:  75.627 | AUROC: 0.79770
+
+Epoch[9] Batch[0] - loss: 0.554913(batch)  acc: 73.256% (63/86)
+Epoch[9] Batch[86] - loss: 0.599359(batch)  acc: 75.581% (65/86)
+Epoch[9] Batch[172] - loss: 0.529516(batch)  acc: 76.744% (66/86)
+Epoch[9] Batch[258] - loss: 0.459808(batch)  acc: 80.233% (69/86)
+Epoch[9] Batch[344] - loss: 0.462952(batch)  acc: 76.744% (66/86)
+Epoch[9] Batch[430] - loss: 0.587348(batch)  acc: 70.930% (61/86)
+Epoch[9] Batch[516] - loss: 0.545942(batch)  acc: 73.256% (63/86)
+Epoch[9] Batch[602] - loss: 0.598146(batch)  acc: 70.930% (61/86)
+Epoch[9] Batch[688] - loss: 0.511677(batch)  acc: 74.419% (64/86)
+Epoch[9] Batch[774] - loss: 0.495486(batch)  acc: 77.907% (67/86)
+Epoch[9] Batch[860] - loss: 0.574755(batch)  acc: 70.930% (61/86)
+Epoch[9] Batch[946] - loss: 0.487433(batch)  acc: 79.070% (68/86)
+Epoch[9] Batch[1032] - loss: 0.482535(batch)  acc: 73.256% (63/86)
+Epoch[9] Batch[1118] - loss: 0.568140(batch)  acc: 74.419% (64/86)
+Epoch[9] Batch[1204] - loss: 0.475317(batch)  acc: 81.395% (70/86)
+Epoch[9] Batch[1290] - loss: 0.524058(batch)  acc: 77.907% (67/86)
+Epoch[9] Batch[1376] - loss: 0.502091(batch)  acc: 75.581% (65/86)
+Epoch[9] Batch[1462] - loss: 0.472688(batch)  acc: 81.395% (70/86)
+Epoch[9] Batch[1548] - loss: 0.466858(batch)  acc: 75.581% (65/86)
+Epoch[9] Batch[1634] - loss: 0.551706(batch)  acc: 69.767% (60/86)
+Epoch[9] Batch[1720] - loss: 0.405831(batch)  acc: 81.395% (70/86)
+Epoch[9] Batch[1806] - loss: 0.521688(batch)  acc: 74.419% (64/86)
+Model Saved Epoch: 09 | Best Val. Loss: 0.508642(m per batch) | Acc: 75.647% | AUROC: 0.859239
+
+Epoch: 09 | Time: 0m 5s
+	Train Loss: 0.50639
+	 Val. Loss: 0.50864 |  Accuracy:  75.647 | AUROC: 0.85924
+
+	 Best Val. encountered Loss: 0.50864 |  Accuracy:  75.647 | AUROC: 0.85924
+
+Epoch[10] Batch[0] - loss: 0.498607(batch)  acc: 77.907% (67/86)
+Epoch[10] Batch[86] - loss: 0.531034(batch)  acc: 73.256% (63/86)
+Epoch[10] Batch[172] - loss: 0.433036(batch)  acc: 81.395% (70/86)
+Epoch[10] Batch[258] - loss: 0.597800(batch)  acc: 74.419% (64/86)
+Epoch[10] Batch[344] - loss: 0.433177(batch)  acc: 81.395% (70/86)
+Epoch[10] Batch[430] - loss: 0.473015(batch)  acc: 81.395% (70/86)
+Epoch[10] Batch[516] - loss: 0.533356(batch)  acc: 73.256% (63/86)
+Epoch[10] Batch[602] - loss: 0.500070(batch)  acc: 75.581% (65/86)
+Epoch[10] Batch[688] - loss: 0.475255(batch)  acc: 79.070% (68/86)
+Epoch[10] Batch[774] - loss: 0.609706(batch)  acc: 74.419% (64/86)
+Epoch[10] Batch[860] - loss: 0.476978(batch)  acc: 74.419% (64/86)
+Epoch[10] Batch[946] - loss: 0.505783(batch)  acc: 73.256% (63/86)
+Epoch[10] Batch[1032] - loss: 0.501168(batch)  acc: 72.093% (62/86)
+Epoch[10] Batch[1118] - loss: 0.553583(batch)  acc: 66.279% (57/86)
+Epoch[10] Batch[1204] - loss: 0.561256(batch)  acc: 68.605% (59/86)
+Epoch[10] Batch[1290] - loss: 0.516482(batch)  acc: 73.256% (63/86)
+Epoch[10] Batch[1376] - loss: 0.478167(batch)  acc: 74.419% (64/86)
+Epoch[10] Batch[1462] - loss: 0.512288(batch)  acc: 73.256% (63/86)
+Epoch[10] Batch[1548] - loss: 0.533668(batch)  acc: 74.419% (64/86)
+Epoch[10] Batch[1634] - loss: 0.419148(batch)  acc: 81.395% (70/86)
+Epoch[10] Batch[1720] - loss: 0.540482(batch)  acc: 73.256% (63/86)
+Epoch[10] Batch[1806] - loss: 0.422201(batch)  acc: 83.721% (72/86)
+
+Epoch: 10 | Time: 0m 5s
+	Train Loss: 0.50611
+	 Val. Loss: 0.50874 |  Accuracy:  75.596 | AUROC: 0.86634
+
+	 Best Val. encountered Loss: 0.50864 |  Accuracy:  75.647 | AUROC: 0.85924
+
+Epoch[11] Batch[0] - loss: 0.495256(batch)  acc: 70.930% (61/86)
+Epoch[11] Batch[86] - loss: 0.456183(batch)  acc: 84.884% (73/86)
+Epoch[11] Batch[172] - loss: 0.468560(batch)  acc: 73.256% (63/86)
+Epoch[11] Batch[258] - loss: 0.517918(batch)  acc: 76.744% (66/86)
+Epoch[11] Batch[344] - loss: 0.413934(batch)  acc: 76.744% (66/86)
+Epoch[11] Batch[430] - loss: 0.567771(batch)  acc: 72.093% (62/86)
+Epoch[11] Batch[516] - loss: 0.435879(batch)  acc: 80.233% (69/86)
+Epoch[11] Batch[602] - loss: 0.430790(batch)  acc: 76.744% (66/86)
+Epoch[11] Batch[688] - loss: 0.494099(batch)  acc: 75.581% (65/86)
+Epoch[11] Batch[774] - loss: 0.566703(batch)  acc: 66.279% (57/86)
+Epoch[11] Batch[860] - loss: 0.469161(batch)  acc: 74.419% (64/86)
+Epoch[11] Batch[946] - loss: 0.578111(batch)  acc: 74.419% (64/86)
+Epoch[11] Batch[1032] - loss: 0.460754(batch)  acc: 76.744% (66/86)
+Epoch[11] Batch[1118] - loss: 0.471994(batch)  acc: 81.395% (70/86)
+Epoch[11] Batch[1204] - loss: 0.515040(batch)  acc: 73.256% (63/86)
+Epoch[11] Batch[1290] - loss: 0.502258(batch)  acc: 72.093% (62/86)
+Epoch[11] Batch[1376] - loss: 0.418786(batch)  acc: 82.558% (71/86)
+Epoch[11] Batch[1462] - loss: 0.440996(batch)  acc: 75.581% (65/86)
+Epoch[11] Batch[1548] - loss: 0.553255(batch)  acc: 68.605% (59/86)
+Epoch[11] Batch[1634] - loss: 0.591978(batch)  acc: 65.116% (56/86)
+Epoch[11] Batch[1720] - loss: 0.521825(batch)  acc: 76.744% (66/86)
+Epoch[11] Batch[1806] - loss: 0.431333(batch)  acc: 76.744% (66/86)
+
+Epoch: 11 | Time: 0m 5s
+	Train Loss: 0.50597
+	 Val. Loss: 0.50865 |  Accuracy:  75.586 | AUROC: 0.87013
+
+	 Best Val. encountered Loss: 0.50864 |  Accuracy:  75.647 | AUROC: 0.85924
+
+Epoch[12] Batch[0] - loss: 0.498240(batch)  acc: 73.256% (63/86)
+Epoch[12] Batch[86] - loss: 0.472415(batch)  acc: 75.581% (65/86)
+Epoch[12] Batch[172] - loss: 0.553339(batch)  acc: 75.581% (65/86)
+Epoch[12] Batch[258] - loss: 0.541063(batch)  acc: 75.581% (65/86)
+Epoch[12] Batch[344] - loss: 0.485318(batch)  acc: 87.209% (75/86)
+Epoch[12] Batch[430] - loss: 0.615075(batch)  acc: 72.093% (62/86)
+Epoch[12] Batch[516] - loss: 0.578659(batch)  acc: 70.930% (61/86)
+Epoch[12] Batch[602] - loss: 0.431825(batch)  acc: 80.233% (69/86)
+Epoch[12] Batch[688] - loss: 0.502889(batch)  acc: 80.233% (69/86)
+Epoch[12] Batch[774] - loss: 0.514298(batch)  acc: 76.744% (66/86)
+Epoch[12] Batch[860] - loss: 0.486883(batch)  acc: 75.581% (65/86)
+Epoch[12] Batch[946] - loss: 0.526346(batch)  acc: 73.256% (63/86)
+Epoch[12] Batch[1032] - loss: 0.488634(batch)  acc: 77.907% (67/86)
+Epoch[12] Batch[1118] - loss: 0.514044(batch)  acc: 79.070% (68/86)
+Epoch[12] Batch[1204] - loss: 0.443208(batch)  acc: 80.233% (69/86)
+Epoch[12] Batch[1290] - loss: 0.441886(batch)  acc: 81.395% (70/86)
+Epoch[12] Batch[1376] - loss: 0.433776(batch)  acc: 76.744% (66/86)
+Epoch[12] Batch[1462] - loss: 0.516303(batch)  acc: 76.744% (66/86)
+Epoch[12] Batch[1548] - loss: 0.558660(batch)  acc: 77.907% (67/86)
+Epoch[12] Batch[1634] - loss: 0.463587(batch)  acc: 79.070% (68/86)
+Epoch[12] Batch[1720] - loss: 0.479062(batch)  acc: 75.581% (65/86)
+Epoch[12] Batch[1806] - loss: 0.517558(batch)  acc: 79.070% (68/86)
+
+Epoch: 12 | Time: 0m 5s
+	Train Loss: 0.50586
+	 Val. Loss: 0.50884 |  Accuracy:  75.571 | AUROC: 0.85992
+
+	 Best Val. encountered Loss: 0.50864 |  Accuracy:  75.647 | AUROC: 0.85924
+
+Epoch[13] Batch[0] - loss: 0.462225(batch)  acc: 76.744% (66/86)
+Epoch[13] Batch[86] - loss: 0.459937(batch)  acc: 76.744% (66/86)
+Epoch[13] Batch[172] - loss: 0.490942(batch)  acc: 76.744% (66/86)
+Epoch[13] Batch[258] - loss: 0.483290(batch)  acc: 80.233% (69/86)
+Epoch[13] Batch[344] - loss: 0.532716(batch)  acc: 73.256% (63/86)
+Epoch[13] Batch[430] - loss: 0.501306(batch)  acc: 77.907% (67/86)
+Epoch[13] Batch[516] - loss: 0.546769(batch)  acc: 69.767% (60/86)
+Epoch[13] Batch[602] - loss: 0.406360(batch)  acc: 83.721% (72/86)
+Epoch[13] Batch[688] - loss: 0.503261(batch)  acc: 75.581% (65/86)
+Epoch[13] Batch[774] - loss: 0.418627(batch)  acc: 79.070% (68/86)
+Epoch[13] Batch[860] - loss: 0.526721(batch)  acc: 73.256% (63/86)
+Epoch[13] Batch[946] - loss: 0.456705(batch)  acc: 79.070% (68/86)
+Epoch[13] Batch[1032] - loss: 0.493440(batch)  acc: 80.233% (69/86)
+Epoch[13] Batch[1118] - loss: 0.422764(batch)  acc: 81.395% (70/86)
+Epoch[13] Batch[1204] - loss: 0.468355(batch)  acc: 82.558% (71/86)
+Epoch[13] Batch[1290] - loss: 0.509062(batch)  acc: 69.767% (60/86)
+Epoch[13] Batch[1376] - loss: 0.541321(batch)  acc: 79.070% (68/86)
+Epoch[13] Batch[1462] - loss: 0.584494(batch)  acc: 68.605% (59/86)
+Epoch[13] Batch[1548] - loss: 0.464115(batch)  acc: 81.395% (70/86)
+Epoch[13] Batch[1634] - loss: 0.496877(batch)  acc: 76.744% (66/86)
+Epoch[13] Batch[1720] - loss: 0.439577(batch)  acc: 79.070% (68/86)
+Epoch[13] Batch[1806] - loss: 0.492625(batch)  acc: 73.256% (63/86)
+Model Saved Epoch: 13 | Best Val. Loss: 0.508402(m per batch) | Acc: 75.561% | AUROC: 0.809444
+
+Epoch: 13 | Time: 0m 5s
+	Train Loss: 0.50580
+	 Val. Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
+
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
+
+Epoch[14] Batch[0] - loss: 0.536352(batch)  acc: 70.930% (61/86)
+Epoch[14] Batch[86] - loss: 0.519974(batch)  acc: 77.907% (67/86)
+Epoch[14] Batch[172] - loss: 0.563772(batch)  acc: 72.093% (62/86)
+Epoch[14] Batch[258] - loss: 0.436314(batch)  acc: 79.070% (68/86)
+Epoch[14] Batch[344] - loss: 0.518171(batch)  acc: 74.419% (64/86)
+Epoch[14] Batch[430] - loss: 0.474490(batch)  acc: 79.070% (68/86)
+Epoch[14] Batch[516] - loss: 0.522386(batch)  acc: 81.395% (70/86)
+Epoch[14] Batch[602] - loss: 0.573458(batch)  acc: 72.093% (62/86)
+Epoch[14] Batch[688] - loss: 0.587107(batch)  acc: 67.442% (58/86)
+Epoch[14] Batch[774] - loss: 0.488691(batch)  acc: 73.256% (63/86)
+Epoch[14] Batch[860] - loss: 0.513182(batch)  acc: 69.767% (60/86)
+Epoch[14] Batch[946] - loss: 0.507172(batch)  acc: 76.744% (66/86)
+Epoch[14] Batch[1032] - loss: 0.530156(batch)  acc: 74.419% (64/86)
+Epoch[14] Batch[1118] - loss: 0.490352(batch)  acc: 73.256% (63/86)
+Epoch[14] Batch[1204] - loss: 0.453283(batch)  acc: 84.884% (73/86)
+Epoch[14] Batch[1290] - loss: 0.511329(batch)  acc: 75.581% (65/86)
+Epoch[14] Batch[1376] - loss: 0.459788(batch)  acc: 82.558% (71/86)
+Epoch[14] Batch[1462] - loss: 0.494301(batch)  acc: 76.744% (66/86)
+Epoch[14] Batch[1548] - loss: 0.534267(batch)  acc: 75.581% (65/86)
+Epoch[14] Batch[1634] - loss: 0.496250(batch)  acc: 75.581% (65/86)
+Epoch[14] Batch[1720] - loss: 0.532813(batch)  acc: 70.930% (61/86)
+Epoch[14] Batch[1806] - loss: 0.447190(batch)  acc: 82.558% (71/86)
+
+Epoch: 14 | Time: 0m 6s
+	Train Loss: 0.50579
+	 Val. Loss: 0.50934 |  Accuracy:  75.476 | AUROC: 0.77652
+
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
+
+Epoch[15] Batch[0] - loss: 0.433965(batch)  acc: 83.721% (72/86)
+Epoch[15] Batch[86] - loss: 0.551376(batch)  acc: 74.419% (64/86)
+Epoch[15] Batch[172] - loss: 0.408220(batch)  acc: 81.395% (70/86)
+Epoch[15] Batch[258] - loss: 0.484013(batch)  acc: 74.419% (64/86)
+Epoch[15] Batch[344] - loss: 0.475374(batch)  acc: 80.233% (69/86)
+Epoch[15] Batch[430] - loss: 0.494762(batch)  acc: 77.907% (67/86)
+Epoch[15] Batch[516] - loss: 0.505624(batch)  acc: 76.744% (66/86)
+Epoch[15] Batch[602] - loss: 0.382450(batch)  acc: 87.209% (75/86)
+Epoch[15] Batch[688] - loss: 0.506748(batch)  acc: 72.093% (62/86)
+Epoch[15] Batch[774] - loss: 0.469290(batch)  acc: 75.581% (65/86)
+Epoch[15] Batch[860] - loss: 0.499443(batch)  acc: 76.744% (66/86)
+Epoch[15] Batch[946] - loss: 0.478719(batch)  acc: 80.233% (69/86)
+Epoch[15] Batch[1032] - loss: 0.461312(batch)  acc: 84.884% (73/86)
+Epoch[15] Batch[1118] - loss: 0.443808(batch)  acc: 79.070% (68/86)
+Epoch[15] Batch[1204] - loss: 0.402844(batch)  acc: 77.907% (67/86)
+Epoch[15] Batch[1290] - loss: 0.492472(batch)  acc: 76.744% (66/86)
+Epoch[15] Batch[1376] - loss: 0.455036(batch)  acc: 74.419% (64/86)
+Epoch[15] Batch[1462] - loss: 0.533386(batch)  acc: 73.256% (63/86)
+Epoch[15] Batch[1548] - loss: 0.476598(batch)  acc: 75.581% (65/86)
+Epoch[15] Batch[1634] - loss: 0.471945(batch)  acc: 77.907% (67/86)
+Epoch[15] Batch[1720] - loss: 0.594102(batch)  acc: 66.279% (57/86)
+Epoch[15] Batch[1806] - loss: 0.525499(batch)  acc: 77.907% (67/86)
+
+Epoch: 15 | Time: 0m 6s
+	Train Loss: 0.50580
+	 Val. Loss: 0.50877 |  Accuracy:  75.591 | AUROC: 0.85979
+
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
+
+Epoch[16] Batch[0] - loss: 0.544450(batch)  acc: 70.930% (61/86)
+Epoch[16] Batch[86] - loss: 0.445929(batch)  acc: 79.070% (68/86)
+Epoch[16] Batch[172] - loss: 0.640104(batch)  acc: 72.093% (62/86)
+Epoch[16] Batch[258] - loss: 0.494596(batch)  acc: 75.581% (65/86)
+Epoch[16] Batch[344] - loss: 0.535233(batch)  acc: 68.605% (59/86)
+Epoch[16] Batch[430] - loss: 0.466721(batch)  acc: 76.744% (66/86)
+Epoch[16] Batch[516] - loss: 0.476795(batch)  acc: 75.581% (65/86)
+Epoch[16] Batch[602] - loss: 0.551056(batch)  acc: 68.605% (59/86)
+Epoch[16] Batch[688] - loss: 0.568085(batch)  acc: 67.442% (58/86)
+Epoch[16] Batch[774] - loss: 0.480788(batch)  acc: 80.233% (69/86)
+Epoch[16] Batch[860] - loss: 0.520156(batch)  acc: 70.930% (61/86)
+Epoch[16] Batch[946] - loss: 0.466348(batch)  acc: 80.233% (69/86)
+Epoch[16] Batch[1032] - loss: 0.555439(batch)  acc: 72.093% (62/86)
+Epoch[16] Batch[1118] - loss: 0.538166(batch)  acc: 73.256% (63/86)
+Epoch[16] Batch[1204] - loss: 0.569327(batch)  acc: 67.442% (58/86)
+Epoch[16] Batch[1290] - loss: 0.557991(batch)  acc: 73.256% (63/86)
+Epoch[16] Batch[1376] - loss: 0.519970(batch)  acc: 77.907% (67/86)
+Epoch[16] Batch[1462] - loss: 0.419681(batch)  acc: 84.884% (73/86)
+Epoch[16] Batch[1548] - loss: 0.425721(batch)  acc: 82.558% (71/86)
+Epoch[16] Batch[1634] - loss: 0.432112(batch)  acc: 82.558% (71/86)
+Epoch[16] Batch[1720] - loss: 0.491930(batch)  acc: 76.744% (66/86)
+Epoch[16] Batch[1806] - loss: 0.600228(batch)  acc: 73.256% (63/86)
+
+Epoch: 16 | Time: 0m 6s
+	Train Loss: 0.50579
+	 Val. Loss: 0.50920 |  Accuracy:  75.561 | AUROC: 0.83171
+
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
+
+Epoch[17] Batch[0] - loss: 0.576007(batch)  acc: 74.419% (64/86)
+Epoch[17] Batch[86] - loss: 0.444492(batch)  acc: 81.395% (70/86)
+Epoch[17] Batch[172] - loss: 0.530059(batch)  acc: 75.581% (65/86)
+Epoch[17] Batch[258] - loss: 0.419419(batch)  acc: 80.233% (69/86)
+Epoch[17] Batch[344] - loss: 0.514296(batch)  acc: 73.256% (63/86)
+Epoch[17] Batch[430] - loss: 0.544808(batch)  acc: 75.581% (65/86)
+Epoch[17] Batch[516] - loss: 0.472288(batch)  acc: 74.419% (64/86)
+Epoch[17] Batch[602] - loss: 0.471382(batch)  acc: 74.419% (64/86)
+Epoch[17] Batch[688] - loss: 0.486159(batch)  acc: 73.256% (63/86)
+Epoch[17] Batch[774] - loss: 0.555334(batch)  acc: 66.279% (57/86)
+Epoch[17] Batch[860] - loss: 0.435744(batch)  acc: 79.070% (68/86)
+Epoch[17] Batch[946] - loss: 0.476858(batch)  acc: 74.419% (64/86)
+Epoch[17] Batch[1032] - loss: 0.515390(batch)  acc: 76.744% (66/86)
+Epoch[17] Batch[1118] - loss: 0.478929(batch)  acc: 80.233% (69/86)
+Epoch[17] Batch[1204] - loss: 0.504708(batch)  acc: 80.233% (69/86)
+Epoch[17] Batch[1290] - loss: 0.480988(batch)  acc: 74.419% (64/86)
+Epoch[17] Batch[1376] - loss: 0.623035(batch)  acc: 67.442% (58/86)
+Epoch[17] Batch[1462] - loss: 0.480453(batch)  acc: 75.581% (65/86)
+Epoch[17] Batch[1548] - loss: 0.475850(batch)  acc: 75.581% (65/86)
+Epoch[17] Batch[1634] - loss: 0.447117(batch)  acc: 77.907% (67/86)
+Epoch[17] Batch[1720] - loss: 0.490560(batch)  acc: 73.256% (63/86)
+Epoch[17] Batch[1806] - loss: 0.558415(batch)  acc: 65.116% (56/86)
+
+Epoch: 17 | Time: 0m 6s
+	Train Loss: 0.50575
+	 Val. Loss: 0.50880 |  Accuracy:  75.566 | AUROC: 0.84478
+
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
+
+Epoch[18] Batch[0] - loss: 0.537601(batch)  acc: 70.930% (61/86)
+Epoch[18] Batch[86] - loss: 0.669826(batch)  acc: 66.279% (57/86)
+Epoch[18] Batch[172] - loss: 0.466670(batch)  acc: 75.581% (65/86)
+Epoch[18] Batch[258] - loss: 0.502417(batch)  acc: 80.233% (69/86)
+Epoch[18] Batch[344] - loss: 0.534615(batch)  acc: 73.256% (63/86)
+Epoch[18] Batch[430] - loss: 0.490156(batch)  acc: 77.907% (67/86)
+Epoch[18] Batch[516] - loss: 0.512989(batch)  acc: 75.581% (65/86)
+Epoch[18] Batch[602] - loss: 0.566551(batch)  acc: 67.442% (58/86)
+Epoch[18] Batch[688] - loss: 0.638781(batch)  acc: 68.605% (59/86)
+Epoch[18] Batch[774] - loss: 0.498850(batch)  acc: 77.907% (67/86)
+Epoch[18] Batch[860] - loss: 0.429558(batch)  acc: 82.558% (71/86)
+Epoch[18] Batch[946] - loss: 0.462543(batch)  acc: 77.907% (67/86)
+Epoch[18] Batch[1032] - loss: 0.564137(batch)  acc: 69.767% (60/86)
+Epoch[18] Batch[1118] - loss: 0.541967(batch)  acc: 72.093% (62/86)
+Epoch[18] Batch[1204] - loss: 0.459562(batch)  acc: 77.907% (67/86)
+Epoch[18] Batch[1290] - loss: 0.673576(batch)  acc: 69.767% (60/86)
+Epoch[18] Batch[1376] - loss: 0.453779(batch)  acc: 77.907% (67/86)
+Epoch[18] Batch[1462] - loss: 0.508235(batch)  acc: 75.581% (65/86)
+Epoch[18] Batch[1548] - loss: 0.490292(batch)  acc: 79.070% (68/86)
+Epoch[18] Batch[1634] - loss: 0.486257(batch)  acc: 76.744% (66/86)
+Epoch[18] Batch[1720] - loss: 0.474624(batch)  acc: 82.558% (71/86)
+Epoch[18] Batch[1806] - loss: 0.508836(batch)  acc: 74.419% (64/86)
+
+Epoch: 18 | Time: 0m 7s
+	Train Loss: 0.50578
+	 Val. Loss: 0.50894 |  Accuracy:  75.561 | AUROC: 0.80333
+
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
+
+Epoch[19] Batch[0] - loss: 0.514797(batch)  acc: 76.744% (66/86)
+Epoch[19] Batch[86] - loss: 0.463246(batch)  acc: 76.744% (66/86)
+Epoch[19] Batch[172] - loss: 0.445575(batch)  acc: 81.395% (70/86)
+Epoch[19] Batch[258] - loss: 0.478968(batch)  acc: 75.581% (65/86)
+Epoch[19] Batch[344] - loss: 0.610020(batch)  acc: 65.116% (56/86)
+Epoch[19] Batch[430] - loss: 0.586552(batch)  acc: 67.442% (58/86)
+Epoch[19] Batch[516] - loss: 0.517467(batch)  acc: 76.744% (66/86)
+Epoch[19] Batch[602] - loss: 0.584453(batch)  acc: 79.070% (68/86)
+Epoch[19] Batch[688] - loss: 0.620939(batch)  acc: 67.442% (58/86)
+Epoch[19] Batch[774] - loss: 0.637325(batch)  acc: 66.279% (57/86)
+Epoch[19] Batch[860] - loss: 0.420800(batch)  acc: 83.721% (72/86)
+Epoch[19] Batch[946] - loss: 0.464634(batch)  acc: 79.070% (68/86)
+Epoch[19] Batch[1032] - loss: 0.478572(batch)  acc: 81.395% (70/86)
+Epoch[19] Batch[1118] - loss: 0.463503(batch)  acc: 82.558% (71/86)
+Epoch[19] Batch[1204] - loss: 0.483916(batch)  acc: 76.744% (66/86)
+Epoch[19] Batch[1290] - loss: 0.493450(batch)  acc: 69.767% (60/86)
+Epoch[19] Batch[1376] - loss: 0.489446(batch)  acc: 76.744% (66/86)
+Epoch[19] Batch[1462] - loss: 0.476344(batch)  acc: 77.907% (67/86)
+Epoch[19] Batch[1548] - loss: 0.524473(batch)  acc: 74.419% (64/86)
+Epoch[19] Batch[1634] - loss: 0.459932(batch)  acc: 80.233% (69/86)
+Epoch[19] Batch[1720] - loss: 0.574818(batch)  acc: 82.558% (71/86)
+Epoch[19] Batch[1806] - loss: 0.543299(batch)  acc: 73.256% (63/86)
+
+Epoch: 19 | Time: 0m 6s
+	Train Loss: 0.50579
+	 Val. Loss: 0.50916 |  Accuracy:  75.566 | AUROC: 0.83442
+
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
+
+Epoch[20] Batch[0] - loss: 0.624990(batch)  acc: 68.605% (59/86)
+Epoch[20] Batch[86] - loss: 0.526246(batch)  acc: 75.581% (65/86)
+Epoch[20] Batch[172] - loss: 0.412511(batch)  acc: 84.884% (73/86)
+Epoch[20] Batch[258] - loss: 0.575145(batch)  acc: 75.581% (65/86)
+Epoch[20] Batch[344] - loss: 0.503419(batch)  acc: 80.233% (69/86)
+Epoch[20] Batch[430] - loss: 0.553085(batch)  acc: 68.605% (59/86)
+Epoch[20] Batch[516] - loss: 0.597816(batch)  acc: 73.256% (63/86)
+Epoch[20] Batch[602] - loss: 0.453218(batch)  acc: 80.233% (69/86)
+Epoch[20] Batch[688] - loss: 0.598821(batch)  acc: 70.930% (61/86)
+Epoch[20] Batch[774] - loss: 0.540963(batch)  acc: 70.930% (61/86)
+Epoch[20] Batch[860] - loss: 0.642040(batch)  acc: 72.093% (62/86)
+Epoch[20] Batch[946] - loss: 0.580465(batch)  acc: 74.419% (64/86)
+Epoch[20] Batch[1032] - loss: 0.482759(batch)  acc: 81.395% (70/86)
+Epoch[20] Batch[1118] - loss: 0.465447(batch)  acc: 77.907% (67/86)
+Epoch[20] Batch[1204] - loss: 0.518948(batch)  acc: 76.744% (66/86)
+Epoch[20] Batch[1290] - loss: 0.464225(batch)  acc: 80.233% (69/86)
+Epoch[20] Batch[1376] - loss: 0.513220(batch)  acc: 75.581% (65/86)
+Epoch[20] Batch[1462] - loss: 0.497352(batch)  acc: 74.419% (64/86)
+Epoch[20] Batch[1548] - loss: 0.526353(batch)  acc: 79.070% (68/86)
+Epoch[20] Batch[1634] - loss: 0.459207(batch)  acc: 79.070% (68/86)
+Epoch[20] Batch[1720] - loss: 0.481821(batch)  acc: 69.767% (60/86)
+Epoch[20] Batch[1806] - loss: 0.483131(batch)  acc: 84.884% (73/86)
+
+Epoch: 20 | Time: 0m 6s
+	Train Loss: 0.50577
+	 Val. Loss: 0.50889 |  Accuracy:  75.571 | AUROC: 0.80647
+
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
+
+Epoch[21] Batch[0] - loss: 0.559110(batch)  acc: 75.581% (65/86)
+Epoch[21] Batch[86] - loss: 0.397432(batch)  acc: 81.395% (70/86)
+Epoch[21] Batch[172] - loss: 0.508134(batch)  acc: 70.930% (61/86)
+Epoch[21] Batch[258] - loss: 0.596455(batch)  acc: 68.605% (59/86)
+Epoch[21] Batch[344] - loss: 0.528580(batch)  acc: 75.581% (65/86)
+Epoch[21] Batch[430] - loss: 0.516974(batch)  acc: 74.419% (64/86)
+Epoch[21] Batch[516] - loss: 0.518931(batch)  acc: 68.605% (59/86)
+Epoch[21] Batch[602] - loss: 0.447917(batch)  acc: 77.907% (67/86)
+Epoch[21] Batch[688] - loss: 0.601880(batch)  acc: 60.465% (52/86)
+Epoch[21] Batch[774] - loss: 0.552886(batch)  acc: 72.093% (62/86)
+Epoch[21] Batch[860] - loss: 0.515397(batch)  acc: 74.419% (64/86)
+Epoch[21] Batch[946] - loss: 0.595928(batch)  acc: 70.930% (61/86)
+Epoch[21] Batch[1032] - loss: 0.437057(batch)  acc: 81.395% (70/86)
+Epoch[21] Batch[1118] - loss: 0.479798(batch)  acc: 74.419% (64/86)
+Epoch[21] Batch[1204] - loss: 0.516937(batch)  acc: 73.256% (63/86)
+Epoch[21] Batch[1290] - loss: 0.470769(batch)  acc: 81.395% (70/86)
+Epoch[21] Batch[1376] - loss: 0.520617(batch)  acc: 73.256% (63/86)
+Epoch[21] Batch[1462] - loss: 0.416514(batch)  acc: 83.721% (72/86)
+Epoch[21] Batch[1548] - loss: 0.513612(batch)  acc: 79.070% (68/86)
+Epoch[21] Batch[1634] - loss: 0.626375(batch)  acc: 70.930% (61/86)
+Epoch[21] Batch[1720] - loss: 0.535896(batch)  acc: 76.744% (66/86)
+Epoch[21] Batch[1806] - loss: 0.462549(batch)  acc: 77.907% (67/86)
+
+Epoch: 21 | Time: 0m 6s
+	Train Loss: 0.50576
+	 Val. Loss: 0.50847 |  Accuracy:  75.596 | AUROC: 0.81124
+
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
+
+Epoch[22] Batch[0] - loss: 0.573443(batch)  acc: 68.605% (59/86)
+Epoch[22] Batch[86] - loss: 0.450444(batch)  acc: 74.419% (64/86)
+Epoch[22] Batch[172] - loss: 0.478086(batch)  acc: 79.070% (68/86)
+Epoch[22] Batch[258] - loss: 0.517000(batch)  acc: 73.256% (63/86)
+Epoch[22] Batch[344] - loss: 0.564483(batch)  acc: 76.744% (66/86)
+Epoch[22] Batch[430] - loss: 0.461558(batch)  acc: 81.395% (70/86)
+Epoch[22] Batch[516] - loss: 0.497445(batch)  acc: 79.070% (68/86)
+Epoch[22] Batch[602] - loss: 0.486946(batch)  acc: 74.419% (64/86)
+Epoch[22] Batch[688] - loss: 0.527255(batch)  acc: 72.093% (62/86)
+Epoch[22] Batch[774] - loss: 0.468217(batch)  acc: 77.907% (67/86)
+Epoch[22] Batch[860] - loss: 0.385954(batch)  acc: 83.721% (72/86)
+Epoch[22] Batch[946] - loss: 0.515191(batch)  acc: 76.744% (66/86)
+Epoch[22] Batch[1032] - loss: 0.552161(batch)  acc: 74.419% (64/86)
+Epoch[22] Batch[1118] - loss: 0.554650(batch)  acc: 68.605% (59/86)
+Epoch[22] Batch[1204] - loss: 0.494248(batch)  acc: 79.070% (68/86)
+Epoch[22] Batch[1290] - loss: 0.467266(batch)  acc: 80.233% (69/86)
+Epoch[22] Batch[1376] - loss: 0.598338(batch)  acc: 70.930% (61/86)
+Epoch[22] Batch[1462] - loss: 0.589794(batch)  acc: 73.256% (63/86)
+Epoch[22] Batch[1548] - loss: 0.589215(batch)  acc: 69.767% (60/86)
+Epoch[22] Batch[1634] - loss: 0.470202(batch)  acc: 77.907% (67/86)
+Epoch[22] Batch[1720] - loss: 0.579240(batch)  acc: 72.093% (62/86)
+Epoch[22] Batch[1806] - loss: 0.520948(batch)  acc: 72.093% (62/86)
+
+Epoch: 22 | Time: 0m 5s
+	Train Loss: 0.50577
+	 Val. Loss: 0.50910 |  Accuracy:  75.556 | AUROC: 0.83883
+
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
+
+Epoch[23] Batch[0] - loss: 0.554618(batch)  acc: 69.767% (60/86)
+Epoch[23] Batch[86] - loss: 0.383241(batch)  acc: 81.395% (70/86)
+Epoch[23] Batch[172] - loss: 0.536972(batch)  acc: 73.256% (63/86)
+Epoch[23] Batch[258] - loss: 0.422279(batch)  acc: 83.721% (72/86)
+Epoch[23] Batch[344] - loss: 0.447433(batch)  acc: 73.256% (63/86)
+Epoch[23] Batch[430] - loss: 0.433085(batch)  acc: 80.233% (69/86)
+Epoch[23] Batch[516] - loss: 0.434643(batch)  acc: 80.233% (69/86)
+Epoch[23] Batch[602] - loss: 0.470384(batch)  acc: 76.744% (66/86)
+Epoch[23] Batch[688] - loss: 0.450208(batch)  acc: 79.070% (68/86)
+Epoch[23] Batch[774] - loss: 0.408235(batch)  acc: 82.558% (71/86)
+Epoch[23] Batch[860] - loss: 0.552598(batch)  acc: 69.767% (60/86)
+Epoch[23] Batch[946] - loss: 0.515574(batch)  acc: 74.419% (64/86)
+Epoch[23] Batch[1032] - loss: 0.481667(batch)  acc: 72.093% (62/86)
+Epoch[23] Batch[1118] - loss: 0.517330(batch)  acc: 70.930% (61/86)
+Epoch[23] Batch[1204] - loss: 0.544629(batch)  acc: 74.419% (64/86)
+Epoch[23] Batch[1290] - loss: 0.484909(batch)  acc: 69.767% (60/86)
+Epoch[23] Batch[1376] - loss: 0.519338(batch)  acc: 74.419% (64/86)
+Epoch[23] Batch[1462] - loss: 0.465525(batch)  acc: 70.930% (61/86)
+Epoch[23] Batch[1548] - loss: 0.453308(batch)  acc: 75.581% (65/86)
+Epoch[23] Batch[1634] - loss: 0.489268(batch)  acc: 76.744% (66/86)
+Epoch[23] Batch[1720] - loss: 0.576343(batch)  acc: 66.279% (57/86)
+Epoch[23] Batch[1806] - loss: 0.410793(batch)  acc: 82.558% (71/86)
+
+Epoch: 23 | Time: 0m 5s
+	Train Loss: 0.50571
+	 Val. Loss: 0.50902 |  Accuracy:  75.536 | AUROC: 0.82283
+
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
 
 
-Early stopping at epoch 08
-	 Best Val. encountered Loss: 0.50855 |  Accuracy:  75.551 | AUROC: 0.69463
+Early stopping at epoch 23
+	 Best Val. encountered Loss: 0.50840 |  Accuracy:  75.561 | AUROC: 0.80944
 

@@ -34,21 +34,45 @@ Delete this when you start working on your own Kedro project.
 
 from kedro.pipeline import Pipeline, node
 
-from .nodes import split_data
+from .nodes import simple_return
 
 
-def create_pipeline(**kwargs):
+# def create_pipeline(**kwargs):
+#     return Pipeline(
+#         [
+#             node(
+#                 split_data,
+#                 ["example_iris_data", "params:example_test_data_ratio"],
+#                 dict(
+#                     train_x="example_train_x",
+#                     train_y="example_train_y",
+#                     test_x="example_test_x",
+#                     test_y="example_test_y",
+#                 ),
+#             )
+#         ]
+#     )
+
+def create_cnn_char_pipeline(**kwargs):
     return Pipeline(
         [
             node(
-                split_data,
-                ["example_iris_data", "params:example_test_data_ratio"],
-                dict(
-                    train_x="example_train_x",
-                    train_y="example_train_y",
-                    test_x="example_test_x",
-                    test_y="example_test_y",
-                ),
+                func= simple_return
+                , inputs= ["allocine_train", "parameters"]
+                , outputs= "train_data"
+                , name= "train_data"
+            ),
+            node(
+                func=simple_return
+                , inputs= ["allocine_valid", "parameters"]
+                , outputs= "valid_data"
+                , name= "valid_data"
+            ),
+            node(
+                func=simple_return
+                , inputs= ["allocine_test", "parameters"]
+                , outputs= "test_data"
+                , name= "test_data"
             )
         ]
     )
