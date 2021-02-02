@@ -51,9 +51,68 @@ Afin de déterminer les paramètres optimaux, Zhang et al proposent une méthodo
 
   Le jeu est déjà découpé en trois sous-jeux : le jeu d'entrainement (160 000 avis), le jeu de validation (20 000 avis) et le jeu de test (20 000 avis).
 
-  La taille 
+  Les avis subissent des traitements (lemmatisation, suppression des stops-word, ...). 
 
-  
+  Pour appliquer la méthode présentée dans Zhang et al., il faut que chaque avis ait le même nombre de mots. L'illustration suivante présente la distribution du nombre de mots. En prenant $s = 67$, seuls 20% des avis seront tronqués. 
 
-  
+  <figure>
+    <img src='C:\Users\khale\OneDrive\Documents\Ensae\Projet stat\nlp_understanding\docs\doc\embed_cnn\graphique\hist_train_word.png' alt="hist_train" class="center">
+    <figcaption>Distribution du nombre de mots par phrase</figcaption>
+  </figure>
 
+### Sélection du modèle 
+
+La méthodologie a été appliquée en utilisant un embedding Word2Vec (dimension 200) et un embedding FastText (dimension 300).
+
+Pour sélectionner le modèle, la méthodologie de l'article a été appliquée est résumée par les graphiques suivants :
+
+<figure>
+  <img src='C:\Users\khale\OneDrive\Documents\Ensae\Projet stat\nlp_understanding\docs\doc\embed_cnn\graphique\word2vec\graphique_largeur.svg' alt="hist_train" class="center">
+  <figcaption>Fonction de perte et précision en fonction de la largeur du filtre pour 100 filtres et un seul type : largeur optimale 2</figcaption>
+</figure>
+
+
+
+
+
+
+
+|    Filtre    | Loss  | Accuracy |
+| :----------: | :---: | :------: |
+|      1       | 0,258 |  0,898   |
+|      2       | 0,254 |  0,898   |
+|      3       | 0,265 |  0,892   |
+|      4       | 0,272 |  0,889   |
+|    (1, 2)    | 0,248 |  0,902   |
+|    (1, 3)    | 0,252 |  0,900   |
+|    (1, 4)    | 0,252 |  0,897   |
+|    (2, 3)    | 0,254 |  0,897   |
+|    (2, 4)    | 0,266 |  0,895   |
+|    (3, 4)    | 0,271 |  0,890   |
+|  (1, 2, 3)   | 0,252 |  0,900   |
+|  (1, 2, 4)   | 0,254 |  0,899   |
+|  (1, 3, 4)   | 0,251 |  0,900   |
+|  (2, 3, 4)   | 0,261 |  0,897   |
+| (1, 2, 3, 4) | 0,257 |  0,895   |
+
+
+
+
+
+<figure>
+  <img src='C:\Users\khale\OneDrive\Documents\Ensae\Projet stat\nlp_understanding\docs\doc\embed_cnn\graphique\word2vec\nb_filtre.svg' alt="hist_train" class="center">
+  <figcaption>Fonction de perte et précision en fonction en fonction du nombre de filtres par largeur pour deux types de filtres : largeur 1 et largeur 2</figcaption>
+</figure>
+
+
+
+
+
+
+
+
+
+<figure>
+  <img src='C:\Users\khale\OneDrive\Documents\Ensae\Projet stat\nlp_understanding\docs\doc\embed_cnn\graphique\word2vec\dropout.svg' alt="hist_train" class="center">
+  <figcaption>Variation du dropout pour le modèle avec 600 filtres de largeur 1 et de largeur 2</figcaption>
+</figure>
