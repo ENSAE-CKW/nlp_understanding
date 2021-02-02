@@ -3,20 +3,18 @@ import numpy as np
 import string
 import torch
 from torch.utils.data import Dataset
+from typing import List
 
 
 class charToTensor(Dataset):
-    def __init__(self, data_csv_path, sentence_max_size
-                 , alphabet=None):
+    def __init__(self, data_df: pd.DataFrame, sentence_max_size: int):
 
-        self.data_df= data_csv_path # this is not a path but a pd.Dataframe
+        self.data_df= data_df # this is not a path but a pd.Dataframe
         # self.data_csv_path= data_csv_path
         self.sentence_max_size= sentence_max_size
 
         # Alphabet definition
         self.all_letters= string.ascii_letters + ".,;:'/?!()@&=#0123456789\"éèêà€$"
-        if alphabet is not None:
-            self.all_letters= alphabet
 
         self.n_letters= len(self.all_letters)
 

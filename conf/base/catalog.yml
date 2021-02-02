@@ -4,16 +4,26 @@
 # Link: https://kedro.readthedocs.io/en/stable/05_data/01_data_catalog.html
 
 allocine_train:
-  type: src.deep_nlp.extras.datasets.custom_csv_dataset.CustomPandas
+  type: pandas.CSVDataSet
   filepath: data/01_raw/allocine_train.csv
+  fs_args:
+    open_args_load:
+      encoding: 'utf_8'
 
 allocine_valid:
-  type: src.deep_nlp.extras.datasets.custom_csv_dataset.CustomPandas
+  type: pandas.CSVDataSet
   filepath: data/01_raw/allocine_valid.csv
+  fs_args:
+    open_args_load:
+      encoding: 'utf_8'
 
 allocine_test:
-  type: src.deep_nlp.extras.datasets.custom_csv_dataset.CustomPandas
+  type: pandas.CSVDataSet
   filepath: data/01_raw/allocine_test.csv
+  fs_args:
+    open_args_load:
+      encoding: 'utf_8'
+
 
 cnn_char_model:
   type: pickle.PickleDataSet

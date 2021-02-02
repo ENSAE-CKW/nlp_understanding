@@ -7,6 +7,7 @@ from nltk import RegexpTokenizer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score
 
 from typing import List
@@ -78,51 +79,46 @@ def train(params):
     X_valid_clean = clean_array_sentence(X_valid)
     print("Clean End")
 
-    print("Encode Start")
-    train_encoded = bow(train=X_train_clean
-                        , valid=X_valid_clean
-                        , params=params
-                        , data=X_train_clean
-                        )
-    print("Encode End")
-
-    # Construct our base vocabulary with max features
-    # We are going to select the number of features in
-    # the next for bound
-    vectorizer = train_encoded["vectorizer"]
-    vocabulary = vectorizer.vocabulary_
-    del train_encoded
-
     # Select the best model between each new_feature possibility
-    for i in [100]:
+    for i in [100, 500, 1000]:
         params["max_features"]= i
         print(params["max_features"])
 
-        X_train_encoded = bow(train=X_train_clean
+        train_encoded = bow(train=X_train_clean
                               , valid=X_valid_clean
                               , params=params
                               , data=X_train_clean
-                              , vocabulary=vocabulary
-                              )["data"]
+                              )
+        vectorizer = train_encoded["vectorizer"]
+        vocabulary = vectorizer.vocabulary_
 
+        X_train_encoded= train_encoded["data"]
+
+        print(X_train_encoded.shape)
+        print("Start Scale")
+        scaler = StandardScaler()
+        scaler.fit(X_train_encoded)
+        print("End Scale")
 
         # Model training step
         # Model definition
-        model = LogisticRegression(solver='liblinear')
+        model = LogisticRegression(solver='saga', penalty= "l1"
+                                   , n_jobs= -1)
 
         grid_params = {
             "C": np.logspace(-3, 3, 7)
-            , "penalty": ["l1"]
         }
 
         gs = GridSearchCV(model
                           , param_grid=grid_params
-                          , scoring="neg_log_loss")
+                          , scoring="neg_log_loss"
+                          , verbose= 1)
 
         print("Model training phase")
-        gs.fit(X_train_encoded, y_train)
-
+        X_train_encoded_scale= scaler.transform(X_train_encoded)
         del X_train_encoded
+        gs.fit(X_train_encoded_scale, y_train)
+        del X_train_encoded_scale
 
         X_valid_encoded = bow(train=X_train_clean
                               , valid=X_valid_clean
@@ -132,9 +128,11 @@ def train(params):
                               )["data"]
 
         print("Validation phase")
-        y_pred = gs.predict(X_valid_encoded)
-        print("Max_feature : {} | AUC : {:.6f}".format(i, roc_auc_score(y_valid, y_pred)))
+        X_valid_encoded_scale = scaler.transform(X_valid_encoded)
         del X_valid_encoded
+        y_pred = gs.predict(X_valid_encoded_scale)
+        print("Max_feature : {} | AUC : {:.6f}".format(i, roc_auc_score(y_valid, y_pred)))
+        del X_valid_encoded_scale
 
         continue
 
@@ -150,7 +148,7 @@ if __name__ == "__main__":
         , "valid_path": r"../../../data/01_raw/allocine_valid.csv"
         , "model_saved_name": "/model_allocine.pth.tar"
         , "log_file_name": "/train_log.txt"
-        , "max_features": 10000
+        , "max_features": None
     }
 
     # train= pd.read_csv(params["train_path"])

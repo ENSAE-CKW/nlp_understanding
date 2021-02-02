@@ -6,28 +6,29 @@
 # Link: https://kedro.readthedocs.io/en/stable/04_kedro_project_setup/02_configuration.html#parameters
 
 # CNN Character Parameters :
-
-cnn_vocabulary: 83
-cnn_lr: 0.0001
-cnn_num_epochs: 50
-cnn_size_batch: 100
-cnn_sentence_max_size: 1014
-cnn_num_threads: 4
-cnn_clip: 400
-cnn_verbose: False
-cnn_freq_verbose: 100
-cnn_cuda_allow: True
-cnn_patience: 5
-## Small feature
+# Model parameters
 cnn_feature_num: 83
 cnn_feature_size: 256
 cnn_kernel_one: 7
 cnn_kernel_two: 3
 cnn_stride_one: 1
 cnn_stride_two: 3
-cnn_seq_len: 1014
+cnn_sequence_len: 1014
 cnn_output_linear: 1024
 cnn_dropout: 0.5
 cnn_num_class: 2
 
+# Train parameters
+cnn_num_threads: 4
+cnn_clip: 400
+cnn_verbose: False
+cnn_freq_verbose: 100
+cnn_cuda_allow: True
+cnn_patience: 5
+cnn_lr: 0.0001
+cnn_num_epochs: 50
+cnn_size_batch: 100
+
+# Others
+cnn_alphabet: None
 

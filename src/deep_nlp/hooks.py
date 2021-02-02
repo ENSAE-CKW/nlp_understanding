@@ -77,13 +77,13 @@ from deep_nlp.pipelines import data_science as ds
 class ProjectHooks:
     @hook_impl
     def register_pipelines(self) -> Dict[str, Pipeline]:
-        de_pipeline= de.create_cnn_char_pipeline()
-        ds_pipeline= ds.create_pipeline()
+        de_cnn_char_pipeline= de.create_cnn_char_pipeline_de() # change name (uniform)
+        ds_cnn_char_pipeline= ds.create_cnn_char_pipeline_ds()
 
         return {
-            "de": de_pipeline
-            , "ds": ds_pipeline
-            , "__default__": de_pipeline + ds_pipeline
+            "de": de_cnn_char_pipeline
+            , "ds": ds_cnn_char_pipeline
+            , "__default__": de_cnn_char_pipeline + ds_cnn_char_pipeline
         }
 
 project_hooks = ProjectHooks()

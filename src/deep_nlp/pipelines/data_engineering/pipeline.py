@@ -37,42 +37,29 @@ from kedro.pipeline import Pipeline, node
 from .nodes import simple_return
 
 
-# def create_pipeline(**kwargs):
-#     return Pipeline(
-#         [
-#             node(
-#                 split_data,
-#                 ["example_iris_data", "params:example_test_data_ratio"],
-#                 dict(
-#                     train_x="example_train_x",
-#                     train_y="example_train_y",
-#                     test_x="example_test_x",
-#                     test_y="example_test_y",
-#                 ),
-#             )
-#         ]
-#     )
-
-def create_cnn_char_pipeline(**kwargs):
+def create_cnn_char_pipeline_de(**kwargs):
     return Pipeline(
         [
             node(
                 func= simple_return
-                , inputs= ["allocine_train", "parameters"]
+                , inputs= ["allocine_train", "params:cnn_sequence_len"]
                 , outputs= "train_data"
-                , name= "train_data"
+                , name= "train_data_cnn_char"
+                , tags= ["cnn_char", "cnn_char_train", "train"]
             ),
             node(
                 func=simple_return
-                , inputs= ["allocine_valid", "parameters"]
+                , inputs= ["allocine_valid", "params:cnn_sequence_len"]
                 , outputs= "valid_data"
-                , name= "valid_data"
+                , name= "valid_data_cnn_char"
+                , tags= ["cnn_char", "cnn_char_train", "train"]
             ),
             node(
                 func=simple_return
-                , inputs= ["allocine_test", "parameters"]
+                , inputs= ["allocine_test", "params:cnn_sequence_len"]
                 , outputs= "test_data"
-                , name= "test_data"
+                , name= "test_data_cnn_char"
+                , tags= ["cnn_char", "cnn_char_test", "test"]
             )
         ]
     )

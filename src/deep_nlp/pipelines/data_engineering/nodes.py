@@ -34,7 +34,7 @@ PLEASE DELETE THIS FILE ONCE YOU START WORKING ON YOUR OWN PROJECT!
 from typing import Any, Dict
 
 import pandas as pd
-from deep_nlp.cnncharclassifier.dataset_load_cnn_char import charToTensor
+from deep_nlp.cnncharclassifier.char_to_tensor import charToTensor
 
 #
 # def split_data(data: pd.DataFrame, example_test_data_ratio: float) -> Dict[str, Any]:
@@ -81,6 +81,6 @@ from deep_nlp.cnncharclassifier.dataset_load_cnn_char import charToTensor
 # For CNN Character Classifier
 
 
-def simple_return(data: pd.DataFrame, parameters: Dict) -> charToTensor:
-    return charToTensor(data, parameters["cnn_sentence_max_size"])
+def simple_return(data: pd.DataFrame, cnn_sequence_len: int) -> charToTensor:
+    return charToTensor(data, cnn_sequence_len)
 

@@ -48,8 +48,8 @@ import sklearn.metrics as metrics
 import time
 
 
-
-def train_model(model, optimizer, train_load, epoch, parameters):
+def train_model(model, optimizer, train_load, epoch
+                , cnn_cuda_allow, cnn_clip, cnn_freq_verbose, cnn_size_batch):
 
     model.train()
 
@@ -58,40 +58,40 @@ def train_model(model, optimizer, train_load, epoch, parameters):
     for batch, data in enumerate(train_load):
         input, target = data
 
-        if parameters["cnn_cuda_allow"]:
+        if cnn_cuda_allow:
             input = input.cuda()
             target = target.cuda()
 
         input = Variable(input)
         target = Variable(target)
-
         logit = model(input)
         loss = F.nll_loss(logit, target)
         epoch_loss += loss.item()
         optimizer.zero_grad()
         loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), parameters["cnn_clip"])
+        torch.nn.utils.clip_grad_norm_(model.parameters(), cnn_clip)
         optimizer.step()
 
         # Verbose
-        if batch % parameters["cnn_freq_verbose"] == 0:
+        if batch % cnn_freq_verbose == 0:
             corrects = (torch.max(logit, 1)[1].view(target.size()).data == target.data).sum()
-            accuracy = 100.0 * corrects / int(parameters["cnn_size_batch"])
+            accuracy = 100.0 * corrects / int(cnn_size_batch)
 
             print("Epoch[{}] Batch[{}] - loss: {:.6f}(sum per batch)  acc: {:.3f}% ({}/{})" \
-                          .format(epoch + 1, batch, loss.item(), accuracy, corrects, parameters["cnn_size_batch"]))
+                          .format(epoch + 1, batch, loss.item(), accuracy, corrects, cnn_size_batch))
 
     return epoch_loss/len(train_load)
 
 
-def evaluation(model, valid_data, parameters):
+def evaluation(model, valid_data
+               , cnn_size_batch, cnn_num_threads):
     model.eval()
 
     corrects, avg_loss, epoch_loss, size= 0, 0, 0, 0
     predictions_all, target_all, probabilities_all= [], [], []
 
-    valid_load = DataLoader(valid_data, batch_size= parameters["cnn_size_batch"]
-                            , num_workers= parameters["cnn_num_threads"]
+    valid_load = DataLoader(valid_data, batch_size= cnn_size_batch
+                            , num_workers= cnn_num_threads
                             , drop_last= True, shuffle= True, pin_memory= True)
 
     for batch, data in enumerate(valid_load):
@@ -114,10 +114,6 @@ def evaluation(model, valid_data, parameters):
             probabilities_all += torch.exp(logit)[:, 1].cpu().numpy().tolist()
             target_all += target.data.cpu().numpy().tolist()
 
-            # torch.cuda.synchronize()
-
-    # avg_loss= epoch_loss/size
-    # accuracy= 100*corrects/size
     avg_loss = epoch_loss / len(valid_load) # avg loss (batch level)
     accuracy = 100 * corrects / size # avg acc per obs
 
@@ -134,29 +130,32 @@ def evaluation(model, valid_data, parameters):
     return {"loss": avg_loss, "accuracy": accuracy, "auroc": auroc}
 
 
-def train(train_data, valid_data, parameters):
+def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
+          , cnn_cuda_allow: bool, cnn_feature_num: int, cnn_lr: float, cnn_patience: int, cnn_num_epochs: int
+          , cnn_size_batch: int, cnn_num_threads: int, cnn_sequence_len: int, cnn_feature_size: int
+          , cnn_kernel_one: int, cnn_kernel_two: int, cnn_stride_one: int, cnn_stride_two: int, cnn_output_linear: int
+          , cnn_num_class: int, cnn_dropout: int):
     # Set up CUDA
-    if parameters["cnn_cuda_allow"]:
+    if cnn_cuda_allow:
         torch.cuda.empty_cache()
         torch.cuda.set_device(0)
 
-    # Train load
-
-    # Adding vocabulary size to model dictionnary
-    vocab_size = parameters["cnn_vocabulary"]
-    parameters["feature_num"] = vocab_size
-
-
     # Call our model
-    model= CNNCharClassifier(parameters)
+    kwargs= {"sequence_len": cnn_sequence_len, "feature_num": cnn_feature_num
+         , "feature_size": cnn_feature_size, "kernel_one": cnn_kernel_one
+         , "kernel_two": cnn_kernel_two, "stride_one": cnn_stride_one
+         , "stride_two": cnn_stride_two, "output_linear": cnn_output_linear
+         , "num_class": cnn_num_class, "dropout": cnn_dropout}
+
+    model= CNNCharClassifier(**kwargs)
     model= torch.nn.DataParallel(model)
 
-    if parameters["cnn_cuda_allow"]:
+    if cnn_cuda_allow:
         model = torch.nn.DataParallel(model).cuda()
 
     model.train()
 
-    optimizer= optim.Adam(model.parameters(), lr= parameters["cnn_lr"])
+    optimizer= optim.Adam(model.parameters(), lr= cnn_lr)
 
     # We reset start-batch to 0 because for the next epoch we take all the data
     best_eval_acc= 0
@@ -165,22 +164,26 @@ def train(train_data, valid_data, parameters):
     best_model= {}
 
     # Early stopping definition
-    es= EarlyStopping(patience= parameters["cnn_patience"])
+    es= EarlyStopping(patience= cnn_patience)
 
     # Start training
-    for epoch in range(parameters["cnn_num_epochs"]):
+    for epoch in range(cnn_num_epochs):
         start_time = time.time()
 
-        train_load = DataLoader(train_data, batch_size= parameters["cnn_size_batch"]
-                                , num_workers=parameters["cnn_num_threads"]
+        train_load = DataLoader(train_data, batch_size= cnn_size_batch
+                                , num_workers= cnn_num_threads
                                 , drop_last=True, shuffle=True, pin_memory= True)
 
         model.train()
-        train_loss= train_model(model, optimizer, train_load, epoch, parameters)
+        train_loss= train_model(model= model, optimizer= optimizer, train_load= train_load, epoch= epoch
+                                , cnn_cuda_allow= cnn_cuda_allow, cnn_clip= cnn_clip
+                                , cnn_freq_verbose= cnn_freq_verbose, cnn_size_batch=cnn_size_batch)
+
 
         # Save the model if its the best encountered for so long dude (after 1 entire epoch)
         model.eval()
-        valid_results = evaluation(model, valid_data, parameters)
+        valid_results = evaluation(model= model, valid_data= valid_data,  cnn_size_batch= cnn_size_batch
+                            ,cnn_num_threads= cnn_num_threads)
 
         if best_eval_loss is None or best_eval_loss > valid_results["loss"]:
             # save_checkpoint(model

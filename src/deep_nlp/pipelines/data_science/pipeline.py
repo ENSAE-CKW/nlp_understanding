@@ -36,31 +36,19 @@ from kedro.pipeline import Pipeline, node
 
 from .nodes import train
 
-
-# def create_pipeline(**kwargs):
-#     return Pipeline(
-#         [
-#             # node(
-#             #     train_model,
-#             #     ["example_train_x", "example_train_y", "parameters"],
-#             #     "example_model",
-#             # ),
-#             # node(
-#             #     predict,
-#             #     dict(model="example_model", test_x="example_test_x"),
-#             #     "example_predictions",
-#             # ),
-#             # node(report_accuracy, ["example_predictions", "example_test_y"], None),
-#         ]
-#     )
-
-def create_pipeline(**kwargs):
+def create_cnn_char_pipeline_ds(**kwargs):
     return Pipeline(
         [
             node(
                 func= train
-                , inputs= ["train_data", "valid_data", "parameters"]
-                , outputs= "cnn_char_model"
+                , inputs= ["train_data", "valid_data", "params:cnn_freq_verbose", "params:cnn_clip"
+                    , "params:cnn_cuda_allow", "params:cnn_feature_num", "params:cnn_lr", "params:cnn_patience"
+                    , "params:cnn_num_epochs", "params:cnn_size_batch", "params:cnn_num_threads"
+                    , "params:cnn_sequence_len", "params:cnn_feature_size", "params:cnn_kernel_one"
+                    , "params:cnn_kernel_two", "params:cnn_stride_one", "params:cnn_stride_two"
+                    , "params:cnn_output_linear", "params:cnn_num_class", "params:cnn_dropout"]
+                , outputs= "cnn_char_model_train" # model
+                , tags= ["cnn_char_train", "train"]
             )
         ]
     )
