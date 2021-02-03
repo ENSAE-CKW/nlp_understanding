@@ -27,5 +27,35 @@
 # limitations under the License.
 
 
-from .pipeline_cnn_char import create_cnn_char_pipeline_de
-from .pipeline_logistic_bow import create_logistic_bow_pipeline_de
+
+from kedro.pipeline import Pipeline, node
+
+from .nodes_logistic_bow import encode_data
+
+
+def create_logistic_bow_pipeline_de(**kwargs):
+    return Pipeline(
+        [
+            node(
+                func= encode_data
+                , inputs= ["allocine_train", "params:logistic_bow_max_number_feature"]
+                , outputs= ["train_data_logistic_bow", "train_y_logistic_bow", "vocabulary_logistic_bow"]
+                , name= "train_data_logistic_bow"
+                , tags= ["logistic_bow", "logistic_bow_train", "train"]
+            ),
+            node(
+                func=encode_data
+                , inputs= ["allocine_valid", "params:logistic_bow_max_number_feature", "vocabulary_logistic_bow"]
+                , outputs= ["valid_data_logistic_bow", "valid_y_logistic_bow"]
+                , name= "valid_data_logistic_bow"
+                , tags= ["logistic_bow", "logistic_bow_train", "train"]
+            ),
+            node(
+                func=encode_data
+                , inputs= ["allocine_test", "params:logistic_bow_max_number_feature", "vocabulary_logistic_bow"]
+                , outputs= ["test_data_logistic_bow", "test_y_logistic_bow"]
+                , name= "test_data_logistic_bow"
+                , tags= ["logistic_bow", "logistic_bow_test", "test"]
+            )
+        ]
+    )

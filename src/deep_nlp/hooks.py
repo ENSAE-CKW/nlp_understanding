@@ -39,50 +39,22 @@ from deep_nlp.pipelines import data_engineering as de
 from deep_nlp.pipelines import data_science as ds
 
 
-# class ProjectHooks:
-#     @hook_impl
-#     def register_pipelines(self) -> Dict[str, Pipeline]:
-#         """Register the project's pipeline.
-#
-#         Returns:
-#             A mapping from a pipeline name to a ``Pipeline`` object.
-#
-#         """
-#         data_engineering_pipeline = de.create_pipeline()
-#         data_science_pipeline = ds.create_pipeline()
-#
-#         return {
-#             "de": data_engineering_pipeline,
-#             "ds": data_science_pipeline,
-#             "__default__": data_engineering_pipeline + data_science_pipeline,
-#         }
-#
-#     @hook_impl
-#     def register_config_loader(self, conf_paths: Iterable[str]) -> ConfigLoader:
-#         return ConfigLoader(conf_paths)
-#
-#     @hook_impl
-#     def register_catalog(
-#         self,
-#         catalog: Optional[Dict[str, Dict[str, Any]]],
-#         credentials: Dict[str, Dict[str, Any]],
-#         load_versions: Dict[str, str],
-#         save_version: str,
-#         journal: Journal,
-#     ) -> DataCatalog:
-#         return DataCatalog.from_config(
-#             catalog, credentials, load_versions, save_version, journal
-#         )
-
 class ProjectHooks:
     @hook_impl
     def register_pipelines(self) -> Dict[str, Pipeline]:
-        de_cnn_char_pipeline= de.create_cnn_char_pipeline_de() # change name (uniform)
+        # CNN Character
+        de_cnn_char_pipeline= de.create_cnn_char_pipeline_de()
         ds_cnn_char_pipeline= ds.create_cnn_char_pipeline_ds()
 
+        # Logistic BOW
+        de_logistic_bow_pipeline= de.create_logistic_bow_pipeline_de()
+
         return {
-            "de": de_cnn_char_pipeline
-            , "ds": ds_cnn_char_pipeline
+            "de_cnn_char": de_cnn_char_pipeline
+            , "ds_cnn_char": ds_cnn_char_pipeline
+            , "de_logistic_bow": de_logistic_bow_pipeline
+
+            , "cnn_char": de_cnn_char_pipeline + ds_cnn_char_pipeline
             , "__default__": de_cnn_char_pipeline + ds_cnn_char_pipeline
         }
 

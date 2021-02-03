@@ -26,6 +26,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Example code for the nodes in the example pipeline. This code is meant
+just for illustrating basic Kedro features.
 
-from .pipeline_cnn_char import create_cnn_char_pipeline_de
-from .pipeline_logistic_bow import create_logistic_bow_pipeline_de
+Delete this when you start working on your own Kedro project.
+"""
+
+from kedro.pipeline import Pipeline, node
+
+from .nodes_cnn_char import train
+
+def create_cnn_char_pipeline_ds(**kwargs):
+    return Pipeline(
+        [
+            node(
+                func= train
+                , inputs= ["train_data", "valid_data", "params:cnn_freq_verbose", "params:cnn_clip"
+                    , "params:cnn_cuda_allow", "params:cnn_feature_num", "params:cnn_lr", "params:cnn_patience"
+                    , "params:cnn_num_epochs", "params:cnn_size_batch", "params:cnn_num_threads"
+                    , "params:cnn_sequence_len", "params:cnn_feature_size", "params:cnn_kernel_one"
+                    , "params:cnn_kernel_two", "params:cnn_stride_one", "params:cnn_stride_two"
+                    , "params:cnn_output_linear", "params:cnn_num_class", "params:cnn_dropout"]
+                , outputs= "cnn_char_model_train" # model
+                , tags= ["cnn_char_train", "train"]
+            )
+        ]
+    )

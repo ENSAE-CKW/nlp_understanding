@@ -3,6 +3,7 @@
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://kedro.readthedocs.io/en/stable/05_data/01_data_catalog.html
 
+# Dataset
 allocine_train:
   type: pandas.CSVDataSet
   filepath: data/01_raw/allocine_train.csv
@@ -24,8 +25,45 @@ allocine_test:
     open_args_load:
       encoding: 'utf_8'
 
+# CNN Character
+
+#cnn_char_model:
+#  type: pickle.PickleDataSet
+#  filepath: data/06_models/cnn_char_classifier/cnn_char_model/cnn_char_model.pth
+#  versioned: true
 
 cnn_char_model:
-  type: pickle.PickleDataSet
-  filepath: data/06_models/cnn_char_classifier/cnn_char_model/cnn_char_model.pth
-  versioned: true
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataSet
+  data_set:
+    type: pickle.PickleDataSet
+    filepath: data/06_models/cnn_char_classifier/cnn_char_model/cnn_char_model.pth
+
+# Logistic BOW
+
+vocabulary_logistic_bow:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/05_model_input/logistic_bow/vocabulary.pkl
+
+train_data_logistic_bow:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/05_model_input/logistic_bow/train_data.pkl
+
+train_y_logistic_bow:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/05_model_input/logistic_bow/train_y.pkl
+
+valid_data_logistic_bow:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/05_model_input/logistic_bow/valid_data.pkl
+
+valid_y_logistic_bow:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/05_model_input/logistic_bow/valid_y.pkl
+
+test_data_logistic_bow:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/05_model_input/logistic_bow/test_data.pkl
+
+test_y_logistic_bow:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/05_model_input/logistic_bow/test_y.pkl

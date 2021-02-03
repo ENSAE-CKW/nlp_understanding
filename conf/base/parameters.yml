@@ -26,9 +26,11 @@ cnn_freq_verbose: 100
 cnn_cuda_allow: True
 cnn_patience: 5
 cnn_lr: 0.0001
-cnn_num_epochs: 50
+cnn_num_epochs: 1 #50
 cnn_size_batch: 100
-
-# Others
+  # Others
 cnn_alphabet: None
+
+# Logistic BOW
+logistic_bow_max_number_feature: 100
 

@@ -3,7 +3,6 @@ import numpy as np
 import re
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
-from nltk import RegexpTokenizer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import LogisticRegression
@@ -32,13 +31,13 @@ def clean_text(sentence: str) -> List[str]:
     return (" ".join(cleaned_sentence))
 
 
-def bow(train, valid, data, params, vocabulary= None):
+def bow(train, valid, data, max_features, vocabulary= None):
     if vocabulary is None:
         vectorizer= CountVectorizer(analyzer = "word"
                                     , tokenizer = None
                                     , preprocessor = None
                                     , stop_words = None
-                                    , max_features= params["max_features"]
+                                    , max_features= max_features
                                     , dtype=np.uint8
                                     )
         # Construct our vocabulary
@@ -49,7 +48,7 @@ def bow(train, valid, data, params, vocabulary= None):
                                     , tokenizer = None
                                     , preprocessor = None
                                     , stop_words = None
-                                     , max_features= params["max_features"]
+                                     , max_features= max_features
                                      , vocabulary= vocabulary
                                      , dtype= np.uint8
                                      )
@@ -59,96 +58,116 @@ def bow(train, valid, data, params, vocabulary= None):
     return {"vectorizer": vectorizer, "data": data}
 
 
-def train(params):
-    train = pd.read_csv(params["train_path"])
-    X_train = np.array(train["review"])
-    y_train = np.array(train["label"])
-    del train
+# def train(params):
+train = pd.read_csv(params["train_path"])
+X_train = np.array(train["review"])
+y_train = np.array(train["label"])
+del train
 
-    valid = pd.read_csv(params["valid_path"])
-    X_valid = np.array(valid["review"])
-    y_valid = np.array(valid["label"])
-    del valid
+valid = pd.read_csv(params["valid_path"])
+X_valid = np.array(valid["review"])
+y_valid = np.array(valid["label"])
+del valid
 
-    # Clean our review
-    def clean_array_sentence(array: np.ndarray) -> List[List[str]]:
-        return list(map(clean_text, array))
+# Clean our review
+def clean_array_sentence(array: np.ndarray) -> List[List[str]]:
+    return list(map(clean_text, array))
 
-    print("Clean Start")
-    X_train_clean = clean_array_sentence(X_train)
-    X_valid_clean = clean_array_sentence(X_valid)
-    print("Clean End")
+print("Clean Start")
+X_train_clean = clean_array_sentence(X_train)[:80000]
+X_valid_clean = clean_array_sentence(X_valid)
+print("Clean End")
 
-    # Select the best model between each new_feature possibility
-    for i in [100, 500, 1000]:
-        params["max_features"]= i
-        print(params["max_features"])
+######################################################
+train_encoded = bow(train=X_train_clean
+                          , valid=X_valid_clean
+                          , max_features=params["max_features"]
+                          , data=X_train_clean
+                      )
+vectorizer = train_encoded["vectorizer"]
+vocabulary = vectorizer.vocabulary_
+vocabulary_sorted= {k: v for k, v in sorted(vocabulary.items(), key=lambda item: item[1], reverse= True)}
+n= 100
+n_first_vocabulary= list(vocabulary_sorted.items())[:n]
 
-        train_encoded = bow(train=X_train_clean
-                              , valid=X_valid_clean
-                              , params=params
-                              , data=X_train_clean
-                              )
-        vectorizer = train_encoded["vectorizer"]
-        vocabulary = vectorizer.vocabulary_
+X_valid_encoded = bow(train= X_train_clean
+                          , valid= X_valid_clean
+                          , max_features=params["max_features"]
+                          , data= X_valid_clean
+                          , vocabulary=n_first_vocabulary
+                          )
+######################################################
 
-        X_train_encoded= train_encoded["data"]
+# Select the best model between each new_feature possibility
+for i in [100, 500, 1000]:
+    params["max_features"]= i
+    print(params["max_features"])
 
-        print(X_train_encoded.shape)
-        print("Start Scale")
-        scaler = StandardScaler()
-        scaler.fit(X_train_encoded)
-        print("End Scale")
+    train_encoded = bow(train=X_train_clean
+                          , valid=X_valid_clean
+                          , params=params
+                          , data=X_train_clean
+                          )
+    vectorizer = train_encoded["vectorizer"]
+    vocabulary = vectorizer.vocabulary_
 
-        # Model training step
-        # Model definition
-        model = LogisticRegression(solver='saga', penalty= "l1"
-                                   , n_jobs= -1)
+    X_train_encoded= train_encoded["data"]
 
-        grid_params = {
-            "C": np.logspace(-3, 3, 7)
-        }
+    print(X_train_encoded.shape)
+    print("Start Scale")
+    scaler = StandardScaler()
+    scaler.fit(X_train_encoded)
+    print("End Scale")
 
-        gs = GridSearchCV(model
-                          , param_grid=grid_params
-                          , scoring="neg_log_loss"
-                          , verbose= 1)
+    # Model training step
+    # Model definition
+    model = LogisticRegression(solver='saga', penalty= "l1"
+                               , n_jobs= -1)
 
-        print("Model training phase")
-        X_train_encoded_scale= scaler.transform(X_train_encoded)
-        del X_train_encoded
-        gs.fit(X_train_encoded_scale, y_train)
-        del X_train_encoded_scale
+    grid_params = {
+        "C": np.logspace(-3, 3, 7)
+    }
 
-        X_valid_encoded = bow(train=X_train_clean
-                              , valid=X_valid_clean
-                              , params=params
-                              , data=X_valid_clean
-                              , vocabulary=vocabulary
-                              )["data"]
+    gs = GridSearchCV(model
+                      , param_grid=grid_params
+                      , scoring="neg_log_loss"
+                      , verbose= 1)
 
-        print("Validation phase")
-        X_valid_encoded_scale = scaler.transform(X_valid_encoded)
-        del X_valid_encoded
-        y_pred = gs.predict(X_valid_encoded_scale)
-        print("Max_feature : {} | AUC : {:.6f}".format(i, roc_auc_score(y_valid, y_pred)))
-        del X_valid_encoded_scale
+    print("Model training phase")
+    X_train_encoded_scale= scaler.transform(X_train_encoded)
+    del X_train_encoded
+    gs.fit(X_train_encoded_scale, y_train)
+    del X_train_encoded_scale
 
-        continue
+    X_valid_encoded = bow(train=X_train_clean
+                          , valid=X_valid_clean
+                          , params=params
+                          , data=X_valid_clean
+                          , vocabulary=vocabulary
+                          )["data"]
 
-    pass
+    print("Validation phase")
+    X_valid_encoded_scale = scaler.transform(X_valid_encoded)
+    del X_valid_encoded
+    y_pred = gs.predict(X_valid_encoded_scale)
+    print("Max_feature : {} | AUC : {:.6f}".format(i, roc_auc_score(y_valid, y_pred)))
+    del X_valid_encoded_scale
+
+    continue
+
+    # pass
 
 
 
 if __name__ == "__main__":
 
     params = {
-        "model_path": r"../../../data/06_models/logisticclassifier/allocine_classification"
-        , "train_path": r"../../../data/01_raw/allocine_train.csv"
-        , "valid_path": r"../../../data/01_raw/allocine_valid.csv"
+        "model_path": r"data/06_models/logisticclassifier/allocine_classification"
+        , "train_path": r"data/01_raw/allocine_train.csv"
+        , "valid_path": r"data/01_raw/allocine_valid.csv"
         , "model_saved_name": "/model_allocine.pth.tar"
         , "log_file_name": "/train_log.txt"
-        , "max_features": None
+        , "max_features": 500
     }
 
     # train= pd.read_csv(params["train_path"])
