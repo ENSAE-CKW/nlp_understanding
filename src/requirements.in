@@ -107,7 +107,8 @@ webencodings==0.5.1       # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\N
 wheel==0.32.2             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in
 whichcraft==0.6.1         # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, cookiecutter
 widgetsnbextension==3.5.1  # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, ipywidgets
-
+scikit-learn==0.24.1
+nltk==3.5
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip

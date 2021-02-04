@@ -19,15 +19,13 @@ cachetools==4.2.0         # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\N
 certifi==2020.12.5        # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, requests
 cffi==1.14.4              # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, argon2-cffi
 chardet==4.0.0            # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, binaryornot, requests
-click==7.1.2              # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, black, cookiecutter, kedro, pip-tools, sacremoses
+click==7.1.2              # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, black, cookiecutter, kedro, nltk, pip-tools
 colorama==0.4.4           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, ipython, pytest
 cookiecutter==1.6.0       # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, kedro
 coverage==5.3.1           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, pytest-cov
 decorator==4.4.2          # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, ipython
 defusedxml==0.6.0         # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, nbconvert
 entrypoints==0.3          # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, nbconvert
-fasttext==0.9.2           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in
-filelock==3.0.12          # via transformers
 flake8==3.8.4             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in
 fsspec==0.6.3             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, kedro
 future==0.18.2            # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, cookiecutter
@@ -41,7 +39,7 @@ jedi==0.18.0              # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\N
 jinja2-time==0.2.0        # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, cookiecutter
 jinja2==2.11.2            # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, cookiecutter, jinja2-time, nbconvert, notebook
 jmespath==0.10.0          # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, kedro
-joblib==1.0.0             # via sacremoses
+joblib==1.0.0             # via nltk, scikit-learn
 jsonschema==3.2.0         # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, jupyterlab-launcher, nbformat
 jupyter-client==6.1.7     # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, ipykernel, jupyter-console, kedro, nbclient, notebook, qtconsole
 jupyter-console==6.2.0    # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, jupyter
@@ -61,9 +59,10 @@ nbconvert==6.0.7          # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\N
 nbformat==5.0.8           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, ipywidgets, nbclient, nbconvert, nbstripout, notebook
 nbstripout==0.3.3         # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in
 nest-asyncio==1.4.3       # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, nbclient
+nltk==3.5                 # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in
 notebook==6.1.6           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, jupyter, jupyterlab, jupyterlab-launcher, widgetsnbextension
-numpy==1.19.4             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, fasttext, pandas, torch, transformers
-packaging==20.8           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, bleach, pytest, transformers
+numpy==1.19.4             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, pandas, scikit-learn, scipy
+packaging==20.8           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, bleach, pytest
 pandas==1.1.5             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, kedro
 pandocfilters==1.4.3      # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, nbconvert
 parso==0.8.1              # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, jedi
@@ -75,7 +74,6 @@ poyo==0.5.0               # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\N
 prometheus-client==0.9.0  # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, notebook
 prompt-toolkit==3.0.8     # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, ipython, jupyter-console
 py==1.10.0                # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, pytest
-pybind11==2.6.1           # via fasttext
 pycodestyle==2.6.0        # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, flake8
 pycparser==2.20           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, cffi
 pyflakes==2.2.0           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, flake8
@@ -94,23 +92,21 @@ pyyaml==5.3.1             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\N
 pyzmq==20.0.0             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, jupyter-client, notebook, qtconsole
 qtconsole==5.0.1          # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, jupyter
 qtpy==1.9.0               # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, qtconsole
-regex==2020.11.13         # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, black, sacremoses, transformers
-requests==2.25.1          # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, cookiecutter, transformers
-sacremoses==0.0.43        # via transformers
+regex==2020.11.13         # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, black, nltk
+requests==2.25.1          # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, cookiecutter
+scikit-learn==0.24.1      # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in
+scipy==1.6.0              # via scikit-learn
 send2trash==1.5.0         # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, notebook
-six==1.15.0               # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, argon2-cffi, bleach, jsonschema, pip-tools, python-dateutil, sacremoses
+six==1.15.0               # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, argon2-cffi, bleach, jsonschema, pip-tools, python-dateutil
 terminado==0.9.1          # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, notebook
 testpath==0.4.4           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, nbconvert
-tokenizers==0.9.4         # via transformers
+threadpoolctl==2.1.0      # via scikit-learn
 toml==0.10.2              # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, black
 toposort==1.6             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, kedro
-torch==1.7.1              # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in
 tornado==6.1              # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, ipykernel, jupyter-client, notebook, terminado
-tqdm==4.55.0              # via sacremoses, transformers
+tqdm==4.56.0              # via nltk
 traitlets==5.0.5          # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, ipykernel, ipython, ipywidgets, jupyter-client, jupyter-core, nbclient, nbconvert, nbformat, notebook, qtconsole
-transformers==4.1.1       # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in
 typed-ast==1.4.1          # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, black
-typing-extensions==3.7.4.3  # via torch
 urllib3==1.26.2           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, requests
 wcwidth==0.2.5            # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, prompt-toolkit, pytest
 webencodings==0.5.1       # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, bleach
