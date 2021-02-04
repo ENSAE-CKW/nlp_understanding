@@ -48,11 +48,14 @@ class ProjectHooks:
 
         # Logistic BOW
         de_logistic_bow_pipeline= de.create_logistic_bow_pipeline_de()
+        ds_logistic_bow_pipeline= ds.create_logistic_bow_pipeline_ds()
 
         return {
             "de_cnn_char": de_cnn_char_pipeline
             , "ds_cnn_char": ds_cnn_char_pipeline
+
             , "de_logistic_bow": de_logistic_bow_pipeline
+            , "ds_logistic_bow": ds_logistic_bow_pipeline
 
             , "cnn_char": de_cnn_char_pipeline + ds_cnn_char_pipeline
             , "__default__": de_cnn_char_pipeline + ds_cnn_char_pipeline

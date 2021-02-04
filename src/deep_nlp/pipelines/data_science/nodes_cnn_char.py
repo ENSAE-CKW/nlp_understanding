@@ -26,16 +26,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Example code for the nodes in the example pipeline. This code is meant
-just for illustrating basic Kedro features.
-
-Delete this when you start working on your own Kedro project.
-"""
-# pylint: disable=invalid-name
-
-import logging
-from typing import Any, Dict
-
 from deep_nlp.cnncharclassifier import CNNCharClassifier
 from deep_nlp.utils.early_stopping import EarlyStopping
 from deep_nlp.utils.utils import *

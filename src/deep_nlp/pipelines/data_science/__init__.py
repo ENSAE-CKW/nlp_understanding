@@ -25,10 +25,6 @@
 #
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Example code for the nodes in the example pipeline. This code is meant
-just for illustrating basic Kedro features.
 
-PLEASE DELETE THIS FILE ONCE YOU START WORKING ON YOUR OWN PROJECT!
-"""
-
-from .pipeline_cnn_char import create_cnn_char_pipeline_ds  # NOQA
+from .pipeline_cnn_char import create_cnn_char_pipeline_ds
+from .pipeline_logistic_bow import create_logistic_bow_pipeline_ds

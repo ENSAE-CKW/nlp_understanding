@@ -67,3 +67,13 @@ test_data_logistic_bow:
 test_y_logistic_bow:
   type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
   filepath: data/05_model_input/logistic_bow/test_y.pkl
+
+logistic_bow_model_train:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataSet
+  data_set:
+    type: pickle.PickleDataSet
+    filepath: data/06_models/logisticclassifier/logistic_bow_model/logistic_bow.pkl
+
+logistic_bow_scaler:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/06_models/logisticclassifier/logistic_bow_model/scaler.pkl
