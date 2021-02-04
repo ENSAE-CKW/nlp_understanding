@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
-from pytorch_lightning.metrics.functional.classification import auroc
+# from pytorch_lightning.metrics.functional.classification import auroc
 
 import time
 from deep_nlp.utils.early_stopping import EarlyStopping

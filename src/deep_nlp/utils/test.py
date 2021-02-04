@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 from torch import optim
 from torch.autograd import Variable
 import torch.nn.functional as F
-from pytorch_lightning.metrics.functional.classification import auroc
+# from pytorch_lightning.metrics.functional.classification import auroc
 
 
 

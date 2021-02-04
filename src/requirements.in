@@ -59,7 +59,7 @@ nbformat==5.0.8           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\N
 nbstripout==0.3.3         # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in
 nest-asyncio==1.4.3       # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, nbclient
 notebook==6.1.6           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, jupyter, jupyterlab, jupyterlab-launcher, widgetsnbextension
-numpy==1.19.4             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, pandas
+numpy==1.19.3             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, pandas
 packaging==20.8           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, bleach, pytest
 pandas==1.1.5             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, kedro
 pandocfilters==1.4.3      # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, nbconvert
@@ -109,6 +109,7 @@ whichcraft==0.6.1         # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\N
 widgetsnbextension==3.5.1  # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, ipywidgets
 scikit-learn==0.24.1
 nltk==3.5
+torch==1.7.1
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
