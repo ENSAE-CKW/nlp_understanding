@@ -84,7 +84,7 @@ pytest==5.4.3             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\N
 python-dateutil==2.8.1    # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, arrow, jupyter-client, pandas
 python-json-logger==0.1.11  # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, kedro
 pytz==2020.5              # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, pandas
-pywin32==300              # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, jupyter-core
+pywin32              # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, jupyter-core
 pywinpty==0.5.7           # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, terminado
 pyyaml==5.3.1             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, kedro
 pyzmq==20.0.0             # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, jupyter-client, notebook, qtconsole
@@ -110,6 +110,8 @@ widgetsnbextension==3.5.1  # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\
 scikit-learn==0.24.1
 nltk==3.5
 torch==1.7.1
+kedro-viz
+kedro-mlflow
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
