@@ -45,6 +45,8 @@ class ProjectHooks:
         # CNN Character
         de_cnn_char_pipeline= de.create_cnn_char_pipeline_de()
         ds_cnn_char_pipeline= ds.create_cnn_char_pipeline_ds()
+        ds_cnn_char_test= ds.create_cnn_char_test()
+
 
         # Logistic BOW
         de_logistic_bow_pipeline= de.create_logistic_bow_pipeline_de()
@@ -53,11 +55,15 @@ class ProjectHooks:
         return {
             "de_cnn_char": de_cnn_char_pipeline
             , "ds_cnn_char": ds_cnn_char_pipeline
+            , "ds_cnn_char_test": ds_cnn_char_test
 
             , "de_logistic_bow": de_logistic_bow_pipeline
             , "ds_logistic_bow": ds_logistic_bow_pipeline
 
-            , "cnn_char": de_cnn_char_pipeline + ds_cnn_char_pipeline
+            , "cnn_char": de_cnn_char_pipeline + ds_cnn_char_pipeline + ds_cnn_char_test
+            , "cnn_char_test": de_cnn_char_pipeline + ds_cnn_char_test
+            , "logistic_bow": de_logistic_bow_pipeline + ds_logistic_bow_pipeline
+
             , "__default__": de_cnn_char_pipeline + ds_cnn_char_pipeline
         }
 

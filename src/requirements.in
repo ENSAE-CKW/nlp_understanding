@@ -109,10 +109,14 @@ whichcraft==0.6.1         # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\N
 widgetsnbextension==3.5.1  # via -r C:\Users\wenceslas\Documents\cours\ENSAE\2A\Normal\statapp\nlp_understanding\src\requirements.in, ipywidgets
 scikit-learn==0.24.1
 nltk==3.5
-torch==1.7.1
+
 kedro-viz
 kedro-mlflow
+mlflow
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
 # setuptools
+
+# Need
+# pip install torch===1.7.1+cu110 torchvision===0.8.2+cu110 torchaudio===0.7.2 -f https://download.pytorch.org/whl/torch_stable.html

@@ -26,6 +26,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .pipeline_cnn_char import create_cnn_char_pipeline_ds
-from .pipeline_logistic_bow import create_logistic_bow_pipeline_ds
-from .pipeline_cnn_char_test import create_cnn_char_test
+"""Example code for the nodes in the example pipeline. This code is meant
+just for illustrating basic Kedro features.
+
+Delete this when you start working on your own Kedro project.
+"""
+
+from kedro.pipeline import Pipeline, node
+
+from .nodes_cnn_char import cnn_test
+
+def create_cnn_char_test(**kwargs):
+    return Pipeline(
+        [
+            node(
+                func= cnn_test
+                , inputs= ["test_data", "params:cnn_cuda_allow", "params:cnn_size_batch"
+                     , "params:cnn_num_threads", "cnn_char_model"]
+                , outputs= None
+                , tags= ["cnn_char_test", "test"]
+            )
+        ]
+    )

@@ -47,7 +47,7 @@ def create_cnn_char_pipeline_ds(**kwargs):
                     , "params:cnn_sequence_len", "params:cnn_feature_size", "params:cnn_kernel_one"
                     , "params:cnn_kernel_two", "params:cnn_stride_one", "params:cnn_stride_two"
                     , "params:cnn_output_linear", "params:cnn_num_class", "params:cnn_dropout"]
-                , outputs= "cnn_char_model_train" # model
+                , outputs= "cnn_char_model" # model
                 , tags= ["cnn_char_train", "train"]
             )
         ]

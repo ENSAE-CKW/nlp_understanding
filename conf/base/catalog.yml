@@ -25,18 +25,17 @@ allocine_test:
     open_args_load:
       encoding: 'utf_8'
 
-# CNN Character
-
+## CNN Character
 #cnn_char_model:
-#  type: pickle.PickleDataSet
-#  filepath: data/06_models/cnn_char_classifier/cnn_char_model/cnn_char_model.pth
-#  versioned: true
+#  type: deep_nlp.extras.datasets.local_model.TorchLocalModel
+#  filepath: data/06_models/cnn_char_classifier/cnn_char_model/cnn_char_model.pth.tar
+#  model: "CNNCharClassifier"
 
 cnn_char_model:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataSet
   data_set:
     type: pickle.PickleDataSet
-    filepath: data/06_models/cnn_char_classifier/cnn_char_model/cnn_char_model.pth
+    filepath: data/06_models/cnn_char_classifier/cnn_char_model/cnn_char_model.pt
 
 # Logistic BOW
 

@@ -26,8 +26,8 @@ cnn_freq_verbose: 100
 cnn_cuda_allow: True
 cnn_patience: 5
 cnn_lr: 0.0001
-cnn_num_epochs: 1 #50
-cnn_size_batch: 100
+cnn_num_epochs: 50
+cnn_size_batch: 86
   # Others
 cnn_alphabet: None
 

@@ -7,14 +7,17 @@ from typing import List
 
 
 class charToTensor(Dataset):
-    def __init__(self, data_df: pd.DataFrame, sentence_max_size: int):
+    def __init__(self, data_df: pd.DataFrame, sentence_max_size: int, vocabulary: str= None):
 
         self.data_df= data_df # this is not a path but a pd.Dataframe
         # self.data_csv_path= data_csv_path
         self.sentence_max_size= sentence_max_size
 
         # Alphabet definition
-        self.all_letters= string.ascii_letters + ".,;:'/?!()@&=#0123456789\"éèêà€$"
+        if vocabulary is None:
+            self.all_letters= string.ascii_letters + ".,;:'/?!()@&=#0123456789\"éèêà€$"
+        else:
+            self.all_letters= vocabulary
 
         self.n_letters= len(self.all_letters)
 

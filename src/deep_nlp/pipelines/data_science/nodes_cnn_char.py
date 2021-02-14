@@ -35,6 +35,7 @@ from torch import optim
 from torch.autograd import Variable
 import torch.nn.functional as F
 import sklearn.metrics as metrics
+from mlflow import log_metric
 import time
 
 
@@ -69,6 +70,7 @@ def train_model(model, optimizer, train_load, epoch
 
             print("Epoch[{}] Batch[{}] - loss: {:.6f}(sum per batch)  acc: {:.3f}% ({}/{})" \
                           .format(epoch + 1, batch, loss.item(), accuracy, corrects, cnn_size_batch))
+
 
     return epoch_loss/len(train_load)
 
@@ -111,13 +113,13 @@ def evaluation(model, valid_data
     fpr, tpr, threshold= metrics.roc_curve(target_all, probabilities_all)
     auroc= metrics.auc(fpr, tpr)
 
-    print(accuracy)
-    print(avg_loss)
-    print(auroc)
+    # print(accuracy.cpu().numpy().tolist())
+    # print(avg_loss)
+    # print(auroc)
 
     model.train()
 
-    return {"loss": avg_loss, "accuracy": accuracy, "auroc": auroc}
+    return {"loss": avg_loss, "accuracy": accuracy.cpu().numpy().tolist(), "auroc": auroc}
 
 
 def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
@@ -204,25 +206,48 @@ def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
         print("\t Best Val. encountered Loss: {:.5f} |  Accuracy: {:7.3f} | AUROC: {:.5f}\n" \
               .format(best_eval_loss, best_eval_acc, best_eval_auroc))
 
+        # MLflow log metrics per epoch
+        log_metric(key="Train_loss", value= train_loss, step=epoch + 1)
+        log_metric(key="Validation_loss", value= valid_results["loss"], step=epoch + 1)
+        log_metric(key="Accuracy", value= valid_results["accuracy"], step=epoch + 1)
+        log_metric(key= "AUC", value= valid_results["auroc"], step= epoch+1)
+
         # Early stopping callback
         if es.step(valid_results["loss"]):
             print("\nEarly stopping at epoch {:02}".format(epoch + 1))
             print("\t Best Val. encountered Loss: {:.5f} |  Accuracy: {:7.3f}\n" \
                   .format(best_eval_loss, best_eval_acc))
+
+            log_metric(key="Best_validation_loss", value=best_eval_loss, step=epoch + 1)
+            log_metric(key="AUC_from_best_loss", value=best_eval_acc, step=epoch + 1)
+
             break
 
     model.eval()
     return best_model["model"]
 
 
-def cnn_test(model, test_data, parameters):
-    model.eval()
+def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
+             , cnn_num_threads: int, model_saved):
 
     corrects, avg_loss, epoch_loss, size = 0, 0, 0, 0
     predictions_all, target_all, probabilities_all= [], [], []
 
-    test_load = DataLoader(test_data, batch_size=parameters["cnn_size_batch"]
-                           , pin_memory=True)
+    test_load = DataLoader(test_data, batch_size=cnn_size_batch
+                            , num_workers=cnn_num_threads
+                            , drop_last=True, shuffle=True, pin_memory=True)
+
+    # Call our model
+    model= model_saved
+    if cnn_cuda_allow:
+        model = torch.nn.DataParallel(model).cuda()
+    else:
+        model = torch.nn.DataParallel(model)
+
+    # Load our model Char CNN
+    # checkpoint= torch.load(model_saved)
+    # model.load_state_dict(checkpoint["state_dict"])
+    model.eval()
 
     for batch, data in enumerate(test_load):
         input, target = data
@@ -245,17 +270,18 @@ def cnn_test(model, test_data, parameters):
             target_all += target.data.cpu().numpy().tolist()
 
     avg_loss = epoch_loss / len(test_load)  # avg loss (batch level)
-    accuracy = 100 * corrects / size  # avg acc per obs (size because we don't know if we dropped observations with
-                                        # Dataloader
+    accuracy = 100 * corrects / size  # avg acc per obs
 
-    # AUC and ROC Curve
-    fpr, tpr, threshold= metrics.roc_curve(target_all, probabilities_all)
-    auroc= metrics.auc(fpr, tpr)
+    ## AUC and ROC Curve
+    fpr, tpr, threshold = metrics.roc_curve(target_all, probabilities_all)
+    auroc = metrics.auc(fpr, tpr)
 
-    print(accuracy)
-    print(avg_loss)
-    print(auroc)
 
-    print("Accuracy : {:.5f} | Avg loss : {:.5f} | AUC : {:.5f}".format(accuracy, avg_loss, auroc))
+    log_metric(key="Test_loss", value= avg_loss)
+    log_metric(key="Accuracy_test", value= accuracy.cpu().numpy().tolist())
+    log_metric(key="AUC_test", value= auroc)
+
+    print("Accuracy : {:.5f} | Avg loss : {:.5f} | AUC : {:.5f}".format(accuracy.cpu().numpy().tolist()
+                                                                        , avg_loss, auroc))
 
     pass

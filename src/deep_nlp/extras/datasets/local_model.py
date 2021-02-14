@@ -13,21 +13,21 @@ modo:
 """
 
 from os.path import isfile
-from typing import Any, Union, Dict
+from typing import Any, Dict
 import torch
 from kedro.io import AbstractDataSet
 from deep_nlp.cnncharclassifier import CNNCharClassifier
 
 
 models = {
-    'ExampleModel': CNNCharClassifier # modif
+    'CNNCharClassifier': CNNCharClassifier() # modif
 }
 
 class TorchLocalModel(AbstractDataSet):
 
     def _describe(self) -> Dict[str, Any]:
         return dict(filepath=self._filepath,
-                    model=self._model,
+                    #model=self._model,
                     load_args=self._load_args,
                     save_args=self._save_args)
 
