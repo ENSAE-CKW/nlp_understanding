@@ -52,6 +52,9 @@ class ProjectHooks:
         de_logistic_bow_pipeline= de.create_logistic_bow_pipeline_de()
         ds_logistic_bow_pipeline= ds.create_logistic_bow_pipeline_ds()
 
+        # W2V + CNN
+        de_embed_cnn_pipeline = de.create_embed_cnn_pipeline_de()
+
         return {
             "de_cnn_char": de_cnn_char_pipeline
             , "ds_cnn_char": ds_cnn_char_pipeline
@@ -59,6 +62,8 @@ class ProjectHooks:
 
             , "de_logistic_bow": de_logistic_bow_pipeline
             , "ds_logistic_bow": ds_logistic_bow_pipeline
+
+            , "de_embed_cnn":de_embed_cnn_pipeline
 
             , "cnn_char": de_cnn_char_pipeline + ds_cnn_char_pipeline + ds_cnn_char_test
             , "cnn_char_test": de_cnn_char_pipeline + ds_cnn_char_test
