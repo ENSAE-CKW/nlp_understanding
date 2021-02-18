@@ -3,6 +3,8 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score
+import sklearn.metrics as metrics
+
 from mlflow import log_metric
 
 
@@ -46,12 +48,14 @@ def evaluate(X_valid_encoded, y_valid, model, scaler):
     X_valid_encoded_scale = scaler.transform(X_valid_encoded)
     del X_valid_encoded
     y_pred = model.predict(X_valid_encoded_scale)
-    print("AUC : {:.6f}".format(roc_auc_score(y_valid, y_pred)))
+    fpr, tpr, threshold = metrics.roc_curve(y_valid, model.predict_proba(X_valid_encoded_scale)[:, 1])
+    auroc = metrics.auc(fpr, tpr)
+    print("AUC : {:.6f}".format(auroc))
 
     accuracy= (y_pred == y_valid).sum()/len(y_valid)
     print(accuracy)
     log_metric(key="Accuracy", value=accuracy)
-    log_metric(key="AUC", value=roc_auc_score(y_valid, y_pred))
+    log_metric(key="AUC", value=auroc)
 
     del X_valid_encoded_scale
     pass

@@ -219,7 +219,8 @@ def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
                   .format(best_eval_loss, best_eval_acc))
 
             log_metric(key="Best_validation_loss", value=best_eval_loss, step=epoch + 1)
-            log_metric(key="AUC_from_best_loss", value=best_eval_acc, step=epoch + 1)
+            log_metric(key="Best_AUC", value=best_eval_auroc, step=epoch + 1)
+            log_metric(key="Best_Accuracy", value=best_eval_acc, step=epoch + 1)
 
             break
 
