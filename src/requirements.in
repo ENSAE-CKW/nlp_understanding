@@ -113,6 +113,7 @@ nltk==3.5
 kedro-viz
 kedro-mlflow
 mlflow
+spacy==2.3.2
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
