@@ -43,17 +43,17 @@ class ProjectHooks:
     @hook_impl
     def register_pipelines(self) -> Dict[str, Pipeline]:
         # CNN Character
-        de_cnn_char_pipeline= de.create_cnn_char_pipeline_de()
-        ds_cnn_char_pipeline= ds.create_cnn_char_pipeline_ds()
-        ds_cnn_char_test= ds.create_cnn_char_test()
-
+        de_cnn_char_pipeline = de.create_cnn_char_pipeline_de()
+        ds_cnn_char_pipeline = ds.create_cnn_char_pipeline_ds()
+        ds_cnn_char_test = ds.create_cnn_char_test()
 
         # Logistic BOW
-        de_logistic_bow_pipeline= de.create_logistic_bow_pipeline_de()
-        ds_logistic_bow_pipeline= ds.create_logistic_bow_pipeline_ds()
+        de_logistic_bow_pipeline = de.create_logistic_bow_pipeline_de()
+        ds_logistic_bow_pipeline = ds.create_logistic_bow_pipeline_ds()
 
         # W2V + CNN
         de_embed_cnn_pipeline = de.create_embed_cnn_pipeline_de()
+        ds_embed_cnn_pipeline = ds.create_embed_cnn_pipeline_ds()
 
         return {
             "de_cnn_char": de_cnn_char_pipeline
@@ -63,13 +63,16 @@ class ProjectHooks:
             , "de_logistic_bow": de_logistic_bow_pipeline
             , "ds_logistic_bow": ds_logistic_bow_pipeline
 
-            , "de_embed_cnn":de_embed_cnn_pipeline
+            , "de_embed_cnn": de_embed_cnn_pipeline
+            , "ds_embed_cnn": ds_embed_cnn_pipeline
 
             , "cnn_char": de_cnn_char_pipeline + ds_cnn_char_pipeline + ds_cnn_char_test
             , "cnn_char_test": de_cnn_char_pipeline + ds_cnn_char_test
             , "logistic_bow": de_logistic_bow_pipeline + ds_logistic_bow_pipeline
+            , "embed_cnn": de_embed_cnn_pipeline + ds_embed_cnn_pipeline
 
             , "__default__": de_cnn_char_pipeline + ds_cnn_char_pipeline
         }
+
 
 project_hooks = ProjectHooks()

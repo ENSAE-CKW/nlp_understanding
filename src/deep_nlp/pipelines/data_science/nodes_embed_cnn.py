@@ -4,7 +4,7 @@ import torch.optim as optim
 import torch.nn as nn
 import logging
 from typing import Any, Dict, List, Tuple
-
+from mlflow import log_metric
 from src.deep_nlp.embed_cnn.embcnnmodel import classifier3F
 
 
@@ -139,4 +139,5 @@ def run_model(model, N_EPOCHS, device, train_iterator, valid_iterator):
 
         logger = logging.getLogger(__name__)
         logger.info("Epoch %i : Accuracy : %f and Loss : %f", epoch, valid_acc,valid_loss)
-        return model
+        log_metric(key="Accuracy", value= valid_acc)
+    return model

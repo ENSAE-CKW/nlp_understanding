@@ -4,7 +4,7 @@ from kedro.pipeline import Pipeline, node
 from src.deep_nlp.pipelines.data_science.nodes_embed_cnn import *
 
 
-def create_pipeline(**kwargs):
+def create_embed_cnn_pipeline_ds(**kwargs):
     return Pipeline(
         [
             node(
@@ -24,7 +24,7 @@ def create_pipeline(**kwargs):
             ,
             node(
                 func = run_model,
-                inputs = ["model","params:batch_size", "params:device", "train_batch","valid_batch"],
+                inputs = ["model","params:embcnn_n_epochs", "params:device", "train_batch","valid_batch"],
                 outputs = "model_train",
                 tags= ["embed_cnn", "training", "model"],
                 name= "model's run"
