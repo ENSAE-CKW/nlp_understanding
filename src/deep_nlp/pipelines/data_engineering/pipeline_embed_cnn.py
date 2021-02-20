@@ -7,21 +7,21 @@ def create_embed_cnn_pipeline_de(**kwargs):
         [
             node(
                 func=token_df #verif inter
-                , inputs = ["allocine_train_short","params:colname_allocine", "nlp"]
+                , inputs = ["allocine_train","params:colname_allocine", "nlp"]
                 , outputs = "train_tokenized"
                 , name = "tokenization"
                 , tags = ["embed_cnn","data_proc","train_set"]
                 ),
             node(
                 func=token_df
-                , inputs=["allocine_test_short", "params:colname_allocine", "nlp"]
+                , inputs=["allocine_test", "params:colname_allocine", "nlp"]
                 , outputs="test_tokenized"
                 , name="tokenization of test set"
                 , tags=["embed_cnn", "data_proc", "test_set"]
             ),
             node(
                 func=token_df
-                , inputs=["allocine_valid_short", "params:colname_allocine", "nlp"]
+                , inputs=["allocine_valid", "params:colname_allocine", "nlp"]
                 , outputs="valid_tokenized"
                 , name="tokenization of valid set"
                 , tags=["embed_cnn", "data_proc", "valid_set"]
