@@ -98,27 +98,6 @@ word2vec_for_save:
     open_args_save:
       encoding: 'latin-1'
 
-allocine_train_short:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/allocine_train_short.csv
-  fs_args:
-    open_args_load:
-      encoding: 'utf_8'
-
-allocine_test_short:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/allocine_test_short.csv
-  fs_args:
-    open_args_load:
-      encoding: 'utf_8'
-
-allocine_valid_short:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/allocine_valid_short.csv
-  fs_args:
-    open_args_load:
-      encoding: 'utf_8'
-
 
 allocine_train_short_inter:
   type: pandas.CSVDataSet
