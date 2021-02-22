@@ -13,6 +13,13 @@ def create_embed_cnn_pipeline_de(**kwargs):
                 , tags = ["embed_cnn","data_proc","train_set"]
                 ),
             node(
+                func = creation_nlp,
+                inputs = None,
+                outputs = "nlp",
+                name = "Spacy Language initialisation",
+                tags = ["embed_cnn","data_proc"]
+            ),
+            node(
                 func=token_df
                 , inputs=["allocine_test", "params:colname_allocine", "nlp"]
                 , outputs="test_tokenized"

@@ -3,11 +3,14 @@ import numpy as np
 import spacy
 import pandas as pd
 import torch
-
+import subprocess
 #TODO : add types to args in function
+def creation_nlp():
+    subprocess.run("python -m spacy download fr_core_news_sm")
+    return spacy.load("fr_core_news_sm",  disable=["tagger", "parser","ner"])
 
 def token_sentence(sentence: str, nlp: spacy.language.Language) -> List[str]:
-    return [X.lemma_ for X in nlp(sentence) if X.is_alpha & (not (X.is_stop))]
+    return [X.lemmZa_ for X in nlp(sentence) if X.is_alpha & (not (X.is_stop))]
 
 def token_df(df: pd.DataFrame, col_name: str,nlp : spacy.language.Language) -> pd.DataFrame:
     df["tokenization"] = df.apply(lambda x: token_sentence(x[col_name],nlp), axis = 1) #.lower()
