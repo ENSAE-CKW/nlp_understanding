@@ -115,9 +115,13 @@ kedro-mlflow
 mlflow
 spacy==2.3.2
 
+# BERT CNN
+transformers
+sentencepiece
+
 # The following packages are considered to be unsafe in a requirements file:
 # pip
 # setuptools
 
-# Need
+# Need if you want to use CUDA
 # pip install torch===1.7.1+cu110 torchvision===0.8.2+cu110 torchaudio===0.7.2 -f https://download.pytorch.org/whl/torch_stable.html

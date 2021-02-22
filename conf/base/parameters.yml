@@ -50,3 +50,8 @@ embcnn_nb_output: 2
 embcnn_dropout: 0.5
 embcnn_min_freq: 3
 embcnn_n_epochs: 50
+
+
+# BERT + CNN
+bertcnn_bert_path: "camembert/camembert-base"
+bertcnn_max_seq_len: 67

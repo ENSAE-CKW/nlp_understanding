@@ -77,12 +77,8 @@ logistic_bow_scaler:
   type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
   filepath: data/06_models/logisticclassifier/logistic_bow_model/scaler.pkl
 
+
 # CNN + Embed
-
-
-example_iris_data:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/iris.csv
 
 word2vec:
   type: pandas.CSVDataSet
@@ -98,36 +94,6 @@ word2vec_for_save:
     open_args_save:
       encoding: 'latin-1'
 
-
-allocine_train_short_inter:
-  type: pandas.CSVDataSet
-  filepath: data/02_intermediate/allocine_train_short_inter.csv
-  fs_args:
-    open_args_load:
-      encoding: 'utf_8'
-
-allocine_valid_short_inter:
-  type: pandas.CSVDataSet
-  filepath: data/02_intermediate/allocine_valid_short_inter.csv
-  fs_args:
-    open_args_load:
-      encoding: 'utf_8'
-
-
-allocine_valid:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/allocine_valid.csv
-  fs_args:
-    open_args_load:
-      encoding: 'utf_8'
-
-allocine_test:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/allocine_test.csv
-  fs_args:
-    open_args_load:
-      encoding: 'utf_8'
-
 nlp:
   type: pickle.PickleDataSet
   filepath: data/01_raw/nlp.pickle
@@ -139,3 +105,22 @@ save_embedding:
   fs_args:
     open_args_save:
       encoding: 'latin-1'
+
+
+# BERT + CNN
+
+camembert_tokenizer:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/06_models/bert_cnn/camembert/initial/camembert_tokenizer.pkl
+
+train_bert_tensor:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/05_model_input/bert_cnn/train_bert_tensor.pkl
+
+valid_bert_tensor:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/05_model_input/bert_cnn/valid_bert_tensor.pkl
+
+test_bert_tensor:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/05_model_input/bert_cnn/test_bert_tensor.pkl

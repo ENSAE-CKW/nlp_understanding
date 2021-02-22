@@ -28,33 +28,34 @@
 
 
 from kedro.pipeline import Pipeline, node
+from .nodes_bert_cnn import load_camembert, load_dataloader
 
-from .nodes_cnn_char import simple_return
 
-
-def create_cnn_char_pipeline_de(**kwargs):
+def create_bert_char_pipeline_de(**kwargs):
     return Pipeline(
         [
             node(
-                func= simple_return
-                , inputs= ["allocine_train", "params:cnn_sequence_len"]
-                , outputs= "train_data"
-                , name= "train dataset preprocessing"
-                , tags= ["cnn_char", "cnn_char_train", "train"]
-            ),
-            node(
-                func=simple_return
-                , inputs= ["allocine_valid", "params:cnn_sequence_len"]
-                , outputs= "valid_data"
-                , name= "valid dataset preprocessing"
-                , tags= ["cnn_char", "cnn_char_train", "train"]
-            ),
-            node(
-                func=simple_return
-                , inputs= ["allocine_test", "params:cnn_sequence_len"]
-                , outputs= "test_data"
-                , name= "test dataset preprocessing"
-                , tags= ["cnn_char", "cnn_char_test", "test"]
+                func= load_camembert
+                , inputs= ["params:bertcnn_bert_path"]
+                , outputs= "camembert_tokenizer"
             )
+            , node(
+                func= load_dataloader
+                , inputs= ["allocine_train", "params:bertcnn_max_seq_len", "camembert_tokenizer"]
+                , outputs= "train_bert_tensor"
+                , name= "training dataset preprocessing"
+        )
+            , node(
+                func=load_dataloader
+                , inputs=["allocine_valid", "params:bertcnn_max_seq_len", "camembert_tokenizer"]
+                , outputs="valid_bert_tensor"
+                , name= "valid dataset preprocessing"
+        )
+            , node(
+                func=load_dataloader
+                , inputs=["allocine_test", "params:bertcnn_max_seq_len", "camembert_tokenizer"]
+                , outputs="test_bert_tensor"
+                , name= "test dataset preprocessing"
+        )
         ]
     )
