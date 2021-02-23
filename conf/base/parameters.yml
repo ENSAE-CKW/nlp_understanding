@@ -36,22 +36,31 @@ logistic_bow_max_number_feature: 100
 
 #CNN + Embed
 col_allocine: "review"
-device: "cpu"
-batch_size: 20
+device: "cuda"
+batch_size: 50
 sentence_size: 67
 colname_allocine: "review"
 embed_dim: 200
-embcnn_nb_filtre: 50
+embcnn_nb_filtre: 200
 embcnn_type_filtre:
-  filtre1: 2
-  filtre2: 3
+  filtre1: 1
+  filtre2: 2
 
 embcnn_nb_output: 2
-embcnn_dropout: 0.5
+embcnn_dropout: 0.6
 embcnn_min_freq: 3
 embcnn_n_epochs: 50
 
+#BiLSTM + CNN
 
-# BERT + CNN
-bertcnn_bert_path: "camembert/camembert-base"
-bertcnn_max_seq_len: 67
+bilstm_num_epochs : 50
+bilstm_batch_size: 32
+bilstm_patience : 5
+bilstm_lr : 0.001
+bilstm_input_dim : 200
+bilstm_hidden_dim : 128
+bilstm_layer_dim : 2
+bilstm_feature_size : 256
+bilstm_output_dim : 32
+bilstm_kernel_size : 3
+bilstm_dropout_rate : 0.5

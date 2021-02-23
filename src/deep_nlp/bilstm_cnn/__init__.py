@@ -1,0 +1,1 @@
+from .bilstmcnn import BilstmCnn
