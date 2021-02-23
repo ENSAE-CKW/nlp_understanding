@@ -50,11 +50,14 @@ def word2index_padding_dataset(dataset, vocab, sentence_size):
 
     return dataset
 
+def load_word2vec(word2vec_path):
+    return gensim.models.KeyedVectors.load_word2vec_format(word2vec_path, binary=True, unicode_errors='ignore')
+
 def create_embed_matrix(w2v, vocab) :
 
     size_of_vocabulary = len(vocab) + 1
 
-    embedding_matrix = np.zeros((size_of_vocabulary, w2v.shape[1]-2))
+    embedding_matrix = np.zeros((size_of_vocabulary, w2v.vector_size))
 
     for word, i in vocab.items():
 

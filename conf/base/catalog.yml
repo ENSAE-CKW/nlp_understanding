@@ -124,3 +124,7 @@ valid_bert_tensor:
 test_bert_tensor:
   type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
   filepath: data/05_model_input/bert_cnn/test_bert_tensor.pkl
+
+word2vec_bilstm:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/06_models/bilstm_word2vec/word2vec.pkl

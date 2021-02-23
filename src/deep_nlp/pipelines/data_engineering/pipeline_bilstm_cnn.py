@@ -55,8 +55,15 @@ def create_bilstm_cnn_pipeline_de(**kwargs):
                 , tags=["bilstm_cnn", "word to index", "padding", "test"]
             ),
             node(
+                func=load_word2vec
+                , inputs=["params:bilstm_word2vec_path"]
+                , outputs="word2vec_bilstm"
+                , name="load word2vec"
+                , tags=["bilstm_cnn", "word2vec"]
+            ),
+            node(
                 func=create_embed_matrix
-                , inputs=["word2vec", "vocab"]
+                , inputs=["word2vec_bilstm", "vocab"]
                 , outputs="embed_matrix"
                 , name="embedding matrix creation"
                 , tags=["bilstm_cnn", "embedding matrix"]
