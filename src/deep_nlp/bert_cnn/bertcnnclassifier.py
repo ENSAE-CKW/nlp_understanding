@@ -30,8 +30,9 @@ class BERTCNNClassifier(nn.Module):
         self.dp = nn.Dropout(p= dropout)
         pass
 
-    def forward(self, x, mask):
-        x= self.bert(x, attention_mask= mask)[2][-4:] # why -4: ?
+    def forward(self, sent_id, mask):
+
+        x= self.bert(sent_id, attention_mask= mask)#[2][-4:] # why -4: ?
         x = torch.stack(x, dim= 1)
         x = [conv(x).squeeze() for conv in self.conv]
         x = torch.cat(tuple(x), dim=1) #flaten into [nb_batch x sum_nb_filters]

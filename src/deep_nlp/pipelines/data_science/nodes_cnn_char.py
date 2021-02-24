@@ -37,6 +37,7 @@ import torch.nn.functional as F
 import sklearn.metrics as metrics
 from mlflow import log_metric
 import time
+import copy
 
 
 def train_model(model, optimizer, train_load, epoch
@@ -178,13 +179,16 @@ def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
                             ,cnn_num_threads= cnn_num_threads)
 
         if best_eval_loss is None or best_eval_loss > valid_results["loss"]:
-            # save_checkpoint(model
-            #                 , {'optimizer': optimizer.state_dict(), 'accuracy': valid_results["accuracy"]
-            #                     , "loss": valid_results["loss"], "epoch": epoch
-            #                    }
-            #                 , parameters["cnn_model_path"] + parameters["cnn_model_saved_name"]
-            #                 )
-            best_model= {"model": model, 'optimizer': optimizer.state_dict()}
+
+            # Instance a new model, copy the parameters of the best model and then save it
+            model_clone = CNNCharClassifier(**kwargs)
+            model_clone = torch.nn.DataParallel(model_clone)
+            if cnn_cuda_allow:
+                model_clone = torch.nn.DataParallel(model_clone).cuda()
+
+            model_clone.load_state_dict(model.state_dict())
+
+            best_model= {"model": model_clone, 'optimizer': copy.deepcopy(optimizer.state_dict())}
 
             best_eval_loss = valid_results["loss"]
             best_eval_acc = valid_results["accuracy"]

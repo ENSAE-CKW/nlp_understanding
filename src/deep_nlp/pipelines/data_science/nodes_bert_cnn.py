@@ -35,10 +35,11 @@ from torch import optim
 from torch.autograd import Variable
 import torch.nn.functional as F
 import sklearn.metrics as metrics
-from transformers import AutoModel
+from transformers import BertModel
 from typing import Iterable
 from mlflow import log_metric
 import time
+import copy
 
 
 def train_model(model, optimizer, train_load, epoch
@@ -48,8 +49,6 @@ def train_model(model, optimizer, train_load, epoch
     epoch_loss = 0
 
     for batch, data in enumerate(train_load):
-        print("AHHHHHHHHHHHHHHHH!!!!!!")
-        print(data)
         input_ids, input_mask, target= data
 
         if cnn_cuda_allow:
@@ -59,7 +58,9 @@ def train_model(model, optimizer, train_load, epoch
 
         # input = Variable(input)
         # target = Variable(target)
+        print("OHHHHHHHHHHHHHHHH!!!!!!")
         logit = model(input_ids, input_mask)
+        print("AHHHHHHHHHHHHHHHH!!!!!!")
         loss = F.nll_loss(logit, target)
         epoch_loss += loss.item()
         optimizer.zero_grad()
@@ -144,7 +145,7 @@ def train(train_data, valid_data, bertcnn_freq_verbose: int, bertcnn_clip: int
         torch.cuda.set_device(0)
 
     # Call our model
-    bert_model= AutoModel.from_pretrained(bertcnn_bert_path)
+    bert_model= BertModel.from_pretrained(bertcnn_bert_path)
 
     kwargs= {"bert": bert_model, "max_sentence_size": bertcnn_max_seq_len
         , "embedding_dim": bertcnn_embedding_dim, "nb_filter": bertcnn_nb_filter
@@ -190,13 +191,16 @@ def train(train_data, valid_data, bertcnn_freq_verbose: int, bertcnn_clip: int
                             ,bertcnn_num_threads= bertcnn_num_threads, bertcnn_cuda_allow= bertcnn_cuda_allow)
 
         if best_eval_loss is None or best_eval_loss > valid_results["loss"]:
-            # save_checkpoint(model
-            #                 , {'optimizer': optimizer.state_dict(), 'accuracy': valid_results["accuracy"]
-            #                     , "loss": valid_results["loss"], "epoch": epoch
-            #                    }
-            #                 , parameters["cnn_model_path"] + parameters["cnn_model_saved_name"]
-            #                 )
-            best_model= {"model": model, 'optimizer': optimizer.state_dict()}
+
+            # Instance a new model, copy the parameters of the best model and then save it
+            model_clone = BERTCNNClassifier(**kwargs)
+            model_clone = torch.nn.DataParallel(model_clone)
+            if bertcnn_cuda_allow:
+                model_clone = torch.nn.DataParallel(model_clone).cuda()
+
+            model_clone.load_state_dict(model.state_dict())
+
+            best_model = {"model": model_clone, 'optimizer': copy.deepcopy(optimizer.state_dict())}
 
             best_eval_loss = valid_results["loss"]
             best_eval_acc = valid_results["accuracy"]
