@@ -56,7 +56,8 @@ class ProjectHooks:
         ds_embed_cnn_pipeline = ds.create_embed_cnn_pipeline_ds()
 
         # BERT + CNN
-        de_bert_cnn_pipeline= de.create_bert_char_pipeline_de()
+        de_bert_cnn_pipeline= de.create_bert_cnn_pipeline_de()
+        ds_bert_cnn_pipeline= ds.create_bert_cnn_pipeline_ds()
 
         #BiLSTM + CNN
         de_bilstm_cnn_pipeline = de.create_bilstm_cnn_pipeline_de()
@@ -74,15 +75,23 @@ class ProjectHooks:
             , "de_embed_cnn": de_embed_cnn_pipeline
             , "ds_embed_cnn": ds_embed_cnn_pipeline
 
+
+            , "de_bert_cnn": de_bert_cnn_pipeline
+            , "ds_bert_cnn": ds_bert_cnn_pipeline
+
             , "de_bilstm_cnn": de_bilstm_cnn_pipeline
             , "ds_bilstm_cnn": ds_bilstm_cnn_pipeline
             , "ds_bilstm_cnn_test": ds_bilstm_cnn_test
+
 
             , "cnn_char": de_cnn_char_pipeline + ds_cnn_char_pipeline + ds_cnn_char_test
             , "cnn_char_test": de_cnn_char_pipeline + ds_cnn_char_test
             , "logistic_bow": de_logistic_bow_pipeline + ds_logistic_bow_pipeline
             , "embed_cnn": de_embed_cnn_pipeline + ds_embed_cnn_pipeline
+
             , "bilstm_cnn": de_bilstm_cnn_pipeline + ds_bilstm_cnn_pipeline + ds_bilstm_cnn_test
+
+            , "bert_cnn": de_bert_cnn_pipeline + ds_bert_cnn_pipeline
 
             , "__default__": de_cnn_char_pipeline + ds_cnn_char_pipeline
         }
