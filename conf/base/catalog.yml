@@ -127,4 +127,4 @@ test_bert_tensor:
 
 word2vec_bilstm:
   type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
-  filepath: data/06_models/bilstm_word2vec/word2vec.pkl
+  filepath: data/06_models/word2vec/word2vec.pkl

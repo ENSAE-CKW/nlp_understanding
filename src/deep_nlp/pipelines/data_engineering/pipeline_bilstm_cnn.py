@@ -56,7 +56,7 @@ def create_bilstm_cnn_pipeline_de(**kwargs):
             ),
             node(
                 func=load_word2vec
-                , inputs=["params:bilstm_word2vec_path"]
+                , inputs=["params:word2vec_path"]
                 , outputs="word2vec_bilstm"
                 , name="load word2vec"
                 , tags=["bilstm_cnn", "word2vec"]

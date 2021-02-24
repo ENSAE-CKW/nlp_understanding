@@ -64,4 +64,4 @@ bilstm_feature_size : 256
 bilstm_output_dim : 32
 bilstm_kernel_size : 3
 bilstm_dropout_rate : 0.5
-bilstm_word2vec_path : "data/06_models/bilstm_word2vec/frWac_non_lem_no_postag_no_phrase_200_cbow_cut100.bin"
+word2vec_path: "data/06_models/word2vec/frWac_non_lem_no_postag_no_phrase_200_cbow_cut100.bin"

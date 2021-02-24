@@ -42,7 +42,7 @@ def create_embed_cnn_pipeline_de(**kwargs):
             ) ,
             node(
                 func = vectors_embed
-                , inputs = ["word2vec","params:embed_dim"]
+                , inputs = ["params:word2vec_path"]
                 , outputs= ["name_word_in_embed", "vectors"]
                 , tags=["embed_cnn", "data_proc", "train"]
                 , name = "embedding initialisation"
