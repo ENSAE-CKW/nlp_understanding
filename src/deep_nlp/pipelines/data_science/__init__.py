@@ -30,3 +30,4 @@ from .pipeline_cnn_char import create_cnn_char_pipeline_ds
 from .pipeline_logistic_bow import create_logistic_bow_pipeline_ds
 from .pipeline_cnn_char_test import create_cnn_char_test
 from .pipeline_embed_cnn import create_embed_cnn_pipeline_ds
+from .pipeline_bert_cnn import create_bert_cnn_pipeline_ds

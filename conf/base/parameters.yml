@@ -55,3 +55,23 @@ embcnn_n_epochs: 50
 # BERT + CNN
 bertcnn_bert_path: "camembert/camembert-base"
 bertcnn_max_seq_len: 67
+
+# Model parameters
+bertcnn_embedding_dim: 768
+bertcnn_nb_filter: 50
+bertcnn_type_filter:
+  filtre1: 2
+  filtre2: 3
+bertcnn_output_dim: 2
+bertcnn_dropout: 0.5
+
+# Train parameters
+bertcnn_num_threads: 4
+bertcnn_clip: 400
+bertcnn_verbose: False
+bertcnn_freq_verbose: 100
+bertcnn_cuda_allow: True
+bertcnn_patience: 5
+bertcnn_lr: 0.0001
+bertcnn_num_epochs: 50
+bertcnn_size_batch: 86

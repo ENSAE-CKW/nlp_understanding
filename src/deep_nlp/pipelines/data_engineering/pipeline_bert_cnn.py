@@ -31,7 +31,7 @@ from kedro.pipeline import Pipeline, node
 from .nodes_bert_cnn import load_camembert, load_dataloader
 
 
-def create_bert_char_pipeline_de(**kwargs):
+def create_bert_cnn_pipeline_de(**kwargs):
     return Pipeline(
         [
             node(

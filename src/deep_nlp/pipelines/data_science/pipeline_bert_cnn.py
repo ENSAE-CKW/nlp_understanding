@@ -1,3 +1,4 @@
+
 # Copyright 2020 QuantumBlack Visual Analytics Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,8 +27,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Example code for the nodes in the example pipeline. This code is meant
+just for illustrating basic Kedro features.
 
-from .pipeline_cnn_char import create_cnn_char_pipeline_de
-from .pipeline_logistic_bow import create_logistic_bow_pipeline_de
-from .pipeline_embed_cnn import create_embed_cnn_pipeline_de
-from .pipeline_bert_cnn import create_bert_cnn_pipeline_de
+Delete this when you start working on your own Kedro project.
+"""
+
+from kedro.pipeline import Pipeline, node
+
+from .nodes_bert_cnn import train
+
+def create_bert_cnn_pipeline_ds(**kwargs):
+    return Pipeline(
+        [
+            node(
+                func= train
+                , inputs= ["train_bert_tensor", "valid_bert_tensor", "params:bertcnn_freq_verbose", "params:bertcnn_clip"
+                           , "params:bertcnn_cuda_allow", "params:bertcnn_lr", "params:bertcnn_patience"
+                           , "params:bertcnn_num_epochs", "params:bertcnn_size_batch", "params:bertcnn_num_threads"
+                           , "params:bertcnn_max_seq_len", "params:bertcnn_embedding_dim"
+                           , "params:bertcnn_nb_filter", "params:bertcnn_type_filter", "params:bertcnn_output_dim"
+                           , "params:bertcnn_dropout", "params:bertcnn_bert_path"]
+                , outputs= "bertcnn_char_model" # model
+                , tags= ["bertcnn_char_train", "train"]
+            )
+        ]
+    )
