@@ -15,13 +15,13 @@ def train(cuda_allow, model, train_load, optimizer, criterion):
 
     model.train()
 
-    for batch in train_load:
+    for reviews, labels in train_load:
         if cuda_allow:
-            reviews = batch[0].to(torch.int64).cuda()
-            labels = batch[1].to(torch.int64).cuda()
+            reviews = reviews.to(torch.int64).cuda()
+            labels = labels.to(torch.int64).cuda()
         else:
-            reviews = batch[0].to(torch.int64)
-            labels = batch[1].to(torch.int64)
+            reviews = reviews.to(torch.int64)
+            labels = labels.to(torch.int64)
 
         optimizer.zero_grad()
 
@@ -33,7 +33,7 @@ def train(cuda_allow, model, train_load, optimizer, criterion):
 
         optimizer.step()
 
-    return epoch_loss/len(train_loader)
+    return epoch_loss/len(train_load)
 
 def evaluate(cuda_allow, model, valid_load, criterion):
 
@@ -42,13 +42,13 @@ def evaluate(cuda_allow, model, valid_load, criterion):
     predictions_all, target_all, probabilities_all = [], [], []
 
     with torch.no_grad():
-        for batch in valid_load:
+        for reviews, labels in valid_load:
             if cuda_allow:
-                valid_reviews = batch[0].to(torch.int64).cuda()
-                valid_labels = batch[1].to(torch.int64).cuda()
+                valid_reviews = reviews.to(torch.int64).cuda()
+                valid_labels = labels.to(torch.int64).cuda()
             else :
-                valid_reviews = batch[0].to(torch.int64)
-                valid_labels = batch[1].to(torch.int64)
+                valid_reviews = reviews.to(torch.int64)
+                valid_labels = labels.to(torch.int64)
 
             outputs = model(valid_reviews)
             loss_valid = criterion(outputs, valid_labels)
@@ -69,7 +69,7 @@ def evaluate(cuda_allow, model, valid_load, criterion):
             else:
                 correct += (predicted == valid_labels).sum()
 
-        avg_loss = epoch_loss / len(valid_loader)
+        avg_loss = epoch_loss / len(valid_load)
         accuracy = 100 * correct / total
         fpr, tpr, threshold = metrics.roc_curve(target_all, probabilities_all)
         auroc = metrics.auc(fpr, tpr)
@@ -94,7 +94,7 @@ def prepare_batch(train_data, valid_data, test_data, batch_size):
 
     return train_load, valid_load, test_load
 
-def run_train(cuda_allow, train_loader, valid_loader, num_epochs, patience, learning_rate, embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size, kernel_size, dropout_rate):
+def run_train(cuda_allow, train_load, valid_load, num_epochs, patience, learning_rate, embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size, kernel_size, dropout_rate):
 
     model = BilstmCnn(embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size, kernel_size, dropout_rate)
     criterion = nn.CrossEntropyLoss()
@@ -114,10 +114,10 @@ def run_train(cuda_allow, train_loader, valid_loader, num_epochs, patience, lear
     best_model = None
 
     for epoch in range(num_epochs):
-        train_loss = train(cuda_allow, model, train_loader, optimizer, criterion)
+        train_loss = train(cuda_allow, model, train_load, optimizer, criterion)
 
         # evaluate the model
-        valid_results = evaluate(cuda_allow, model, valid_loader, criterion)
+        valid_results = evaluate(cuda_allow, model, valid_load, criterion)
 
         if valid_results["loss"] < best_valid_loss:
             best_epoch = epoch+1
@@ -145,6 +145,7 @@ def run_train(cuda_allow, train_loader, valid_loader, num_epochs, patience, lear
     return best_model
 
 def bilstm_test(model, cuda_allow, test_load) :
+
     model.eval()
 
     if cuda_allow:
