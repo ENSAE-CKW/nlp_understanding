@@ -9,13 +9,13 @@ import numpy as np
 
 
 
-def train(cuda_allow, model, train_loader, optimizer, criterion):
+def train(cuda_allow, model, train_load, optimizer, criterion):
 
     epoch_loss = 0
 
     model.train()
 
-    for batch in train_loader:
+    for batch in train_load:
         if cuda_allow:
             reviews = batch[0].to(torch.int64).cuda()
             labels = batch[1].to(torch.int64).cuda()
@@ -35,14 +35,14 @@ def train(cuda_allow, model, train_loader, optimizer, criterion):
 
     return epoch_loss/len(train_loader)
 
-def evaluate(cuda_allow, model, valid_loader, criterion):
+def evaluate(cuda_allow, model, valid_load, criterion):
 
     model.eval()
     correct, avg_loss, epoch_loss, total = 0, 0, 0, 0
     predictions_all, target_all, probabilities_all = [], [], []
 
     with torch.no_grad():
-        for batch in valid_loader:
+        for batch in valid_load:
             if cuda_allow:
                 valid_reviews = batch[0].to(torch.int64).cuda()
                 valid_labels = batch[1].to(torch.int64).cuda()
@@ -80,19 +80,19 @@ def evaluate(cuda_allow, model, valid_loader, criterion):
 
 def prepare_batch(train_data, valid_data, test_data, batch_size):
 
-    train_loader = torch.utils.data.DataLoader(dataset=train_data,
+    train_load = torch.utils.data.DataLoader(dataset=train_data,
                                                batch_size=batch_size,
                                                shuffle=True)
 
-    valid_loader = torch.utils.data.DataLoader(dataset=valid_data,
+    valid_load = torch.utils.data.DataLoader(dataset=valid_data,
                                                batch_size=batch_size,
                                                shuffle=False)
 
-    test_loader = torch.utils.data.DataLoader(dataset=test_data,
+    test_load = torch.utils.data.DataLoader(dataset=test_data,
                                               batch_size=batch_size,
                                               shuffle=False)
 
-    return train_loader, valid_loader, test_loader
+    return train_load, valid_load, test_load
 
 def run_train(cuda_allow, train_loader, valid_loader, num_epochs, patience, learning_rate, embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size, kernel_size, dropout_rate):
 
@@ -143,3 +143,48 @@ def run_train(cuda_allow, train_loader, valid_loader, num_epochs, patience, lear
             break
 
     return best_model
+
+def bilstm_test(model, cuda_allow, test_load) :
+    model.eval()
+
+    if cuda_allow:
+        model = torch.nn.DataParallel(model).cuda()
+    else:
+        model = torch.nn.DataParallel(model)
+
+    criterion = nn.CrossEntropyLoss()
+    correct, avg_loss, epoch_loss, total = 0, 0, 0, 0
+    predictions_all, target_all, probabilities_all = [], [], []
+
+    with torch.no_grad():
+        for test_reviews, test_labels in test_load:
+            if cuda_allow:
+                test_reviews = test_reviews.to(torch.int64).cuda()
+                test_labels = test_labels.to(torch.int64).cuda()
+            else:
+                test_reviews = test_reviews.to(torch.int64)
+                test_labels = test_labels.to(torch.int64)
+
+            total += test_labels.size(0)
+
+            outputs = model(test_reviews)
+            loss = criterion(outputs, test_labels)  # , size_average= False)
+
+            epoch_loss += loss.item()
+            _, predicted = torch.max(outputs.data, 1)
+            correct += (predicted == test_labels).sum()
+
+            predictions_all += predicted.cpu().numpy().tolist()
+            probabilities_all += torch.exp(outputs)[:, 1].cpu().numpy().tolist()
+            target_all += test_labels.data.cpu().numpy().tolist()
+
+    avg_loss = epoch_loss / len(test_load)
+    accuracy = 100 * correct / total
+
+    # AUC and ROC Curve
+    fpr, tpr, threshold = metrics.roc_curve(target_all, probabilities_all)
+    auroc = metrics.auc(fpr, tpr)
+
+    print('Résultat test : Loss: {} Accuracy: {}. AUC: {}'.format(avg_loss, accuracy, auroc))
+
+    pass
