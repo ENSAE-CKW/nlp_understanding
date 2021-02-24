@@ -31,3 +31,4 @@ from .pipeline_cnn_char import create_cnn_char_pipeline_de
 from .pipeline_logistic_bow import create_logistic_bow_pipeline_de
 from .pipeline_embed_cnn import create_embed_cnn_pipeline_de
 from .pipeline_bert_cnn import create_bert_cnn_pipeline_de
+from .pipeline_bilstm_cnn import create_bilstm_cnn_pipeline_de

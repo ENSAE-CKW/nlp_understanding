@@ -119,6 +119,9 @@ spacy==2.3.2
 transformers
 sentencepiece
 
+# BiLSTM CNN
+gensim
+
 # The following packages are considered to be unsafe in a requirements file:
 # pip
 # setuptools

@@ -4,13 +4,15 @@ import spacy
 import pandas as pd
 import torch
 import subprocess
+import gensim
+
 #TODO : add types to args in function
 def creation_nlp():
     subprocess.run("python -m spacy download fr_core_news_sm")
     return spacy.load("fr_core_news_sm",  disable=["tagger", "parser","ner"])
 
 def token_sentence(sentence: str, nlp: spacy.language.Language) -> List[str]:
-    return [X.lemmZa_ for X in nlp(sentence) if X.is_alpha & (not (X.is_stop))]
+    return [X.lemma_ for X in nlp(sentence) if X.is_alpha & (not (X.is_stop))]
 
 def token_df(df: pd.DataFrame, col_name: str,nlp : spacy.language.Language) -> pd.DataFrame:
     df["tokenization"] = df.apply(lambda x: token_sentence(x[col_name],nlp), axis = 1) #.lower()
@@ -25,9 +27,10 @@ def vocab(df_tokenised: pd.DataFrame) -> Set[str]:
 #We assume that the embedding is an csv file with
 #name : name of the word
 #columns named from 0 à D-1 where D stands for the dimension of the embedding
-def vectors_embed(embed: pd.DataFrame, D: int):
-    name = embed["name"]
-    vectors = embed.loc[:, [str(i) for i in range(0, D)]]
+def vectors_embed(path_embed):
+    model = gensim.models.KeyedVectors.load_word2vec_format(path_embed, binary=True,unicode_errors='ignore')
+    vectors = pd.DataFrame(model.wv.syn0)
+    name = [word for word in model.wv.vocab]
     vectors["name"] = name
     return name,vectors
 
