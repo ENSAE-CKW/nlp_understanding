@@ -87,13 +87,6 @@ word2vec:
     open_args_load:
       encoding: 'latin-1'
 
-word2vec_for_save:
-  type: pandas.CSVDataSet
-  filepath: data/02_intermediate/word2vec_save.csv
-  fs_args:
-    open_args_save:
-      encoding: 'latin-1'
-
 nlp:
   type: pickle.PickleDataSet
   filepath: data/01_raw/nlp.pickle
