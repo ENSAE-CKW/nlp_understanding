@@ -5,6 +5,7 @@ import torch.nn as nn
 from deep_nlp.bilstm_cnn import BilstmCnn
 from deep_nlp.utils.early_stopping import EarlyStopping
 from torch.utils.data import TensorDataset, DataLoader
+from mlflow import log_metric
 import numpy as np
 import copy
 
@@ -123,6 +124,11 @@ def run_train(cuda_allow, train_load, valid_load, num_epochs, patience, learning
         # evaluate the model
         valid_results = evaluate(cuda_allow, model, valid_load, criterion)
 
+        log_metric(key="Train_loss", value= train_loss, step=epoch + 1)
+        log_metric(key="Validation_loss", value= valid_results["loss"], step=epoch + 1)
+        log_metric(key="Accuracy", value= valid_results["accuracy"].cpu().numpy().tolist(), step=epoch + 1)
+        log_metric(key= "AUC", value= valid_results["auroc"], step= epoch+1)
+
         if valid_results["loss"] < best_valid_loss:
             best_epoch = epoch+1
 
@@ -154,6 +160,11 @@ def run_train(cuda_allow, train_load, valid_load, num_epochs, patience, learning
                                                                                                                best_valid_loss,
                                                                                                                best_accuracy,
                                                                                                                best_AUC))
+            log_metric(key="Best_train_loss", value=best_valid_loss)
+            log_metric(key="Best_validation_loss", value=best_valid_loss)
+            log_metric(key="Best_AUC", value=best_AUC)
+            log_metric(key="Best_Accuracy", value=best_accuracy.cpu().numpy().tolist())
+
             break
 
     return best_model
@@ -199,6 +210,10 @@ def bilstm_test(model, cuda_allow, test_load) :
     # AUC and ROC Curve
     fpr, tpr, threshold = metrics.roc_curve(target_all, probabilities_all)
     auroc = metrics.auc(fpr, tpr)
+
+    log_metric(key="Test_loss", value= avg_loss)
+    log_metric(key="Accuracy_test", value= accuracy.cpu().numpy().tolist())
+    log_metric(key="AUC_test", value= auroc)
 
     print('Résultat test : Loss: {} Accuracy: {}. AUC: {}'.format(avg_loss, accuracy, auroc))
 
