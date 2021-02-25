@@ -99,6 +99,11 @@ save_embedding:
     open_args_save:
       encoding: 'latin-1'
 
+embed_cnn_model:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataSet
+  data_set:
+    type: pickle.PickleDataSet
+    filepath: data/06_models/bert_cnn/bert_cnn_classifier/embed_cnn.pt
 
 # BERT + CNN
 

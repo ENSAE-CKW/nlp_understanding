@@ -6,7 +6,8 @@ import logging
 from typing import Any, Dict, List, Tuple
 from mlflow import log_metric
 from src.deep_nlp.embed_cnn.embcnnmodel import classifier3F
-
+import sklearn
+from sklearn import metrics
 
 def binary_accuracy(preds, y):
     #round predictions to the closest integer
@@ -89,7 +90,7 @@ def init_model(embed,SENTENCE_SIZE, nb_filtre, type_filtre, nb_output, dropout):
     return model
 
 
-def creation_batch(train_data, val_data, test_data, device, nb_batch):
+def creation_batch(train_data, val_data, test_data, device, nb_batch): #TODO : use instead torch.utils.data.DataLoader
     train_tensor_x = torch.from_numpy(train_data.drop(columns=["label"]).to_numpy()).to(device).long().split(nb_batch)
     train_tensor_y = torch.from_numpy(train_data["label"].to_numpy()).to(device).long().split(nb_batch)
 
@@ -141,3 +142,37 @@ def run_model(model, N_EPOCHS, device, train_iterator, valid_iterator):
         logger.info("Epoch %i : Accuracy : %f and Loss : %f", epoch, valid_acc,valid_loss)
         log_metric(key="Accuracy", value= valid_acc)
     return model
+
+def cnn_embed_test(model, iterator, criterion, device):
+    # deactivating dropout layers
+    model.eval()
+    model.to(device)
+    #Initialisation of variables
+    epoch_loss = 0
+    epoch_acc = 0
+    pred_test = []
+
+    with torch.no_grad():
+        for batch in iterator:
+            predictions = model(batch[0])
+            loss = criterion(predictions[:,1], batch[1].float())
+            acc = binary_accuracy(predictions, batch[1].float())
+            pred_test.append(predictions)
+
+            # keep track of loss and accuracy
+            epoch_loss += loss.item()
+            epoch_acc += acc.item()
+
+        size = len(iterator)
+        loss = epoch_loss/size
+        acc = epoch_acc/size
+
+    pred_test = torch.cat(pred_test).to(device)
+    lab = [element.l for element in iterator]
+    lab = torch.cat(lab).to(device)
+
+    fpr, tpr, thresholds = sklearn.metrics.roc_curve(y_true=lab, y_score=pred_test[:, 1])
+    auc = metrics.auc(fpr, tpr)
+    acc = binary_accuracy(pred_test, lab)
+
+    return auc,acc,loss
