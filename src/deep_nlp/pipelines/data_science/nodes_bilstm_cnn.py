@@ -160,7 +160,7 @@ def run_train(cuda_allow, train_load, valid_load, num_epochs, patience, learning
                                                                                                                best_valid_loss,
                                                                                                                best_accuracy,
                                                                                                                best_AUC))
-            log_metric(key="Best_train_loss", value=best_valid_loss)
+            log_metric(key="Best_train_loss", value=best_train_loss)
             log_metric(key="Best_validation_loss", value=best_valid_loss)
             log_metric(key="Best_AUC", value=best_AUC)
             log_metric(key="Best_Accuracy", value=best_accuracy.cpu().numpy().tolist())
