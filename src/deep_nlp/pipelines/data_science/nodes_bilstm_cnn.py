@@ -6,12 +6,16 @@ from deep_nlp.bilstm_cnn import BilstmCnn
 from deep_nlp.utils.early_stopping import EarlyStopping
 from torch.utils.data import TensorDataset, DataLoader
 import numpy as np
-
+import copy
 
 
 def train(cuda_allow, model, train_load, optimizer, criterion):
 
     epoch_loss = 0
+
+    if cuda_allow:
+        torch.cuda.empty_cache()
+        torch.cuda.set_device(0)
 
     model.train()
 
@@ -121,7 +125,17 @@ def run_train(cuda_allow, train_load, valid_load, num_epochs, patience, learning
 
         if valid_results["loss"] < best_valid_loss:
             best_epoch = epoch+1
-            best_model = model
+
+            model_clone = BilstmCnn(embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size, kernel_size, dropout_rate)
+
+            if cuda_allow:
+                model_clone = torch.nn.DataParallel(model_clone).cuda()
+            else:
+                model_clone = torch.nn.DataParallel(model_clone)
+
+            model_clone.load_state_dict(model.state_dict())
+
+            best_model = model_clone
             best_train_loss = train_loss
             best_valid_loss = valid_results["loss"]
             best_accuracy = valid_results["accuracy"]

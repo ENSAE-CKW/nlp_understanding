@@ -9,7 +9,7 @@ def create_bilstm_cnn_test(**kwargs):
                 func= bilstm_test
                 , inputs= ["bilstmcnn_model", "params:cnn_cuda_allow", "test_batch"]
                 , outputs= None
-                , tags= ["bilstm_cnn", "test"]
+                , tags= ["bilstm_cnn_test", "test"]
             )
         ]
     )
