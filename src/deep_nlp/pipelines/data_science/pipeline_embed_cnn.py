@@ -25,7 +25,7 @@ def create_embed_cnn_pipeline_ds(**kwargs):
             node(
                 func = run_model,
                 inputs = ["model","params:embcnn_n_epochs", "params:device", "train_batch","valid_batch"],
-                outputs = "model_train",
+                outputs = "cnn_embed_model",
                 tags= ["embed_cnn", "training", "model"],
                 name= "model's run"
             )
