@@ -103,7 +103,7 @@ embed_cnn_model:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataSet
   data_set:
     type: pickle.PickleDataSet
-    filepath: data/06_models/bert_cnn/bert_cnn_classifier/embed_cnn.pt
+    filepath: data/06_models/embed_cnn/embed_cnn_classifier/embed_cnn.pt
 
 # BERT + CNN
 

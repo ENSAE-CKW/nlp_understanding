@@ -8,6 +8,7 @@ from mlflow import log_metric
 from src.deep_nlp.embed_cnn.embcnnmodel import classifier3F
 import sklearn
 from sklearn import metrics
+import copy
 
 def binary_accuracy(preds, y):
     #round predictions to the closest integer
@@ -149,7 +150,7 @@ def run_model(model, N_EPOCHS, device, train_iterator, valid_iterator):
         log_metric(key="Train Accuracy", value= train_acc)
 
 
-    return model
+    return best_model
 
 def cnn_embed_test(model, iterator, criterion, device):
     # deactivating dropout layers
