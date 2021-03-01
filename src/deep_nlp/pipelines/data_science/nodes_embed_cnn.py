@@ -123,9 +123,10 @@ def run_model(model, N_EPOCHS, device, train_iterator, valid_iterator):
     best_train_loss = float('inf')
     best_train_acc = float('inf')
 
-    for epoch in range(N_EPOCHS):
-        #best model
+    param = model.get_params()
+    best_model = classifier3F(*param)
 
+    for epoch in range(N_EPOCHS):
         # train the model
         train_loss, train_acc = train(model, train_iterator, optimizer, criterion)
 
@@ -138,10 +139,12 @@ def run_model(model, N_EPOCHS, device, train_iterator, valid_iterator):
             best_acc = valid_acc
             best_train_loss = train_loss
             best_train_acc = train_acc
-
+            # best model
+            best_model.load_state_dict(copy.deepcopy(model.state_dict()))
         logger = logging.getLogger(__name__)
         logger.info("Epoch %i : Accuracy : %f and Loss : %f", epoch, valid_acc,valid_loss)
         log_metric(key="Accuracy", value= valid_acc)
+
 
     return model
 
