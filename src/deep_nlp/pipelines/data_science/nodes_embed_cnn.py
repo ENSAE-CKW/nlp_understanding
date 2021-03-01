@@ -124,6 +124,7 @@ def run_model(model, N_EPOCHS, device, train_iterator, valid_iterator):
     best_train_acc = float('inf')
 
     for epoch in range(N_EPOCHS):
+        #best model
 
         # train the model
         train_loss, train_acc = train(model, train_iterator, optimizer, criterion)
@@ -141,6 +142,7 @@ def run_model(model, N_EPOCHS, device, train_iterator, valid_iterator):
         logger = logging.getLogger(__name__)
         logger.info("Epoch %i : Accuracy : %f and Loss : %f", epoch, valid_acc,valid_loss)
         log_metric(key="Accuracy", value= valid_acc)
+
     return model
 
 def cnn_embed_test(model, iterator, criterion, device):
