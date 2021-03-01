@@ -143,7 +143,10 @@ def run_model(model, N_EPOCHS, device, train_iterator, valid_iterator):
             best_model.load_state_dict(copy.deepcopy(model.state_dict()))
         logger = logging.getLogger(__name__)
         logger.info("Epoch %i : Accuracy : %f and Loss : %f", epoch, valid_acc,valid_loss)
-        log_metric(key="Accuracy", value= valid_acc)
+        log_metric(key="Valid Accuracy", value= valid_acc)
+        log_metric(key = "Valid Loss", value = valid_loss)
+        log_metric(key="Train Loss", value=train_loss)
+        log_metric(key="Train Accuracy", value= train_acc)
 
 
     return model
