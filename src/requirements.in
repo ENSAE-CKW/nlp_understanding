@@ -114,6 +114,8 @@ kedro-viz
 kedro-mlflow
 mlflow
 spacy==2.3.2
+matplotlib
+seaborn
 
 # BERT CNN
 transformers
