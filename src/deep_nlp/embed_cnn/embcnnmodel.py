@@ -31,6 +31,11 @@ class classifier3F(nn.Module):
 
         self.dp = nn.Dropout(p=dropout)
 
+        self.params = [wv, no_words, embedding_dim, nb_filter, height_filter, output_dim, dropout]
+
+    def get_params(self):
+        return self.params
+
     def forward(self, text):
         x = self.embedding(text)
         x = x.unsqueeze(1)  # [nb_batch, nb_channel = 1, nb_words_in_sentences, embedding_dim]

@@ -1,1 +1,16 @@
-# TODO test
+#CNN + Embed
+col_allocine: "review"
+device: "cpu"
+batch_size: 50
+sentence_size: 67
+colname_allocine: "review"
+embed_dim: 200
+embcnn_nb_filtre: 200
+embcnn_type_filtre:
+  filtre1: 1
+  filtre2: 2
+
+embcnn_nb_output: 2
+embcnn_dropout: 0.6
+embcnn_min_freq: 3
+embcnn_n_epochs: 3
