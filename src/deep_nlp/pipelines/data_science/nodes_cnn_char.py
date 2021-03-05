@@ -35,7 +35,12 @@ from torch import optim
 from torch.autograd import Variable
 import torch.nn.functional as F
 import sklearn.metrics as metrics
-from mlflow import log_metric
+from mlflow import log_metric, log_artifact
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
+import pandas as pd
+import numpy as np
 import time
 import copy
 
@@ -127,7 +132,7 @@ def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
           , cnn_cuda_allow: bool, cnn_feature_num: int, cnn_lr: float, cnn_patience: int, cnn_num_epochs: int
           , cnn_size_batch: int, cnn_num_threads: int, cnn_sequence_len: int, cnn_feature_size: int
           , cnn_kernel_one: int, cnn_kernel_two: int, cnn_stride_one: int, cnn_stride_two: int, cnn_output_linear: int
-          , cnn_num_class: int, cnn_dropout: int):
+          , cnn_num_class: int, cnn_dropout: int, cnn_path_to_save_model: str):
     # Set up CUDA
     if cnn_cuda_allow:
         torch.cuda.empty_cache()
@@ -190,6 +195,14 @@ def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
 
             best_model= {"model": model_clone, 'optimizer': copy.deepcopy(optimizer.state_dict())}
 
+            # Save to pytorch to test performance models:
+            save_checkpoint(model
+                            , {'optimizer': optimizer.state_dict(), 'accuracy': best_eval_acc
+                                , "loss": best_eval_loss, "epoch": epoch, "auc": best_eval_auroc
+                               }
+                            , cnn_path_to_save_model
+                            )
+
             best_eval_loss = valid_results["loss"]
             best_eval_acc = valid_results["accuracy"]
             best_eval_auroc= valid_results["auroc"]
@@ -249,9 +262,6 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
     else:
         model = torch.nn.DataParallel(model)
 
-    # Load our model Char CNN
-    # checkpoint= torch.load(model_saved)
-    # model.load_state_dict(checkpoint["state_dict"])
     model.eval()
 
     for batch, data in enumerate(test_load):
@@ -289,4 +299,34 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
     print("Accuracy : {:.5f} | Avg loss : {:.5f} | AUC : {:.5f}".format(accuracy.cpu().numpy().tolist()
                                                                         , avg_loss, auroc))
 
+
+    # Confusion matrix
+    data_cm = metrics.confusion_matrix(target_all, predictions_all)
+
+    positif_negatif_dict_map = {1: "positif", 0: "negatif"}
+
+    df_cm = pd.DataFrame(data_cm, columns=[positif_negatif_dict_map[i] for i in np.unique(target_all)]
+                         , index=[positif_negatif_dict_map[i] for i in np.unique(target_all)])
+
+    df_cm.index.name = 'Actual'
+    df_cm.columns.name = 'Predicted'
+
+    plt.figure(figsize=(7, 6))
+
+    sns.heatmap(df_cm, cmap="Blues", annot=True, fmt='g')
+
+    plt.savefig("data/08_reporting/confusion_matrix.png")
+    log_artifact("data/08_reporting/confusion_matrix.png")
+
+    plt.show()
+
+    pass
+
+
+def save_checkpoint(model, state, filename):
+    # From https://github.com/srviest/char-cnn-text-classification-pytorch/blob/master/train.py
+    model_is_cuda = next(model.parameters()).is_cuda
+    model = model.module if model_is_cuda else model
+    state['state_dict'] = model.state_dict()
+    torch.save(state,filename)
     pass

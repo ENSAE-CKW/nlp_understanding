@@ -30,6 +30,8 @@ cnn_num_epochs: 50
 cnn_size_batch: 86
   # Others
 cnn_alphabet: None
+      # To delete after testing performance
+cnn_path_to_save_model: "data/06_models/cnn_char_classifier/cnn_char_model/cnn_char_model_pytorch.pt"
 
 # Logistic BOW
 logistic_bow_max_number_feature: 100
