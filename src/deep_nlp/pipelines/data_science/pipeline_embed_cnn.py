@@ -16,7 +16,7 @@ def create_embed_cnn_pipeline_ds(**kwargs):
             ),
             node(
                 func = creation_batch,
-                inputs = ["allocine_train_short_inter", "allocine_valid_short_inter","allocine_test_short_inter","params:device","params:batch_size"],
+                inputs = ["allocine_train_inter", "allocine_valid_inter","allocine_test_inter","params:device","params:batch_size"],
                 outputs = ["train_batch", "valid_batch", "test_batch"],
                 tags=["embed_cnn", "training", "batch"],
                 name = "batch initialisation"

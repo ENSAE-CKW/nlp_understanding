@@ -96,19 +96,19 @@ def create_embed_cnn_pipeline_de(**kwargs):
             node(
                 func = reshape_df
                 , inputs = ["train_padded","embed_for_torch"]
-                , outputs = "allocine_train_short_inter"
+                , outputs = "allocine_train_inter"
                 , tags = ["embed_cnn","data_proc", "train_set"]
                 , name = "reformat train"),
             node(
                 func=reshape_df
                 , inputs=["test_padded","embed_for_torch"]
-                , outputs="allocine_test_short_inter"
+                , outputs="allocine_test_inter"
                 , tags=["embed_cnn","data_proc", "test_set"]
                 , name="reformat tests"),
             node(
                 func=reshape_df
                 , inputs=["valid_padded","embed_for_torch"]
-                , outputs="allocine_valid_short_inter"
+                , outputs="allocine_valid_inter"
                 , tags=["embed_cnn", "data_proc", "valid_set"]
                 , name="reformat valid"),
             node(

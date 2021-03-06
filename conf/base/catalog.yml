@@ -79,7 +79,6 @@ logistic_bow_scaler:
 
 
 # CNN + Embed
-
 word2vec:
   type: pandas.CSVDataSet
   filepath: data/01_raw/word2vec.csv
@@ -87,6 +86,26 @@ word2vec:
     open_args_load:
       encoding: 'latin-1'
 
+allocine_train_inter:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/allocine_train_inter.csv
+  fs_args:
+    open_args_save:
+      encoding: 'latin-1'
+
+allocine_valid_inter:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/allocine_valid_inter.csv
+  fs_args:
+    open_args_save:
+      encoding: 'latin-1'
+
+allocine_test_inter:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/allocine_test_inter.csv
+  fs_args:
+    open_args_save:
+      encoding: 'latin-1'
 nlp:
   type: pickle.PickleDataSet
   filepath: data/01_raw/nlp.pickle
@@ -104,6 +123,10 @@ embed_cnn_model:
   data_set:
     type: pickle.PickleDataSet
     filepath: data/06_models/embed_cnn/embed_cnn_classifier/embed_cnn.pt
+
+word_ind_dict:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/04_feature/voc.pkl
 
 # BERT + CNN
 
