@@ -5,6 +5,8 @@ import torch.nn as nn
 import logging
 from typing import Any, Dict, List, Tuple
 from mlflow import log_metric
+from torch.utils.data import TensorDataset
+
 from src.deep_nlp.embed_cnn.embcnnmodel import classifier3F
 import sklearn
 from sklearn import metrics
@@ -26,19 +28,19 @@ def train(model, iterator, optimizer, criterion):
     # set the model in training phase
     model.train()
 
-    for batch in iterator:
+    for variables_x, variables_y in iterator:
         # resets the gradients after every batch
         # each batch is used in order to provide an estimation of gradient C according to the paramaeters
         optimizer.zero_grad()
 
         # convert to 1D tensor
-        predictions = model(batch[0])
+        predictions = model(variables_x)
 
         # compute the loss
-        loss = criterion(predictions[:,1], batch[1].float())
+        loss = criterion(predictions[:,1], variables_y.float())
 
         # compute the binary accuracy
-        acc = binary_accuracy(predictions, batch[1].float())
+        acc = binary_accuracy(predictions, variables_y.float())
 
         # backpropage the loss and compute the gradients
         loss.backward()
@@ -65,16 +67,16 @@ def evaluate(model, iterator, criterion):
 
     # deactivates autograd
     with torch.no_grad():
-        for batch in iterator:
+        for variables_x, variables_y in iterator:
             # retrieve text and no. of words
-            text = batch[0]
+            text = variables_x
 
             # convert to 1d tensor
             predictions = model(text).squeeze()
 
             # compute loss and accuracy
-            loss = criterion(predictions[:,1], batch[1].float())
-            acc = binary_accuracy(predictions, batch[1].float())
+            loss = criterion(predictions[:,1], variables_y.float())
+            acc = binary_accuracy(predictions, variables_y.float())
 
             # keep track of loss and accuracy
             epoch_loss += loss.item()
@@ -91,21 +93,30 @@ def init_model(embed,SENTENCE_SIZE, nb_filtre, type_filtre, nb_output, dropout):
     return model
 
 
-def creation_batch(train_data, val_data, test_data, device, nb_batch): #TODO : use instead torch.utils.data.DataLoader
-    train_tensor_x = torch.from_numpy(train_data.drop(columns=["label"]).to_numpy()).to(device).long().split(nb_batch)
-    train_tensor_y = torch.from_numpy(train_data["label"].to_numpy()).to(device).long().split(nb_batch)
+def creation_batch(train_data, val_data, test_data, device, batch_size):
+    train_tensor_x = torch.from_numpy(train_data.drop(columns=["label"]).to_numpy()).to(device).long()
+    train_tensor_y = torch.from_numpy(train_data["label"].to_numpy()).to(device).long()
 
-    val_tensor_x = torch.from_numpy(val_data.drop(columns=["label"]).to_numpy()).to(device).long().split(nb_batch)
-    val_tensor_y = torch.from_numpy(val_data["label"].to_numpy()).to(device).long().split(nb_batch)
+    val_tensor_x = torch.from_numpy(val_data.drop(columns=["label"]).to_numpy()).to(device).long()
+    val_tensor_y = torch.from_numpy(val_data["label"].to_numpy()).to(device).long()
 
-    test_tensor_x = torch.from_numpy(test_data.drop(columns=["label"]).to_numpy()).to(device).long().split(nb_batch)
-    test_tensor_y = torch.from_numpy(test_data["label"].to_numpy()).to(device).long().split(nb_batch)
+    test_tensor_x = torch.from_numpy(test_data.drop(columns=["label"]).to_numpy()).to(device).long()
+    test_tensor_y = torch.from_numpy(test_data["label"].to_numpy()).to(device).long()
 
-    train_dict = list(zip(train_tensor_x, train_tensor_y))
-    val_dict = list(zip(val_tensor_x, val_tensor_y))
-    test_dict = list(zip(test_tensor_x, test_tensor_y))
+    train_data = TensorDataset(train_tensor_x,train_tensor_y)
+    test_data = TensorDataset(test_tensor_x, test_tensor_y)
+    valid_data = TensorDataset(val_tensor_x, val_tensor_y)
 
-    return train_dict, val_dict, test_dict
+    train_load = torch.utils.data.DataLoader(dataset=train_data,
+                                batch_size=batch_size,
+                                shuffle=True)
+    val_load = torch.utils.data.DataLoader(dataset= valid_data,
+                                batch_size=batch_size,
+                                shuffle=True)
+    test_load = torch.utils.data.DataLoader(dataset= test_data,
+                                batch_size=batch_size,
+                                shuffle=True)
+    return train_load,val_load, test_load
 
 
 def run_model(model, N_EPOCHS, device, train_iterator, valid_iterator):
@@ -162,10 +173,10 @@ def cnn_embed_test(model, iterator, criterion, device):
     pred_test = []
 
     with torch.no_grad():
-        for batch in iterator:
-            predictions = model(batch[0])
-            loss = criterion(predictions[:,1], batch[1].float())
-            acc = binary_accuracy(predictions, batch[1].float())
+        for variables_x, variables_y in iterator:
+            predictions = model(variables_x)
+            loss = criterion(predictions[:,1], variables_y.float())
+            acc = binary_accuracy(predictions, variables_y.float())
             pred_test.append(predictions)
 
             # keep track of loss and accuracy

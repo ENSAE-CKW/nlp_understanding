@@ -40,6 +40,7 @@ def words_index(name_embed, vocab):
     word_with_vectors = vocab.intersection(name_embed)
     return dict(zip(word_with_vectors, range(len(word_with_vectors))))
 
+#vectors describes vectors of embed
 def index_vectors_embed(vectors, word_index_dict):
     vectors["index"] = vectors.apply(lambda x: word_index_dict.get(x["name"]), axis=1)
     vectors.sort_values(by = "index")
