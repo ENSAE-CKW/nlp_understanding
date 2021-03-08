@@ -86,9 +86,9 @@ def evaluate(model, iterator, criterion):
 
     return epoch_loss / size, epoch_acc / size
 
-def init_model(embed,SENTENCE_SIZE, nb_filtre, type_filtre, nb_output, dropout):
+def init_model(embed,SENTENCE_SIZE, nb_filtre, type_filtre, nb_output, dropout, padded):
     type_filtre = list(type_filtre.values())
-    model = classifier3F(embed, SENTENCE_SIZE, embed.shape[1], nb_filtre, type_filtre, nb_output, dropout)
+    model = classifier3F(embed, SENTENCE_SIZE, embed.shape[1], nb_filtre, type_filtre, nb_output, dropout, padded)
     model = model.float()
     return model
 
@@ -162,6 +162,10 @@ def run_model(model, N_EPOCHS, device, train_iterator, valid_iterator):
 
 
     return best_model
+
+def save_model(model):
+    return model.state_dict()
+
 
 def cnn_embed_test(model, iterator, criterion, device):
     # deactivating dropout layers

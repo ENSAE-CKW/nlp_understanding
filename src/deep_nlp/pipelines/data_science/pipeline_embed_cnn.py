@@ -9,7 +9,7 @@ def create_embed_cnn_pipeline_ds(**kwargs):
         [
             node(
                 func = init_model,
-                inputs = ["embed_for_torch","params:sentence_size","params:embcnn_nb_filtre", "params:embcnn_type_filtre","params:embcnn_nb_output","params:embcnn_dropout"],
+                inputs = ["embed_for_torch","params:sentence_size","params:embcnn_nb_filtre", "params:embcnn_type_filtre","params:embcnn_nb_output","params:embcnn_dropout","params:embcnn_padded"],
                 outputs = "model",
                 tags = ["embed_cnn","training", "model"],
                 name = "initiailisation model"
@@ -22,6 +22,11 @@ def create_embed_cnn_pipeline_ds(**kwargs):
                 name = "batch initialisation"
             )
             ,
+            node(
+                func = save_model,
+                inputs = "embed_cnn_model",
+                outputs = "embed_cnn_model_for_save"
+            ),
             node(
                 func = run_model,
                 inputs = ["model","params:embcnn_n_epochs", "params:device", "train_batch","valid_batch"],

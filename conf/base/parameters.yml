@@ -53,6 +53,8 @@ embcnn_dropout: 0.6
 embcnn_min_freq: 3
 embcnn_n_epochs: 50
 
+embcnn_padded: True
+
 #BiLSTM + CNN
 
 bilstm_num_epochs : 50

@@ -4,10 +4,11 @@ import torch
 class classifier3F(nn.Module):
     # TODO : remove embedding_dim using wv.shape[1]
     # define all the layers used in model
-    def __init__(self, wv, no_words, embedding_dim, nb_filter, height_filter, output_dim, dropout):
+    def __init__(self, wv, no_words, embedding_dim, nb_filter, height_filter, output_dim, dropout, padded):
         # Constructor
         super().__init__()
 
+        self.padded = padded
         # embedding layer
         self.embedding = nn.Embedding.from_pretrained(wv)
 
@@ -19,7 +20,7 @@ class classifier3F(nn.Module):
 
         for height in height_filter:
             conv_lay = nn.Sequential(
-                nn.Conv2d(1, int(nb_filter), (int(float(height)), embedding_dim)),
+                nn.Conv2d(in_channels= 1,out_channels= int(nb_filter),kernel_size = (int(float(height)), embedding_dim)),
                 nn.ReLU(),
                 nn.MaxPool2d((no_words - height + 1, 1), stride=1),
             )
@@ -39,7 +40,12 @@ class classifier3F(nn.Module):
     def forward(self, text):
         x = self.embedding(text)
         x = x.unsqueeze(1)  # [nb_batch, nb_channel = 1, nb_words_in_sentences, embedding_dim]
-        x = [conv(x).squeeze() for conv in self.conv]
+        if self.padded:
+            x_padded = [nn.ZeroPad2d((0, 0, 0, height))(x) for height in height_filter]
+            x_padded = list(zip(x_padded,self.conv))
+            x = [conv(x).squeeze() for x,conv in x_padded]
+        else:
+            x = [conv(x).squeeze() for conv in self.conv]
         x = torch.cat(tuple(x), dim=1) #flaten into [nb_batch x sum_nb_filters]
         x = self.dp(x) #doesn't change the shape of x
         x = self.fc(x)  # [nb_batch, 2]
