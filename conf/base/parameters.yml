@@ -9,7 +9,7 @@
 # Model parameters
 cnn_feature_num: 83
 cnn_feature_size: 256
-cnn_kernel_one: 7
+cnn_kernel_one: 7 # comme khaled couche de conv
 cnn_kernel_two: 3
 cnn_stride_one: 1
 cnn_stride_two: 3
@@ -24,7 +24,7 @@ cnn_clip: 400
 cnn_verbose: False
 cnn_freq_verbose: 100
 cnn_cuda_allow: True
-cnn_patience: 5
+cnn_patience: 3
 cnn_lr: 0.0001
 cnn_num_epochs: 50
 cnn_size_batch: 86
