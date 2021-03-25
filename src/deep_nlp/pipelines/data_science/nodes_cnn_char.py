@@ -132,7 +132,7 @@ def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
           , cnn_cuda_allow: bool, cnn_feature_num: int, cnn_lr: float, cnn_patience: int, cnn_num_epochs: int
           , cnn_size_batch: int, cnn_num_threads: int, cnn_sequence_len: int, cnn_feature_size: int
           , cnn_kernel_one: int, cnn_kernel_two: int, cnn_stride_one: int, cnn_stride_two: int, cnn_output_linear: int
-          , cnn_num_class: int, cnn_dropout: int, cnn_path_to_save_model: str):
+          , cnn_num_class: int, cnn_dropout: int):
     # Set up CUDA
     if cnn_cuda_allow:
         torch.cuda.empty_cache()
@@ -193,15 +193,8 @@ def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
 
             model_clone.load_state_dict(model.state_dict())
 
-            best_model= {"model": model_clone, 'optimizer': copy.deepcopy(optimizer.state_dict())}
+            best_model= {"model": model_clone.state_dict()}
 
-            # Save to pytorch to test performance models:
-            save_checkpoint(model
-                            , {'optimizer': optimizer.state_dict(), 'accuracy': best_eval_acc
-                                , "loss": best_eval_loss, "epoch": epoch, "auc": best_eval_auroc
-                               }
-                            , cnn_path_to_save_model
-                            )
 
             best_eval_loss = valid_results["loss"]
             best_eval_acc = valid_results["accuracy"]
@@ -246,7 +239,9 @@ def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
 
 
 def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
-             , cnn_num_threads: int, model_saved):
+             , cnn_num_threads: int, model_saved, cnn_feature_num: int, cnn_sequence_len: int
+             , cnn_feature_size: int, cnn_kernel_one: int, cnn_kernel_two: int, cnn_stride_one: int
+             , cnn_stride_two: int, cnn_output_linear: int, cnn_num_class: int, cnn_dropout: int):
 
     corrects, avg_loss, epoch_loss, size = 0, 0, 0, 0
     predictions_all, target_all, probabilities_all= [], [], []
@@ -256,11 +251,19 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
                             , drop_last=True, shuffle=True, pin_memory=True)
 
     # Call our model
-    model= model_saved
+    kwargs = {"sequence_len": cnn_sequence_len, "feature_num": cnn_feature_num
+        , "feature_size": cnn_feature_size, "kernel_one": cnn_kernel_one
+        , "kernel_two": cnn_kernel_two, "stride_one": cnn_stride_one
+        , "stride_two": cnn_stride_two, "output_linear": cnn_output_linear
+        , "num_class": cnn_num_class, "dropout": cnn_dropout}
+
+    model = CNNCharClassifier(**kwargs)
+    model = torch.nn.DataParallel(model)
+
     if cnn_cuda_allow:
         model = torch.nn.DataParallel(model).cuda()
-    else:
-        model = torch.nn.DataParallel(model)
+
+    model.load_state_dict(model_saved)
 
     model.eval()
 
@@ -282,6 +285,7 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
 
             predictions_all += predict.cpu().numpy().tolist()
             probabilities_all += torch.exp(logit)[:, 1].cpu().numpy().tolist()
+            print(torch.exp(logit)[:, 1].cpu().numpy())
             target_all += target.data.cpu().numpy().tolist()
 
     avg_loss = epoch_loss / len(test_load)  # avg loss (batch level)
@@ -322,11 +326,3 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
 
     pass
 
-
-def save_checkpoint(model, state, filename):
-    # From https://github.com/srviest/char-cnn-text-classification-pytorch/blob/master/train.py
-    model_is_cuda = next(model.parameters()).is_cuda
-    model = model.module if model_is_cuda else model
-    state['state_dict'] = model.state_dict()
-    torch.save(state,filename)
-    pass

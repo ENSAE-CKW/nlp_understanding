@@ -1,12 +1,16 @@
+import torch
 import torch.nn as nn
+from abc import abstractmethod
+from ..grad_cam.model import GradCamBaseModel
 
-class CNNCharClassifier(nn.Module):
+
+class CNNCharClassifier(GradCamBaseModel):
 
     def __init__(self, sequence_len, feature_num, feature_size, kernel_one, kernel_two, stride_one, stride_two
                  , output_linear, num_class, dropout):
-        # Paste from https://github.com/srviest/char-cnn-text-classification-pytorch/blob/master/model.py
+
         super(CNNCharClassifier, self).__init__() # legacy
-        self.sequence_len= sequence_len
+        self.sequence_len= 1014 #+ 6#9222 #sequence_len
         self.feature_num= feature_num # vocab size
         self.feature_size= feature_size
         self.kernel_one= kernel_one # 7
@@ -18,11 +22,15 @@ class CNNCharClassifier(nn.Module):
         self.num_class= int(num_class) # 2
         self.dropout= dropout
 
-        self.conv1 = nn.Sequential(
-            nn.Conv1d(self.feature_num, self.feature_size, kernel_size= self.kernel_one, stride= self.stride_one),
-            nn.ReLU(),
-            nn.MaxPool1d(kernel_size= self.kernel_two, stride= self.stride_two)
-        )
+        # paddng argument
+        # self.to_pad= nn.ZeroPad2d((0, 9222 - 1014, 0, 0))
+        # self.to_pad = nn.ZeroPad2d((0, (1014 + 6) - 1014, 0, 0))
+
+
+        self.conv1_conv= nn.Conv1d(self.feature_num, self.feature_size, kernel_size= self.kernel_one, stride= self.stride_one)
+        self.conv1_relu= nn.ReLU()
+        self.conv1_maxpool= nn.MaxPool1d(kernel_size= self.kernel_two, stride= self.stride_two)
+
 
         self.conv2 = nn.Sequential(
             nn.Conv1d(self.feature_size, self.feature_size, kernel_size= self.kernel_one, stride= self.stride_one),
@@ -45,10 +53,11 @@ class CNNCharClassifier(nn.Module):
             nn.ReLU()
         )
 
-        self.conv6 = nn.Sequential(
-            nn.Conv1d(self.feature_size, self.feature_size, kernel_size= self.kernel_two, stride= self.stride_one),
-            nn.ReLU(),
-            nn.MaxPool1d(kernel_size= self.kernel_two, stride= self.stride_two)
+        self.conv6= nn.Sequential(
+            nn.Conv1d(self.feature_size, self.feature_size
+                                    , kernel_size=self.kernel_two, stride=self.stride_one)
+            , nn.ReLU()
+            , nn.MaxPool1d(kernel_size=self.kernel_two, stride=self.stride_two)
         )
 
         self.fc1 = nn.Sequential(
@@ -66,7 +75,23 @@ class CNNCharClassifier(nn.Module):
         self.fc3 = nn.Linear(self.output_linear, self.num_class)
         self.log_softmax = nn.LogSoftmax(dim= 1)
 
+        # Init weight
         self.weight_init()
+
+        # Access before maxpooling
+        self.before_conv.add_module("conv1_conv", self.conv1_conv)
+        self.before_conv.add_module("conv1_relu", self.conv1_relu)
+
+        # disect the network to access its last convolutional layer
+        self.pool.add_module("conv1_maxpool", self.conv1_maxpool)
+
+        # get the max pool of the features stem
+        self.after_conv.add_module("conv2", self.conv2)
+        self.after_conv.add_module("conv3", self.conv3)
+        self.after_conv.add_module("conv4", self.conv4)
+        self.after_conv.add_module("conv5", self.conv5)
+        self.after_conv.add_module("conv6", self.conv6)
+
 
     def weight_init(self):
         for block in self._modules:
@@ -77,21 +102,19 @@ class CNNCharClassifier(nn.Module):
                 pass
 
     def forward(self, x):
-        x= self.conv1(x) # size [feature_num x feature_size] (== [vocabulary_size x feature_num])
-        x= self.conv2(x) # size [feature_size x feature_size]
-        x= self.conv3(x) # size [feature_size x feature_size]
-        x= self.conv4(x) # size [feature_size x feature_size]
-        x= self.conv5(x) # size [feature_size x feature_size]
-        x= self.conv6(x) # size [feature_size x feature_size]
+        x = self.get_activations(x)
 
-        # collapse
-        x= x.view(x.size(0), -1)
-        # linear layer
-        x= self.fc1(x) # size input: input_size | size output: output_size
-        # linear layer
-        x= self.fc2(x) # size input: output_size | size output: output_size
-        # linear layer
-        x= self.fc3(x) # size input: output_size | size output: num_class
-        # output layer
+        if x.requires_grad: # TODO: check it doesn't change model perf on training data
+            h= self.register_hook(x)
+
+
+        x = self.pool(x)
+
+        x = self.after_conv(x)
+
+        x = x.view(x.size(0), -1)
+        x= self.fc1(x)
+        x= self.fc2(x)
+        x= self.fc3(x)
         x= self.log_softmax(x)
         return x
