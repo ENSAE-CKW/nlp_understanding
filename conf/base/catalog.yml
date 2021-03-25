@@ -161,3 +161,9 @@ bertcnn_char_model:
 word2vec_bilstm:
   type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
   filepath: data/06_models/word2vec/word2vec.pkl
+
+bilstm_cnn_model_for_save:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataSet
+  data_set:
+    type: pickle.PickleDataSet
+    filepath: data/06_models/bilstm_cnn/bilstm_cnn_classifier/bilstm_cnn.pt
