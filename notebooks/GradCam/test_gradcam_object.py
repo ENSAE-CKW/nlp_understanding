@@ -65,10 +65,10 @@ output= cpu_model(test_sentence[0])
 
 # Compute heatmap from basemodel object
 heatmap_test= cpu_model.get_heatmap(text= test_sentence[0]
-                                    , num_class= 0
+                                    , num_class= 1
                                     , dim= [0, 2]
-                                    , type= "max")
-
+                                    , type_map= "normalized")
+heatmap_test= heatmap_test[0]
 
 # CNNChar rebuilt from input the text
 alphabet= test_data.get_alphabet()+" "
@@ -94,7 +94,7 @@ plot_text_and_heatmap(text= rebuild_sentence
 letter_to_token= LetterToToken(text= rebuild_sentence
                                , heatmap= heatmap_match_sentence_size_invert)
 
-results_dict= letter_to_token.transform_letter_to_token(type= "mean")
+results_dict= letter_to_token.transform_letter_to_token(type= "tanh")
 tokens= results_dict["tokens"]
 heatmap_test= results_dict["heatmap"]
 
@@ -103,5 +103,6 @@ plot_bar_heatmap(heatmap_test)
 plot_text_and_heatmap(text= tokens
                       , heatmap= heatmap_test
                       , figsize=(7, 7)
-                      , cmap= "RdYlGn"
+                      , cmap= "PiYG"
                       , word_or_letter= "word")
+

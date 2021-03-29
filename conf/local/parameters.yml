@@ -1,16 +1,21 @@
 #CNN + Embed
 col_allocine: "review"
-device: "cpu"
+device: "cuda"
 batch_size: 50
 sentence_size: 67
 colname_allocine: "review"
 embed_dim: 200
 embcnn_nb_filtre: 600
 embcnn_type_filtre:
-  filtre1: 2
+  filtre1: 1
+  filtre2: 2
 
-
+#embcnn_padded: False
 embcnn_nb_output: 2
 embcnn_dropout: 0.6
 embcnn_min_freq: 3
 embcnn_n_epochs: 5
+
+#cnn_sequence_len: 9222
+cnn_size_batch: 86
+#cnn_num_epochs: 1

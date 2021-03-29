@@ -92,7 +92,6 @@ class CNNCharClassifier(GradCamBaseModel):
         self.after_conv.add_module("conv5", self.conv5)
         self.after_conv.add_module("conv6", self.conv6)
 
-
     def weight_init(self):
         for block in self._modules:
             try:
@@ -103,10 +102,10 @@ class CNNCharClassifier(GradCamBaseModel):
 
     def forward(self, x):
         x = self.get_activations(x)
+        # x = self.conv1_relu(x)
 
-        if x.requires_grad: # TODO: check it doesn't change model perf on training data
+        if x.requires_grad:
             h= self.register_hook(x)
-
 
         x = self.pool(x)
 
