@@ -169,6 +169,10 @@ def run_train(cuda_allow, train_load, valid_load, num_epochs, patience, learning
 
     return best_model
 
+
+def save_model(model):
+    return model.state_dict()
+
 def bilstm_test(model, cuda_allow, test_load) :
 
     model.eval()
