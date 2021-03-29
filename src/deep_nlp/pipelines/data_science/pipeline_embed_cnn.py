@@ -20,12 +20,6 @@ def create_embed_cnn_pipeline_ds(**kwargs):
                 outputs = ["train_batch", "valid_batch", "test_batch"],
                 tags=["embed_cnn", "training", "batch"],
                 name = "batch initialisation"
-            )
-            ,
-            node(
-                func = save_model,
-                inputs = "embed_cnn_model",
-                outputs = "embed_cnn_model_for_save"
             ),
             node(
                 func = run_model,
@@ -33,6 +27,11 @@ def create_embed_cnn_pipeline_ds(**kwargs):
                 outputs = "embed_cnn_model",
                 tags= ["embed_cnn", "training", "model"],
                 name= "model's run"
+            ),
+            node(
+                func=save_model,
+                inputs="embed_cnn_model",
+                outputs="embed_cnn_model_for_save"
             )
 
         ]

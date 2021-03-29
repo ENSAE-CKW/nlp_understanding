@@ -7,7 +7,9 @@ from typing import Any, Dict, List, Tuple
 from mlflow import log_metric
 from torch.utils.data import TensorDataset
 
-from src.deep_nlp.embed_cnn.embcnnmodel import classifier3F
+# from src.deep_nlp.embed_cnn.embcnnmodel import classifier3F
+from src.deep_nlp.embed_cnn.embcnnmodel_gradcam import classifier3F
+
 import sklearn
 from sklearn import metrics
 import copy

@@ -58,7 +58,7 @@ class classifier3F(nn.Module):
         else:
             x = [conv(x).squeeze() for conv in self.conv]
         x = torch.cat(tuple(x), dim=1) #flaten into [nb_batch x sum_nb_filters]
-        print(x.shape)
+        # print(x.shape)
         x = self.dp(x) #doesn't change the shape of x
         x = self.fc(x)  # [nb_batch, 2]
         x = self.sm(x)
