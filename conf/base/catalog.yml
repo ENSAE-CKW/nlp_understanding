@@ -167,3 +167,19 @@ bilstm_cnn_model_for_save:
   data_set:
     type: pickle.PickleDataSet
     filepath: data/06_models/bilstm_cnn/bilstm_cnn_classifier/bilstm_cnn.pt
+
+final_train_dataset:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/02_intermediate/bilstm_cnn/final_train_dataset.pkl
+
+final_valid_dataset:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/02_intermediate/bilstm_cnn/final_valid_dataset.pkl
+
+final_test_dataset:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/02_intermediate/bilstm_cnn/final_test_dataset.pkl
+
+embed_matrix:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/02_intermediate/bilstm_cnn/embed_matrix.pkl
