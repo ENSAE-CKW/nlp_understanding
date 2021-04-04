@@ -15,7 +15,11 @@ def create_bilstm_cnn_pipeline_ds(**kwargs):
             ),
             node(
                 func = run_train,
-                inputs = ["params:cnn_cuda_allow", "train_batch", "valid_batch", "params:bilstm_num_epochs", "params:bilstm_patience", "params:bilstm_lr", "embed_matrix", "params:sentence_size", "params:bilstm_input_dim", "params:bilstm_hidden_dim", "params:bilstm_layer_dim", "params:bilstm_output_dim", "params:bilstm_feature_size", "params:bilstm_kernel_size", "params:bilstm_dropout_rate"],
+                inputs = ["params:cnn_cuda_allow", "train_batch", "valid_batch", "params:bilstm_num_epochs"
+                    , "params:bilstm_patience", "params:bilstm_lr", "embed_matrix", "params:sentence_size"
+                    , "params:bilstm_input_dim", "params:bilstm_hidden_dim", "params:bilstm_layer_dim"
+                    , "params:bilstm_output_dim", "params:bilstm_feature_size", "params:bilstm_kernel_size"
+                    , "params:bilstm_dropout_rate"],
                 outputs = "bilstmcnn_model",
                 tags= ["train", "bilstmcnn"],
             ),

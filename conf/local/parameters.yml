@@ -19,3 +19,6 @@ embcnn_n_epochs: 5
 #cnn_sequence_len: 9222
 cnn_size_batch: 86
 #cnn_num_epochs: 1
+
+bilstm_batch_size: 86
+bilstm_num_epochs: 1

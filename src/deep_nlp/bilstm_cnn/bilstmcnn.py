@@ -26,7 +26,9 @@ class BilstmCnn(nn.Module):
 
         out, (hn, cn) = self.LSTM(out)
         out = torch.transpose(out, dim0=1, dim1=0)
+        # print(out.size())
         out = self.convLayer(out)
+        # print(out.size())
         out = self.maxpool(out)
         out = out.reshape(out.size(0), -1)
 
