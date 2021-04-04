@@ -2,7 +2,6 @@ import torch.nn as nn
 import torch
 import torch.nn.functional as F
 from ..grad_cam.model import GradCamBaseModel
-import copy
 
 class classifier3F(GradCamBaseModel):
     # define all the layers used in model

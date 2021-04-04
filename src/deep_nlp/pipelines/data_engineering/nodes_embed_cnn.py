@@ -6,15 +6,63 @@ import torch
 import subprocess
 import gensim
 
+from nltk.corpus import stopwords
+import unicodedata
+import re
+
 #TODO : add types to args in function
 def creation_nlp():
     subprocess.run("python -m spacy download fr_core_news_sm")
     return spacy.load("fr_core_news_sm",  disable=["tagger", "parser","ner"])
 
+
+def clean_tokens(token: str, pattern= r'[\s\.\,\:\;\"\'\(\)\[\]\&\!\?\/\\]+'):
+    cleaned_token= re.sub(pattern, "", token)
+    return ''.join(c for c in unicodedata.normalize('NFD', cleaned_token)
+                        if unicodedata.category(c) != 'Mn').lower()
+
+
+french_stopwords = tuple([clean_tokens(word) for word in stopwords.words('french')])
+def strip_accents_and_lowercase(token: str, french_stopwords= french_stopwords) -> str:
+    lower_cleaned_token= clean_tokens(token)
+    if lower_cleaned_token not in french_stopwords:
+        return lower_cleaned_token
+    else:
+        return ""
+
+def last_clean(text: str) -> str:
+    # From https://stackoverflow.com/a/29920015/5909675
+    matches = re.finditer('.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)', text.replace("#", " "))
+    return " ".join([m.group(0) for m in matches])
+
 def token_sentence(sentence: str, nlp: spacy.language.Language) -> List[str]:
     return [X.lemma_ for X in nlp(sentence) if X.is_alpha & (not (X.is_stop))]
 
 def token_df(df: pd.DataFrame, col_name: str,nlp : spacy.language.Language) -> pd.DataFrame:
+    # Clean token mano
+    pattern = r'[\s\.\,\:\;\(\)\[\]\&\!\?\/\\]+'
+
+    df["intermediate"] = df[col_name].apply(lambda sentence: re.split(pattern, sentence))
+
+    df["intermediate"] = df["intermediate"].apply(
+        lambda list_of_token: [clean_tokens(token)
+                               for token in list_of_token])
+
+    df["intermediate"] = df["intermediate"].apply(
+        lambda list_of_token: [strip_accents_and_lowercase(token)
+                               for token in list_of_token])
+
+    df["intermediate"] = df["intermediate"].apply(lambda list_of_token: [last_clean(token)
+                                                                         for token in list_of_token if
+                                                                         token != ""])
+
+    df[col_name] = df["intermediate"].apply(
+        lambda list_of_token: re.sub(r'\s{2,}', "", " ".join(list_of_token))
+    )
+
+    pop_intermediate= df.pop("intermediate")
+    del pop_intermediate
+
     df["tokenization"] = df.apply(lambda x: token_sentence(x[col_name],nlp), axis = 1) #.lower()
     return df
 
