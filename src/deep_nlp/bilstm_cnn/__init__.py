@@ -1,2 +1,2 @@
-# from .bilstmcnn import BilstmCnn
-from .bilstmcnn_gradcam import BilstmCnn
+from .bilstmcnn import BilstmCnn
+# from .bilstmcnn_gradcam import BilstmCnn
