@@ -319,8 +319,8 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
 
     sns.heatmap(df_cm, cmap="Blues", annot=True, fmt='g')
 
-    plt.savefig("data/08_reporting/confusion_matrix.png")
-    log_artifact("data/08_reporting/confusion_matrix.png")
+    plt.savefig("data/08_reporting/cnn_char/confusion_matrix.png")
+    log_artifact("data/08_reporting/cnn_char/confusion_matrix.png")
 
     plt.show()
 

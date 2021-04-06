@@ -46,6 +46,7 @@ def plot_text_and_heatmap(text, heatmap, figsize= (5, 5), cmap= 'Greens'
 
     # Plot heatmap grid
     im= ax.imshow(heatmap_adjusted, cmap=color_map, alpha= alpha, vmax= 1, vmin= -1)
+
     ax.set_yticks(range(heatmap_adjusted.shape[0]))  # data.shape[0]
     ax.set_xticks(range(heatmap_adjusted.shape[1]))  # data.shape[1]
 
@@ -89,6 +90,7 @@ def plot_text_and_heatmap(text, heatmap, figsize= (5, 5), cmap= 'Greens'
                      , horizontalalignment= "center")
 
     fig.colorbar(im, aspect= 75, orientation="horizontal")
+    fig.tight_layout()
     plt.axis('off')
     plt.show()
     pass

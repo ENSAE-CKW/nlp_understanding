@@ -132,6 +132,10 @@ word_ind_dict:
   type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
   filepath: data/04_feature/voc.pkl
 
+test_batch:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/02_intermediate/test_iterator_cnn_embed.pkl
+
 # BERT + CNN
 
 camembert_tokenizer:

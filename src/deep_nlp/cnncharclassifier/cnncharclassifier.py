@@ -9,8 +9,8 @@ class CNNCharClassifier(GradCamBaseModel):
     def __init__(self, sequence_len, feature_num, feature_size, kernel_one, kernel_two, stride_one, stride_two
                  , output_linear, num_class, dropout):
 
-        super(CNNCharClassifier, self).__init__() # legacy
-        self.sequence_len= 1014 #+ 6#9222 #sequence_len
+        super(CNNCharClassifier, self).__init__()
+        self.sequence_len= sequence_len #+ 6#9222 #sequence_len
         self.feature_num= feature_num # vocab size
         self.feature_size= feature_size
         self.kernel_one= kernel_one # 7

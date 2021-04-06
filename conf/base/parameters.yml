@@ -55,6 +55,11 @@ embcnn_n_epochs: 50
 
 embcnn_padded: True
 
+embcnn_class_explanation: 0
+embcnn_type_map: "max"
+embcnn_seuil: 0.75
+embcnn_index_nothing: None
+
 #BiLSTM + CNN
 
 bilstm_num_epochs : 50

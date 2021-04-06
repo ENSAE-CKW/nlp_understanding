@@ -1,1 +1,1 @@
-from .utils import resize_array, implemente_multiple_time
+from .utils import resize_array, implemente_multiple_time, preprocess_before_barplot
