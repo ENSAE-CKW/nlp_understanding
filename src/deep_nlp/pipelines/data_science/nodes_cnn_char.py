@@ -248,7 +248,7 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
              , cnn_num_threads: int, model_saved, cnn_feature_num: int, cnn_sequence_len: int
              , cnn_feature_size: int, cnn_kernel_one: int, cnn_kernel_two: int, cnn_stride_one: int
              , cnn_stride_two: int, cnn_output_linear: int, cnn_num_class: int, cnn_dropout: int
-             , type_map: str, seuil: float):
+             , type_map: str, seuil: float, type_agg: str):
 
     corrects, avg_loss, epoch_loss, size = 0, 0, 0, 0
     predictions_all, target_all, probabilities_all= [], [], []
@@ -325,7 +325,7 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
             letter_to_token = LetterToToken(text=rebuild_sentence
                                             , heatmap=heatmap_match_sentence_size_invert)
 
-            results_dict = letter_to_token.transform_letter_to_token(type="tanh")
+            results_dict = letter_to_token.transform_letter_to_token(type= type_agg)
             tokens = np.array(results_dict["tokens"])
             heatmap_token_level = results_dict["heatmap"]
 
@@ -359,7 +359,7 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
             letter_to_token = LetterToToken(text=rebuild_sentence
                                             , heatmap=heatmap_match_sentence_size_invert)
 
-            results_dict = letter_to_token.transform_letter_to_token(type="tanh")
+            results_dict = letter_to_token.transform_letter_to_token(type= type_agg)
             tokens = np.array(results_dict["tokens"])
             heatmap_token_level = results_dict["heatmap"]
 

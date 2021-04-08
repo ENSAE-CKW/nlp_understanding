@@ -112,6 +112,7 @@ class CNNCharClassifier(GradCamBaseModel):
         x = self.after_conv(x)
 
         x = x.view(x.size(0), -1)
+        # TODO: add classifier step into self.after_conv pipeline
         x= self.fc1(x)
         x= self.fc2(x)
         x= self.fc3(x)
