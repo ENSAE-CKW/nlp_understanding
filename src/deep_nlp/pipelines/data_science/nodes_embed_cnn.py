@@ -8,6 +8,8 @@ from torch.utils.data import TensorDataset
 from src.deep_nlp.embed_cnn.embcnnmodel_gradcam import classifier3F
 from src.deep_nlp.grad_cam.plot import plot_cm, plot_barplot
 from src.deep_nlp.grad_cam.utils import preprocess_before_barplot
+from src.deep_nlp.grad_cam.utils.token import order_tokens_by_importance
+
 import numpy as np
 import sklearn.metrics as metrics
 import copy
@@ -208,83 +210,73 @@ def cnn_embed_test(model_dict, iterator
         probabilities_all += output[:, 1].cpu().detach().numpy().tolist()
         target_all += label.data.cpu().detach().numpy().tolist()
 
-        # GradCam part #
-        text_index = review.squeeze().numpy()
-
-        # TODO: to change if multiclass
+        # Model probability for class 1
         class_explanation = 0
-        explanations_class_one = model.get_heatmap(text=review
-                                                   , num_class= class_explanation
-                                                   , dim=[0, 2]
-                                                   , type_map= type_map)[-1]
+        other_class_explanation = 1 if class_explanation == 0 else 0
 
+        proba_1 = output[0, other_class_explanation].item()
+        difference_classification = label - proba_1
 
-        other_class_explanation= 1 if class_explanation == 0 else 0
-        explanations_class_two = model.get_heatmap(text=review
-                                                   , num_class= other_class_explanation
-                                                   , dim=[0, 2]
-                                                   , type_map=type_map)[-1]
-
+        # GradCam part #
+        # TODO: Manage multiclass
+        # Reconstruct the sentence
+        text_index = review.squeeze().numpy()
         word = np.array([vocab_reverse.get(index, "") for index in text_index])
         # if index word is in the list whe dont want, we capture its index
-        if index_nothing != None:
-            index_nothing= np.array([])
+        if index_nothing != None: # generate warning but its ok dude
+            index_nothing = np.array([])
         selected_word_bool = np.in1d(text_index, index_nothing)
         # Get index of word we want
         selected_word_index = np.where(~selected_word_bool)[0]
 
-        # Get the valeu and word from the index
+        # Select interesting words
         selected_word = word[selected_word_index]
-        # Class 0
-        selected_explanation_one = explanations_class_one[selected_word_index]
-        # Class 1
-        selected_explanation_two = explanations_class_two[selected_word_index]
-
-        # Condition words selected by a threshold (enough important word)
-        # Class 0
-        best_word_explanation_index_one = np.where(selected_explanation_one >= seuil)[0]
-        best_word_explanation_one = selected_word[best_word_explanation_index_one]
-        # best_explanation_value = selected_explanation[best_word_explanation_index]
-        # Class 1
-        best_word_explanation_index_two = np.where(selected_explanation_two >= seuil)[0]
-        best_word_explanation_two = selected_word[best_word_explanation_index_two]
-
-        # Sort by the value (descending order)
-        # Class 0
-        sort_per_explanation_index_one = np.argsort(best_word_explanation_one)[::-1]  # [::-1] to get the highest first
-        best_word_explanation_one = best_word_explanation_one[sort_per_explanation_index_one]
-        # Class 1
-        sort_per_explanation_index_two = np.argsort(best_word_explanation_two)[::-1]
-        best_word_explanation_two = best_word_explanation_two[sort_per_explanation_index_two]
-
-        # Model probability for class 1
-        proba_1 = output[0, other_class_explanation].item()
-
-        # Class 0
-        explications_pour_plot_one = {"mots_expli": best_word_explanation_one
-            , "prob": proba_1}
-        # Class 1
-        explications_pour_plot_two= {"mots_expli": best_word_explanation_two
-            , "prob": proba_1}
-
-        # results_one.append([explications_pour_plot_one, label])
-        # results_two.append([explications_pour_plot_two, label])
-
-        # Get review which are really bad classified (if |label - proba_1| > seuil)
-        difference_classification= label - proba_1
-        if np.abs(difference_classification) >= seuil:
-            if difference_classification > 0: # We predict 0 but it was 1
-                # What is interesting in this case, is to understand why we classified this sentence
-                # as a negative one, whereas it's positive. So we compute the GradCam for the class 0
-                results_wrong_one.append([explications_pour_plot_one, label])
-            else: # We predict 1 but it was 0
-                results_wrong_two.append([explications_pour_plot_two, label])
 
         if proba_1 >= 0.5: # We classified the text as a positive review
             # So we save the gradcam for the class 1 (why the model classified it positive)
+            explanations_class_two = model.get_heatmap(text=review
+                                                       , num_class=other_class_explanation
+                                                       , dim=[0, 2]
+                                                       , type_map=type_map)[-1]
+
+            selected_explanation_two = explanations_class_two[selected_word_index]
+
+            best_word_explanation_two = order_tokens_by_importance(heatmap=selected_explanation_two
+                                                                   , tokens=selected_word
+                                                                   , threshold=seuil)
+
+            explications_pour_plot_two = {"mots_expli": best_word_explanation_two
+                , "prob": proba_1}
+
             results_two.append([explications_pour_plot_two, label])
+
+            if np.abs(difference_classification) >= seuil:
+                results_wrong_two.append(results_two[-1])
+
         else: # same but for the class 0
+            explanations_class_one = model.get_heatmap(text=review
+                                                       , num_class=class_explanation
+                                                       , dim=[0, 2]
+                                                       , type_map=type_map)[-1]
+
+            selected_explanation_one = explanations_class_one[selected_word_index]
+
+            best_word_explanation_one= order_tokens_by_importance(heatmap= selected_explanation_one
+                                                                  , tokens= selected_word
+                                                                  , threshold= seuil)
+
+            explications_pour_plot_one = {"mots_expli": best_word_explanation_one
+                , "prob": proba_1}
+
             results_one.append([explications_pour_plot_one, label])
+
+            # If we did a big mistake (here means we predict 1 with a proba near of 1, but in fact, the true label was 0
+            # So we save the result to understand why the model made a such mistake
+            # The idea itsto look at the grad cam for the class the model thought the sentence was
+            # Here, we save the gradcam for the class 1 because the model was really sure about is classification
+            if np.abs(difference_classification) >= seuil:
+                results_wrong_one.append(results_one[-1])
+
 
         i += 1
         if i % 1000 == 0:

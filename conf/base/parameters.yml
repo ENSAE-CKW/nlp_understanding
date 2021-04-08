@@ -32,6 +32,12 @@ cnn_size_batch: 86
 cnn_alphabet: None
       # To delete after testing performance
 cnn_path_to_save_model: "data/06_models/cnn_char_classifier/cnn_char_model/cnn_char_model_pytorch.pt"
+# Interpretability
+cnn_class_explanation: 0
+cnn_type_map: "max"
+cnn_seuil: 0.75
+cnn_index_nothing: None
+
 
 # Logistic BOW
 logistic_bow_max_number_feature: 100

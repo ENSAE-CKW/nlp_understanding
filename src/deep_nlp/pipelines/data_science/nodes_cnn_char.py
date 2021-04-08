@@ -29,6 +29,12 @@
 from deep_nlp.cnncharclassifier import CNNCharClassifier
 from deep_nlp.utils.early_stopping import EarlyStopping
 from deep_nlp.utils.utils import *
+from src.deep_nlp.grad_cam.plot import plot_cm, plot_barplot
+from deep_nlp.grad_cam.utils.letter import rebuild_text, prepare_heatmap, LetterToToken
+from src.deep_nlp.grad_cam.utils.token import order_tokens_by_importance
+from src.deep_nlp.grad_cam.utils import preprocess_before_barplot
+
+
 import torch
 from torch.utils.data import DataLoader
 from torch import optim
@@ -241,52 +247,138 @@ def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
 def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
              , cnn_num_threads: int, model_saved, cnn_feature_num: int, cnn_sequence_len: int
              , cnn_feature_size: int, cnn_kernel_one: int, cnn_kernel_two: int, cnn_stride_one: int
-             , cnn_stride_two: int, cnn_output_linear: int, cnn_num_class: int, cnn_dropout: int):
+             , cnn_stride_two: int, cnn_output_linear: int, cnn_num_class: int, cnn_dropout: int
+             , type_map: str, seuil: float):
 
     corrects, avg_loss, epoch_loss, size = 0, 0, 0, 0
     predictions_all, target_all, probabilities_all= [], [], []
+    results_two, results_one= [], []
+    results_wrong_two, results_wrong_one= [], []
 
-    test_load = DataLoader(test_data, batch_size=cnn_size_batch
-                            , num_workers=cnn_num_threads
-                            , drop_last=True, shuffle=True, pin_memory=True)
+    test_load = DataLoader(test_data, batch_size= 1
+                            , num_workers=cnn_num_threads)
+
+    alphabet = test_data.get_alphabet() + " "
 
     # Call our model
-    kwargs = {"sequence_len": cnn_sequence_len, "feature_num": cnn_feature_num
+    model_parameters = {"sequence_len": cnn_sequence_len, "feature_num": cnn_feature_num
         , "feature_size": cnn_feature_size, "kernel_one": cnn_kernel_one
         , "kernel_two": cnn_kernel_two, "stride_one": cnn_stride_one
         , "stride_two": cnn_stride_two, "output_linear": cnn_output_linear
         , "num_class": cnn_num_class, "dropout": cnn_dropout}
 
-    model = CNNCharClassifier(**kwargs)
+    model = CNNCharClassifier(**model_parameters)
     model = torch.nn.DataParallel(model)
-
     if cnn_cuda_allow:
         model = torch.nn.DataParallel(model).cuda()
-
     model.load_state_dict(model_saved)
 
-    model.eval()
+    state_dict = model.module.module.state_dict()  # delete module to allow cpu loading
 
+    cpu_model = CNNCharClassifier(**model_parameters).cpu()
+    cpu_model.load_state_dict(state_dict)
+
+    cpu_model.eval()
+    del model # Memory my boy is not unlimited
+
+    i = 0
     for batch, data in enumerate(test_load):
         input, target = data
         size += len(target)
-        input = input.cuda()
-        target = target.cuda()
-        input = Variable(input)
-        target = Variable(target)
 
-        with torch.no_grad():
-            logit = model(input)
-            loss = F.nll_loss(logit, target)  # , size_average= False)
+        logit = cpu_model(input)
+        loss = F.nll_loss(logit, target)
 
-            epoch_loss += loss.item()
-            predict = torch.max(logit, 1)[1].view(target.size()).data
-            corrects += (predict == target.data).sum()
+        epoch_loss += loss.item()
+        predict = torch.max(logit, 1)[1].view(target.size()).data
+        corrects += (predict == target.data).sum()
 
-            predictions_all += predict.cpu().numpy().tolist()
-            probabilities_all += torch.exp(logit)[:, 1].cpu().numpy().tolist()
-            print(torch.exp(logit)[:, 1].cpu().numpy())
-            target_all += target.data.cpu().numpy().tolist()
+        predictions_all += predict.detach().cpu().numpy().tolist()
+        probabilities_all += torch.exp(logit)[:, 1].detach().cpu().numpy().tolist()
+        target_all += target.data.detach().cpu().numpy().tolist()
+
+        # Compute GradCam for gloabal interpretability
+        # Proba for class 1
+        proba_1 = torch.exp(logit)[:, 1].detach().cpu().numpy()[0]
+        class_explanation = 0
+        other_class_explanation = 1 if class_explanation == 0 else 0
+        difference_classification = target - proba_1
+
+
+        # Rebuild text
+        rebuild_sentence = rebuild_text(text= input
+                                        , alphabet=alphabet
+                                        , space_index=83
+                                        , sequence_len=cnn_sequence_len)
+
+        if proba_1 >= 0.5: # The model predict 1. We want to understand why. So we compute GradCam for the class 1
+            explanations_class_two = cpu_model.get_heatmap(text= input
+                                                       , num_class=other_class_explanation
+                                                       , dim=[0, 2]
+                                                       , type_map=type_map)[-1]
+
+            # Resize heatmap Brutal method
+            heatmap_match_sentence_size_invert = prepare_heatmap(heatmap= explanations_class_two
+                                                             , text=rebuild_sentence)
+
+            # Transform character level to token one
+            letter_to_token = LetterToToken(text=rebuild_sentence
+                                            , heatmap=heatmap_match_sentence_size_invert)
+
+            results_dict = letter_to_token.transform_letter_to_token(type="tanh")
+            tokens = np.array(results_dict["tokens"])
+            heatmap_token_level = results_dict["heatmap"]
+
+            best_word_explanation_two = order_tokens_by_importance(heatmap= heatmap_token_level
+                                                                   , tokens= tokens
+                                                                   , threshold= seuil)
+
+            explications_pour_plot_two = {"mots_expli": best_word_explanation_two
+                , "prob": proba_1}
+
+            results_two.append([explications_pour_plot_two, target])
+
+            # If we did a big mistake (here means we predict 1 with a proba near of 1, but in fact, the true label was 0
+            # So we save the result to understand why the model made a such mistake
+            # The idea itsto look at the grad cam for the class the model thought the sentence was
+            # Here, we save the gradcam for the class 1 because the model was really sure about is classification
+            if np.abs(difference_classification) >= seuil:
+                results_wrong_two.append(results_two[-1])
+
+        else: # The model classified it as a 0 (negative review)
+            explanations_class_one = cpu_model.get_heatmap(text=input
+                                                           , num_class=class_explanation
+                                                           , dim=[0, 2]
+                                                           , type_map=type_map)[-1]
+
+            # Resize heatmap Brutal method
+            heatmap_match_sentence_size_invert = prepare_heatmap(heatmap=explanations_class_one
+                                                                 , text=rebuild_sentence)
+
+            # Transform character level to token one
+            letter_to_token = LetterToToken(text=rebuild_sentence
+                                            , heatmap=heatmap_match_sentence_size_invert)
+
+            results_dict = letter_to_token.transform_letter_to_token(type="tanh")
+            tokens = np.array(results_dict["tokens"])
+            heatmap_token_level = results_dict["heatmap"]
+
+            best_word_explanation_one = order_tokens_by_importance(heatmap=heatmap_token_level
+                                                                   , tokens=tokens
+                                                                   , threshold=seuil)
+
+            explications_pour_plot_one = {"mots_expli": best_word_explanation_one
+                , "prob": proba_1}
+
+            results_one.append([explications_pour_plot_one, target])
+
+            # If we did a big mistake (here means we predict 1 with a proba near of 1, but in fact, the true label was 0
+            if np.abs(difference_classification) >= seuil:
+                results_wrong_one.append(results_one[-1])
+
+        i += 1
+        if i % 1000 == 0:
+            print(i)
 
     avg_loss = epoch_loss / len(test_load)  # avg loss (batch level)
     accuracy = 100 * corrects / size  # avg acc per obs
@@ -303,26 +395,26 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
     print("Accuracy : {:.5f} | Avg loss : {:.5f} | AUC : {:.5f}".format(accuracy.cpu().numpy().tolist()
                                                                         , avg_loss, auroc))
 
-
     # Confusion matrix
-    data_cm = metrics.confusion_matrix(target_all, predictions_all)
+    plot_cm(target_all, predictions_all, path="data/08_reporting/cnn_char/confusion_matrix.png")
 
-    positif_negatif_dict_map = {1: "positif", 0: "negatif"}
+    # PLot global gradcam interpretability
+    # Global GradCam analysis
+    _, _, _, mots_0_25 = preprocess_before_barplot(results_one)
+    mots_plus_75, _, _, _ = preprocess_before_barplot(results_two)
 
-    df_cm = pd.DataFrame(data_cm, columns=[positif_negatif_dict_map[i] for i in np.unique(target_all)]
-                         , index=[positif_negatif_dict_map[i] for i in np.unique(target_all)])
+    #
+    _, _, _, mots_0_25_wrong = preprocess_before_barplot(results_wrong_one)
+    mots_plus_75_wrong, _, _, _ = preprocess_before_barplot(results_wrong_two)
 
-    df_cm.index.name = 'Actual'
-    df_cm.columns.name = 'Predicted'
+    plot_barplot(mots_plus_75, path="data/08_reporting/cnn_char/barplot_75.png"
+                 , title="Explication globale pour la classe 1 pour les plus grosses probabilités (>= 0.75)")
+    plot_barplot(mots_0_25, path="data/08_reporting/cnn_char/barplot_25.png"
+                 , title="Explication globale pour la classe 0 pour les plus faibles probabilités (<= 0.25)")
+    plot_barplot(mots_plus_75_wrong, path="data/08_reporting/cnn_char/barplot_75_wrong.png"
+                 , title="Explication globale pour la classe 1 pour les plus grosses erreurs de prédictions")
+    plot_barplot(mots_0_25_wrong, path="data/08_reporting/cnn_char/barplot_25_wrong.png"
+                 , title="Explication globale pour la classe 0 pour les plus grosses erreurs de prédictions")
 
-    plt.figure(figsize=(7, 6))
-
-    sns.heatmap(df_cm, cmap="Blues", annot=True, fmt='g')
-
-    plt.savefig("data/08_reporting/cnn_char/confusion_matrix.png")
-    log_artifact("data/08_reporting/cnn_char/confusion_matrix.png")
-
-    plt.show()
-
-    pass
+pass
 
