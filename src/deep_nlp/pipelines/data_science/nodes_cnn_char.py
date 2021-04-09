@@ -31,7 +31,7 @@ from deep_nlp.utils.early_stopping import EarlyStopping
 from deep_nlp.utils.utils import *
 from src.deep_nlp.grad_cam.plot import plot_cm, plot_barplot
 from deep_nlp.grad_cam.utils.letter import rebuild_text, prepare_heatmap, LetterToToken
-from src.deep_nlp.grad_cam.utils.token import order_tokens_by_importance
+from src.deep_nlp.grad_cam.utils.token import order_tokens_by_importance, find_ngram
 from src.deep_nlp.grad_cam.utils import preprocess_before_barplot
 
 
@@ -254,6 +254,7 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
     predictions_all, target_all, probabilities_all= [], [], []
     results_two, results_one= [], []
     results_wrong_two, results_wrong_one= [], []
+    bigram_token_two, bigram_token_one= [], []
 
     test_load = DataLoader(test_data, batch_size= 1
                             , num_workers=cnn_num_threads)
@@ -326,8 +327,26 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
                                             , heatmap=heatmap_match_sentence_size_invert)
 
             results_dict = letter_to_token.transform_letter_to_token(type= type_agg)
-            tokens = np.array(results_dict["tokens"])
+            tokens = np.array(results_dict["cleaned_tokens"])
             heatmap_token_level = results_dict["heatmap"]
+
+            # Clean list and heatmap to take off "" element in tokens (only if cleaned_tokens)
+            tokens_good_index = np.where(tokens != "")[0]
+            if tokens.shape[0] > 1:  # if composed of more than 1 token
+                # print(1)
+                # print(tokens_good_index)
+                tokens = tokens[tokens_good_index]
+                heatmap_token_level = heatmap_token_level[tokens_good_index]
+            else:
+                continue
+            # Find bigram pairwise index
+            best_word_explanation_index_two = np.where(heatmap_token_level >= seuil)[0]
+            bigram_index = find_ngram(best_word_explanation_index_two, occurence=2)
+
+            # Generate all important bigram
+            bigram_token_two += [" ".join(t) for t in
+                                 [tokens[i].tolist() for i in bigram_index]
+                                 ]
 
             best_word_explanation_two = order_tokens_by_importance(heatmap= heatmap_token_level
                                                                    , tokens= tokens
@@ -360,8 +379,27 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
                                             , heatmap=heatmap_match_sentence_size_invert)
 
             results_dict = letter_to_token.transform_letter_to_token(type= type_agg)
-            tokens = np.array(results_dict["tokens"])
+            tokens = np.array(results_dict["cleaned_tokens"])
             heatmap_token_level = results_dict["heatmap"]
+
+            # Clean list and heatmap to take off "" element in tokens (only if cleaned_tokens)
+            tokens_good_index = np.where(tokens != "")[0]
+
+            if tokens.shape[0] > 1:  # if composed of more than 1 token
+                # print(0)
+                # print(tokens_good_index)
+                tokens = tokens[tokens_good_index]
+                heatmap_token_level = heatmap_token_level[tokens_good_index]
+            else: # If cleaned tokens, ignore it
+                continue
+
+            # Find bigram pairwise index
+            best_word_explanation_index_one = np.where(heatmap_token_level >= seuil)[0]
+            bigram_index = find_ngram(best_word_explanation_index_one, occurence=2)
+            # Generate all important bigram
+            bigram_token_one += [" ".join(t) for t in
+                                 [tokens[i].tolist() for i in bigram_index]
+                                 ]
 
             best_word_explanation_one = order_tokens_by_importance(heatmap=heatmap_token_level
                                                                    , tokens=tokens
@@ -416,5 +454,10 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
     plot_barplot(mots_0_25_wrong, path="data/08_reporting/cnn_char/barplot_25_wrong.png"
                  , title="Explication globale pour la classe 0 pour les plus grosses erreurs de prédictions")
 
+    # COmpute bigram barplot
+    plot_barplot(bigram_token_one, path="data/08_reporting/cnn_char/barplot_bigram_0.png"
+                 , title="Bigram pour la classe 0")
+    plot_barplot(bigram_token_two, path="data/08_reporting/cnn_char/barplot_bigram_1.png"
+                 , title="Bigram pour la classe 1")
 pass
 

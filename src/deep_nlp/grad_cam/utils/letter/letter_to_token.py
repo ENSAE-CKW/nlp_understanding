@@ -76,29 +76,9 @@ class LetterToToken():
             raise RuntimeError
 
     def transform_letter_to_token(self, type= "mean"):
+
         step_index = 0
-
         for i in self._index_sentence_token:
-            # if i[0] == 0:
-            #     # If the first character is a token separator
-            #     self.get_token.append(self.text[0:i[1]])
-            #     value = self._compute_heatmap_pooling(self.heatmap[0:i[1]], type= type)
-            #     self.get_heatmap.append(value)
-            #
-            #     self.get_extended_heatmap = implemente_multiple_time(
-            #         base_list= self.get_extended_heatmap
-            #         , value= value
-            #         , times= i[1] + 1
-            #     )
-            #
-            #     step_index = i[1]
-
-            # # Append tokens
-            # get_token.append(text_test[step_index:i[0]])
-            # get_heatmap.append(np.mean(heatmap_test[step_index:i[0]]))
-            # # Append token separators
-            # get_token.append(text_test[i[0]:i[1]])
-            # get_heatmap.append(np.mean(heatmap_test[i[0]:i[1]]))
 
             # Append tokens and token separators
             self.get_token.append(self.text[step_index:i[1]])

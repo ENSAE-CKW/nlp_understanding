@@ -1,9 +1,25 @@
 import numpy as np
 from itertools import groupby
 from operator import itemgetter
+from typing import List
 
 
-def find_ngram(x: np.ndarray, occurence: int= 2): # add token
+def find_ngram(x: np.ndarray, occurence: int= 2) -> List[int]: # add token
+    """
+    Build pairwise of size occurence of conssecutive value.
+    :param x:
+    :type x: ndarray
+    :param occurence: number of succesive occurence
+    :type occurence: int
+    :return:
+    :rtype:
+
+    Example:
+    --------
+    >>> a = np.([1, 2, 5, 7, 8, 10])
+    >>> find_ngram(a)
+    [[1, 2], [5, 7], [7, 8]]
+    """
     assert occurence != 0
 
     save_group_index= []
@@ -26,7 +42,6 @@ def find_ngram(x: np.ndarray, occurence: int= 2): # add token
             save_group_index += group_of_ngram
 
         elif (num_occurence % occurence != 0) & (num_occurence > occurence):
-            # group_of_ngram= list(map(list, zip(index_ngram, index_ngram[1:] + index_ngram[:1])))[:-1]
             group_of_ngram= [[index_ngram[i+j] for j in range(occurence)]
                              for i in range(num_occurence - occurence + 1)]
 

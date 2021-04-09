@@ -13,7 +13,7 @@ def plot_barplot(list_of_token: List[str], num_to_display: int= 20, title: str= 
     ax.bar(w.keys(), w.values(), figure= None)
 
     ax.set_title(title)
-    ax.xaxis.set_tick_params(rotation= 70)
+    ax.xaxis.set_tick_params(rotation= 80)
 
     plt.tight_layout()
     plt.savefig(path, bbox_inches = "tight")

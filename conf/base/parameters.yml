@@ -34,9 +34,9 @@ cnn_alphabet: None
 cnn_path_to_save_model: "data/06_models/cnn_char_classifier/cnn_char_model/cnn_char_model_pytorch.pt"
 # Interpretability
 cnn_class_explanation: 0
-cnn_type_map: "normalized"
+cnn_type_map: "max"
 cnn_seuil: 0.75
-cnn_type_agg: "logit"
+cnn_type_agg: "tanh"
 
 
 # Logistic BOW

@@ -8,11 +8,12 @@ from torch.utils.data import TensorDataset
 from src.deep_nlp.embed_cnn.embcnnmodel_gradcam import classifier3F
 from src.deep_nlp.grad_cam.plot import plot_cm, plot_barplot
 from src.deep_nlp.grad_cam.utils import preprocess_before_barplot
-from src.deep_nlp.grad_cam.utils.token import order_tokens_by_importance
+from src.deep_nlp.grad_cam.utils.token import order_tokens_by_importance, find_ngram
 
 import numpy as np
 import sklearn.metrics as metrics
 import copy
+from collections import Counter
 
 
 def binary_accuracy(preds, y):
@@ -191,6 +192,7 @@ def cnn_embed_test(model_dict, iterator
     corrects, size= 0, 0
     results_one, results_two = [], []
     results_wrong_one, results_wrong_two= [], []
+    bigram_token_one, bigram_token_two= [], []
 
     # Create a dict with all vocab used
     vocab_reverse= {y:x for x,y in vocab.items()}
@@ -241,6 +243,14 @@ def cnn_embed_test(model_dict, iterator
 
             selected_explanation_two = explanations_class_two[selected_word_index]
 
+            # Find bigram pairwise index
+            best_word_explanation_index_two = np.where(explanations_class_two >= seuil)[0]
+            bigram_index = find_ngram(best_word_explanation_index_two, occurence=2)
+            # Generate all important bigram
+            bigram_token_two += [" ".join(t) for t in
+                                 [selected_word[i].tolist() for i in bigram_index]
+                                 ]
+
             best_word_explanation_two = order_tokens_by_importance(heatmap=selected_explanation_two
                                                                    , tokens=selected_word
                                                                    , threshold=seuil)
@@ -261,6 +271,15 @@ def cnn_embed_test(model_dict, iterator
 
             selected_explanation_one = explanations_class_one[selected_word_index]
 
+            # Find bigram pairwise index
+            best_word_explanation_index_one = np.where(explanations_class_one >= seuil)[0]
+            bigram_index = find_ngram(best_word_explanation_index_one, occurence=2)
+
+            # Generate all important bigram
+            bigram_token_one += [" ".join(t) for t in
+                                 [selected_word[i].tolist() for i in bigram_index]
+                                 ]
+
             best_word_explanation_one= order_tokens_by_importance(heatmap= selected_explanation_one
                                                                   , tokens= selected_word
                                                                   , threshold= seuil)
@@ -276,7 +295,6 @@ def cnn_embed_test(model_dict, iterator
             # Here, we save the gradcam for the class 1 because the model was really sure about is classification
             if np.abs(difference_classification) >= seuil:
                 results_wrong_one.append(results_one[-1])
-
 
         i += 1
         if i % 1000 == 0:
@@ -309,5 +327,11 @@ def cnn_embed_test(model_dict, iterator
                  , title="Explication globale pour la classe 1 pour les plus grosses erreurs de prédictions")
     plot_barplot(mots_0_25_wrong, path="data/08_reporting/embed_cnn/barplot_25_wrong.png"
                  , title="Explication globale pour la classe 0 pour les plus grosses erreurs de prédictions")
+
+    # COmpute bigram barplot
+    plot_barplot(bigram_token_one, path="data/08_reporting/embed_cnn/barplot_bigram_0.png"
+                 , title="Bigram pour la classe 0")
+    plot_barplot(bigram_token_two, path="data/08_reporting/embed_cnn/barplot_bigram_1.png"
+                 , title="Bigram pour la classe 1")
 
     pass
