@@ -33,11 +33,13 @@ class LetterToToken():
     def _clean_tokens(self, token: str):
         return re.sub(self._pattern_token_split, "", token)
 
-    def _strip_accents_and_lowercase(self, token: str) -> str:
-        cleaned_token= self._clean_tokens(token)
-        lower_cleaned_token= ''.join(c for c in unicodedata.normalize('NFD', cleaned_token)
-                            if unicodedata.category(c) != 'Mn').lower()
-        if lower_cleaned_token not in self.french_stopwords:
+    def _strip_accents_and_lowercase(self, token: str, all_stop_word=False) -> str:
+        if all_stop_word:
+            french_stopwords = tuple([self._clean_tokens(word) for word in stopwords.words('french')])
+        else:
+            french_stopwords = tuple([])
+        lower_cleaned_token = self._clean_tokens(token)
+        if lower_cleaned_token not in french_stopwords:
             return lower_cleaned_token
         else:
             return ""
