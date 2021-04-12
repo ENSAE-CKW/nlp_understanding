@@ -11,9 +11,14 @@ import unicodedata
 import re
 
 #TODO : add types to args in function
-def creation_nlp():
+def creation_nlp(all_stop_word = False):
     subprocess.run("python -m spacy download fr_core_news_sm")
-    return spacy.load("fr_core_news_sm",  disable=["tagger", "parser","ner"])
+    nlp = spacy.load("fr_core_news_sm",  disable=["tagger", "parser","ner"])
+    if not all_stop_word:
+        nlp.Defaults.stop_words -= {"apres", "assez", "importe", "moindres", "moins", "n'", "n’", "ne", "neanmoins",
+                                    "ni",
+                                    "nombreuses", "nul", "sans", "sauf", "stop", "suffisant", "tellement", "pas"}
+    return nlp
 
 
 def clean_tokens(token: str, pattern= r'[\s\.\,\:\;\"\'\(\)\[\]\&\!\?\/\\]+'):
@@ -21,9 +26,11 @@ def clean_tokens(token: str, pattern= r'[\s\.\,\:\;\"\'\(\)\[\]\&\!\?\/\\]+'):
     return ''.join(c for c in unicodedata.normalize('NFD', cleaned_token)
                         if unicodedata.category(c) != 'Mn').lower()
 
-
-french_stopwords = tuple([clean_tokens(word) for word in stopwords.words('french')])
-def strip_accents_and_lowercase(token: str, french_stopwords= french_stopwords) -> str:
+def strip_accents_and_lowercase(token: str, french_stopwords= french_stopwords, all_stop_word= False) -> str:
+    if all_stop_word:
+        french_stopwords = tuple([clean_tokens(word) for word in stopwords.words('french')])
+    else:
+        french_stopwords = tuple([])
     lower_cleaned_token= clean_tokens(token)
     if lower_cleaned_token not in french_stopwords:
         return lower_cleaned_token
@@ -36,7 +43,7 @@ def last_clean(text: str) -> str:
     return " ".join([m.group(0) for m in matches])
 
 def token_sentence(sentence: str, nlp: spacy.language.Language) -> List[str]:
-    return [X.lemma_ for X in nlp(sentence) if X.is_alpha & (not (X.is_stop))]
+    return [str(X.lemma_) for X in nlp(sentence) if X.is_alpha & (not (X.is_stop))]
 
 def token_df(df: pd.DataFrame, col_name: str,nlp : spacy.language.Language) -> pd.DataFrame:
     # Clean token mano
