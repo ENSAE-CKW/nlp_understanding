@@ -26,7 +26,7 @@ def clean_tokens(token: str, pattern= r'[\s\.\,\:\;\"\'\(\)\[\]\&\!\?\/\\]+'):
     return ''.join(c for c in unicodedata.normalize('NFD', cleaned_token)
                         if unicodedata.category(c) != 'Mn').lower()
 
-def strip_accents_and_lowercase(token: str, french_stopwords= french_stopwords, all_stop_word= False) -> str:
+def strip_accents_and_lowercase(token: str, all_stop_word= False) -> str:
     if all_stop_word:
         french_stopwords = tuple([clean_tokens(word) for word in stopwords.words('french')])
     else:
