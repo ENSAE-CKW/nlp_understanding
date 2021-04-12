@@ -187,3 +187,7 @@ final_test_dataset:
 embed_matrix:
   type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
   filepath: data/02_intermediate/bilstm_cnn/embed_matrix.pkl
+
+vocab_bilstm:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/04_feature/voc_bilstm.pkl

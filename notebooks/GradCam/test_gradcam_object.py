@@ -74,7 +74,7 @@ heatmap_test= heatmap_test[0]
 alphabet= test_data.get_alphabet()+" "
 rebuild_sentence= rebuild_text(text= test_sentence[0]
                                  , alphabet= alphabet
-                                 , space_index= 83
+                                 , space_index= len(alphabet) - 1 #83 # ajout de +4 si pas fait
                                  , sequence_len= cnn_sequence_len)
 
 # Resize heatmap Brutal method

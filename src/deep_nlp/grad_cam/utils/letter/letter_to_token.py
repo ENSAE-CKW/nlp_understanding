@@ -16,6 +16,7 @@ class LetterToToken():
         self.text= text
         self.heatmap= heatmap
         self._index_sentence_token= self._get_index_split_pattern(self.text)
+        # TODO : take off negative stopwords like "pas", "ne" etc.
         self.french_stopwords = stopwords.words('french')
         self.get_token = []
         self.get_token_clean= []

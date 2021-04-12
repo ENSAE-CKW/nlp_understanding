@@ -15,7 +15,7 @@ class charToTensor(Dataset):
 
         # Alphabet definition
         if vocabulary is None:
-            self.all_letters= string.ascii_letters + ".,;:'/?!()@&=#0123456789\"éèêà€$"
+            self.all_letters= string.ascii_letters + "œ.,;:'/?!()@&=#0123456789\"éèëêàçù€$"
         else:
             self.all_letters= vocabulary
 

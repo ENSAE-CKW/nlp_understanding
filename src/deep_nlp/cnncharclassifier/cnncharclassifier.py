@@ -102,7 +102,6 @@ class CNNCharClassifier(GradCamBaseModel):
 
     def forward(self, x):
         x = self.get_activations(x)
-        # x = self.conv1_relu(x)
 
         if x.requires_grad:
             h= self.register_hook(x)
@@ -112,7 +111,7 @@ class CNNCharClassifier(GradCamBaseModel):
         x = self.after_conv(x)
 
         x = x.view(x.size(0), -1)
-        # TODO: add classifier step into self.after_conv pipeline
+        # Can't incorporate FC part into after_conv because of this x.view between conv and FC
         x= self.fc1(x)
         x= self.fc2(x)
         x= self.fc3(x)

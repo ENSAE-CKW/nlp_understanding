@@ -2,7 +2,8 @@ import torch
 import sklearn.metrics as metrics
 import torch.optim as optim
 import torch.nn as nn
-from deep_nlp.bilstm_cnn import BilstmCnn
+# from deep_nlp.bilstm_cnn import BilstmCnn
+from deep_nlp.bilstm_cnn.bilstmcnn_gradcam import BilstmCnn
 from deep_nlp.utils.early_stopping import EarlyStopping
 from torch.utils.data import TensorDataset, DataLoader
 from mlflow import log_metric
@@ -32,7 +33,7 @@ def train(cuda_allow, model, train_load, optimizer, criterion):
 
         outputs = model(reviews)
 
-        loss = criterion(outputs, labels)
+        loss = criterion(outputs[:,1], labels.float())
         epoch_loss += loss.item()
         loss.backward()
 
@@ -56,7 +57,7 @@ def evaluate(cuda_allow, model, valid_load, criterion):
                 valid_labels = labels.to(torch.int64)
 
             outputs = model(valid_reviews)
-            loss_valid = criterion(outputs, valid_labels)
+            loss_valid = criterion(outputs[:,1], valid_labels.float())
 
             epoch_loss += loss_valid.item()
 
@@ -94,15 +95,18 @@ def prepare_batch(train_data, valid_data, test_data, batch_size):
                                                shuffle=False)
 
     test_load = torch.utils.data.DataLoader(dataset=test_data,
-                                              batch_size=batch_size,
+                                              batch_size= 1,
                                               shuffle=False)
 
     return train_load, valid_load, test_load
 
-def run_train(cuda_allow, train_load, valid_load, num_epochs, patience, learning_rate, embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size, kernel_size, dropout_rate):
+def run_train(cuda_allow, train_load, valid_load, num_epochs, patience, learning_rate, embedding_matrix
+              , sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size, kernel_size
+              , dropout_rate, padded):
 
-    model = BilstmCnn(embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size, kernel_size, dropout_rate)
-    criterion = nn.CrossEntropyLoss()
+    model = BilstmCnn(embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size
+                      , kernel_size, dropout_rate, padded)
+    criterion = nn.BCELoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
     es = EarlyStopping(patience=patience)
 
@@ -132,7 +136,8 @@ def run_train(cuda_allow, train_load, valid_load, num_epochs, patience, learning
         if valid_results["loss"] < best_valid_loss:
             best_epoch = epoch+1
 
-            model_clone = BilstmCnn(embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size, kernel_size, dropout_rate)
+            model_clone = BilstmCnn(embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim
+                                    , output_dim, feature_size, kernel_size, dropout_rate, padded)
 
             if cuda_allow:
                 model_clone = torch.nn.DataParallel(model_clone).cuda()
@@ -173,40 +178,68 @@ def run_train(cuda_allow, train_load, valid_load, num_epochs, patience, learning
 def save_model(model):
     return model.state_dict()
 
-def bilstm_test(model, cuda_allow, test_load) :
 
-    model.eval()
+def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim
+                , feature_size, kernel_size, dropout_rate, padded, test_load, model_saved, vocab, index_nothing):
+
+    if index_nothing is None:
+        index_nothing= np.array([144213])
+
+    model = BilstmCnn(embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size
+                      , kernel_size, dropout_rate, padded)
 
     if cuda_allow:
         model = torch.nn.DataParallel(model).cuda()
     else:
         model = torch.nn.DataParallel(model)
 
+    model.load_state_dict(model_saved)
+
+    # Transform the GPU model into CPU one
+    state_dict = model.module.state_dict()
+    #
+    cpu_model = BilstmCnn(embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size
+                      , kernel_size, dropout_rate, padded)
+    cpu_model.load_state_dict(state_dict)
+
     criterion = nn.CrossEntropyLoss()
     correct, avg_loss, epoch_loss, total = 0, 0, 0, 0
     predictions_all, target_all, probabilities_all = [], [], []
 
-    with torch.no_grad():
-        for test_reviews, test_labels in test_load:
-            if cuda_allow:
-                test_reviews = test_reviews.to(torch.int64).cuda()
-                test_labels = test_labels.to(torch.int64).cuda()
-            else:
-                test_reviews = test_reviews.to(torch.int64)
-                test_labels = test_labels.to(torch.int64)
+    # Create a dict with all vocab used
+    vocab_reverse = {y: x for x, y in vocab.items()}
 
-            total += test_labels.size(0)
+    cpu_model.eval()
+    for test_reviews, test_labels in test_load:
 
-            outputs = model(test_reviews)
-            loss = criterion(outputs, test_labels)  # , size_average= False)
+        test_reviews = test_reviews.to(torch.int64)
+        test_labels = test_labels.to(torch.int64)
 
-            epoch_loss += loss.item()
-            _, predicted = torch.max(outputs.data, 1)
-            correct += (predicted == test_labels).sum()
+        total += test_labels.size(0)
 
-            predictions_all += predicted.cpu().numpy().tolist()
-            probabilities_all += torch.exp(outputs)[:, 1].cpu().numpy().tolist()
-            target_all += test_labels.data.cpu().numpy().tolist()
+        outputs = cpu_model(test_reviews)
+        loss = criterion(outputs[:,1], test_labels.float())  # , size_average= False)
+
+        epoch_loss += loss.item()
+        _, predicted = torch.max(outputs.data, 1)
+        correct += (predicted == test_labels).sum()
+
+        predictions_all += predicted.detach().cpu().numpy().tolist()
+        probabilities_all += torch.exp(outputs)[:, 1].detach().cpu().numpy().tolist()
+        target_all += test_labels.data.detach().cpu().numpy().tolist()
+
+        # Compute GradCam for gloabal interpretability
+        # Proba for class 1
+        proba_1 = torch.exp(outputs)[:, 1].detach().cpu().numpy()[0]
+        class_explanation = 0
+        other_class_explanation = 1 if class_explanation == 0 else 0
+        difference_classification = test_labels - proba_1
+
+        print(proba_1)
+        print(difference_classification[0])
+        print(outputs)
+
+        break
 
     avg_loss = epoch_loss / len(test_load)
     accuracy = 100 * correct / total

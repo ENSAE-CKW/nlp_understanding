@@ -34,22 +34,17 @@ from deep_nlp.grad_cam.utils.letter import rebuild_text, prepare_heatmap, Letter
 from src.deep_nlp.grad_cam.utils.token import order_tokens_by_importance, find_ngram
 from src.deep_nlp.grad_cam.utils import preprocess_before_barplot
 
-
 import torch
 from torch.utils.data import DataLoader
 from torch import optim
 from torch.autograd import Variable
 import torch.nn.functional as F
 import sklearn.metrics as metrics
-from mlflow import log_metric, log_artifact
-import matplotlib.pyplot as plt
+from mlflow import log_metric
 import seaborn as sns
 sns.set()
-import pandas as pd
 import numpy as np
 import time
-import copy
-
 
 def train_model(model, optimizer, train_load, epoch
                 , cnn_cuda_allow, cnn_clip, cnn_freq_verbose, cnn_size_batch):
@@ -256,6 +251,7 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
     results_wrong_two, results_wrong_one= [], []
     bigram_token_two, bigram_token_one= [], []
 
+
     test_load = DataLoader(test_data, batch_size= 1
                             , num_workers=cnn_num_threads)
 
@@ -269,12 +265,15 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
         , "num_class": cnn_num_class, "dropout": cnn_dropout}
 
     model = CNNCharClassifier(**model_parameters)
-    model = torch.nn.DataParallel(model)
+
     if cnn_cuda_allow:
         model = torch.nn.DataParallel(model).cuda()
+    else:
+        model = torch.nn.DataParallel(model)
+
     model.load_state_dict(model_saved)
 
-    state_dict = model.module.module.state_dict()  # delete module to allow cpu loading
+    state_dict = model.module.state_dict()  # delete module to allow cpu loading
 
     cpu_model = CNNCharClassifier(**model_parameters).cpu()
     cpu_model.load_state_dict(state_dict)
@@ -309,7 +308,7 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
         # Rebuild text
         rebuild_sentence = rebuild_text(text= input
                                         , alphabet=alphabet
-                                        , space_index=83
+                                        , space_index= len(alphabet) - 1
                                         , sequence_len=cnn_sequence_len)
 
         if proba_1 >= 0.5: # The model predict 1. We want to understand why. So we compute GradCam for the class 1
@@ -318,17 +317,9 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
                                                        , dim=[0, 2]
                                                        , type_map=type_map)[-1]
 
-            # Resize heatmap Brutal method
-            heatmap_match_sentence_size_invert = prepare_heatmap(heatmap= explanations_class_two
-                                                             , text=rebuild_sentence)
-
-            # Transform character level to token one
-            letter_to_token = LetterToToken(text=rebuild_sentence
-                                            , heatmap=heatmap_match_sentence_size_invert)
-
-            results_dict = letter_to_token.transform_letter_to_token(type= type_agg)
-            tokens = np.array(results_dict["cleaned_tokens"])
-            heatmap_token_level = results_dict["heatmap"]
+            heatmap_token_level, tokens = compute_heatmap_token_level(heatmap=explanations_class_two
+                                                                      , sentence= rebuild_sentence
+                                                                      , type_agg=type_agg)
 
             # Clean list and heatmap to take off "" element in tokens (only if cleaned_tokens)
             tokens_good_index = np.where(tokens != "")[0]
@@ -357,7 +348,8 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
 
             results_two.append([explications_pour_plot_two, target])
 
-            # If we did a big mistake (here means we predict 1 with a proba near of 1, but in fact, the true label was 0
+            # If we did a big mistake (here means we predict 1 with a proba near of 1, but in fact, the true
+            # label was 0
             # So we save the result to understand why the model made a such mistake
             # The idea itsto look at the grad cam for the class the model thought the sentence was
             # Here, we save the gradcam for the class 1 because the model was really sure about is classification
@@ -365,22 +357,15 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
                 results_wrong_two.append(results_two[-1])
 
         else: # The model classified it as a 0 (negative review)
+
             explanations_class_one = cpu_model.get_heatmap(text=input
                                                            , num_class=class_explanation
                                                            , dim=[0, 2]
                                                            , type_map=type_map)[-1]
 
-            # Resize heatmap Brutal method
-            heatmap_match_sentence_size_invert = prepare_heatmap(heatmap=explanations_class_one
-                                                                 , text=rebuild_sentence)
-
-            # Transform character level to token one
-            letter_to_token = LetterToToken(text=rebuild_sentence
-                                            , heatmap=heatmap_match_sentence_size_invert)
-
-            results_dict = letter_to_token.transform_letter_to_token(type= type_agg)
-            tokens = np.array(results_dict["cleaned_tokens"])
-            heatmap_token_level = results_dict["heatmap"]
+            heatmap_token_level, tokens= compute_heatmap_token_level(heatmap= explanations_class_one
+                                                                     , sentence= rebuild_sentence
+                                                                     , type_agg= type_agg)
 
             # Clean list and heatmap to take off "" element in tokens (only if cleaned_tokens)
             tokens_good_index = np.where(tokens != "")[0]
@@ -410,7 +395,8 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
 
             results_one.append([explications_pour_plot_one, target])
 
-            # If we did a big mistake (here means we predict 1 with a proba near of 1, but in fact, the true label was 0
+            # If we did a big mistake (here means we predict 1 with a proba near of 1, but in fact, the true
+            # label was 0
             if np.abs(difference_classification) >= seuil:
                 results_wrong_one.append(results_one[-1])
 
@@ -461,3 +447,18 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
                  , title="Bigram pour la classe 1")
 pass
 
+
+def compute_heatmap_token_level(heatmap, sentence, type_agg):
+    # Resize heatmap Brutal method
+    heatmap_match_sentence_size_invert = prepare_heatmap(heatmap=heatmap
+                                                         , text=sentence)
+
+    # Transform character level to token one
+    letter_to_token = LetterToToken(text=sentence
+                                    , heatmap=heatmap_match_sentence_size_invert)
+
+    results_dict = letter_to_token.transform_letter_to_token(type=type_agg)
+    tokens = np.array(results_dict["cleaned_tokens"])
+    heatmap_token_level = results_dict["heatmap"]
+
+    return heatmap_token_level, tokens

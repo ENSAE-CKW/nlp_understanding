@@ -7,7 +7,7 @@
 
 # CNN Character Parameters :
 # Model parameters
-cnn_feature_num: 83
+cnn_feature_num: 87 # 83
 cnn_feature_size: 256
 cnn_kernel_one: 7 # comme khaled couche de conv
 cnn_kernel_two: 3
@@ -28,10 +28,8 @@ cnn_patience: 3
 cnn_lr: 0.0001
 cnn_num_epochs: 50
 cnn_size_batch: 86
-  # Others
+# Others
 cnn_alphabet: None
-      # To delete after testing performance
-cnn_path_to_save_model: "data/06_models/cnn_char_classifier/cnn_char_model/cnn_char_model_pytorch.pt"
 # Interpretability
 cnn_class_explanation: 0
 cnn_type_map: "max"
@@ -67,7 +65,6 @@ embcnn_seuil: 0.75
 embcnn_index_nothing: None
 
 #BiLSTM + CNN
-
 bilstm_num_epochs : 50
 bilstm_batch_size: 32
 bilstm_patience : 5
@@ -80,6 +77,9 @@ bilstm_output_dim : 2
 bilstm_kernel_size : 3
 bilstm_dropout_rate : 0.5
 word2vec_path: "data/06_models/word2vec/frWac_non_lem_no_postag_no_phrase_200_cbow_cut100.bin"
+bilstm_padded: True
+
+bilstm_index_nothing: None
 
 # BERT + CNN
 bertcnn_bert_path: "camembert/camembert-base"
@@ -104,3 +104,4 @@ bertcnn_patience: 5
 bertcnn_lr: 0.0001
 bertcnn_num_epochs: 50
 bertcnn_size_batch: 86
+

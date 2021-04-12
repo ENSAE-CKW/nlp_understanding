@@ -2,7 +2,8 @@ import torch.nn as nn
 import torch
 
 class BilstmCnn(nn.Module):
-    def __init__(self,  embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size, kernel_size=3, dropout_rate=0.5):
+    def __init__(self,  embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim, feature_size
+                 , kernel_size, dropout_rate, padded):
         super(BilstmCnn, self).__init__()
 
         self.mp_kernel_size = 2
