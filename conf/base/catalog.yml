@@ -132,7 +132,7 @@ word_ind_dict:
   type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
   filepath: data/04_feature/voc.pkl
 
-test_batch:
+test_batch_embed:
   type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
   filepath: data/02_intermediate/test_iterator_cnn_embed.pkl
 
@@ -191,3 +191,7 @@ embed_matrix:
 vocab_bilstm:
   type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
   filepath: data/04_feature/voc_bilstm.pkl
+
+test_batch_bilstm:
+  type: kedro.extras.datasets.pickle.pickle_dataset.PickleDataSet
+  filepath: data/02_intermediate/test_iterator_cnn_bilstm.pkl
