@@ -41,11 +41,12 @@ def create_embed_cnn_pipeline_test(**kwargs):
         [
             node(
                 func= cnn_embed_test
-                , inputs= ["embed_cnn_model_for_save", "test_batch"
+                , inputs= ["embed_cnn_model_for_save", "test_batch_embed"
                     , "embed_for_torch","params:sentence_size","params:embcnn_nb_filtre"
                     , "params:embcnn_type_filtre","params:embcnn_nb_output","params:embcnn_dropout"
                     , "params:embcnn_padded", "word_ind_dict", "params:embcnn_class_explanation"
-                    , "params:embcnn_type_map", "params:embcnn_seuil", "params:embcnn_index_nothing"]
+                    , "params:embcnn_type_map", "params:embcnn_seuil", "params:embcnn_index_nothing"
+                    , "params:embcnn_heatmap"]
                 , outputs= None
                 , tags= ["embed_cnn_test", "test"]
             )

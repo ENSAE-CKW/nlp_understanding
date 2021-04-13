@@ -63,6 +63,7 @@ embcnn_class_explanation: 0
 embcnn_type_map: "max"
 embcnn_seuil: 0.75
 embcnn_index_nothing: None
+embcnn_heatmap: -1
 
 #BiLSTM + CNN
 bilstm_num_epochs : 50
@@ -80,6 +81,8 @@ word2vec_path: "data/06_models/word2vec/frWac_non_lem_no_postag_no_phrase_200_cb
 bilstm_padded: True
 
 bilstm_index_nothing: None
+bilstm_type_map: "max"
+bilstm_seuil: 0.75
 
 # BERT + CNN
 bertcnn_bert_path: "camembert/camembert-base"

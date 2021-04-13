@@ -9,13 +9,13 @@ def create_bilstm_cnn_pipeline_ds(**kwargs):
         [   node(
                 func = prepare_batch,
                 inputs = ["final_train_dataset", "final_valid_dataset", "final_test_dataset", "params:bilstm_batch_size"],
-                outputs = ["train_batch", "valid_batch", "test_batch"],
+                outputs = ["train_batch_bilstm", "valid_batch_bilstm", "test_batch_bilstm"],
                 tags=["bilstmcnn", "training", "batch"],
                 name = "batch preparation"
             ),
             node(
                 func = run_train,
-                inputs = ["params:cnn_cuda_allow", "train_batch", "valid_batch", "params:bilstm_num_epochs"
+                inputs = ["params:cnn_cuda_allow", "train_batch_bilstm", "valid_batch_bilstm", "params:bilstm_num_epochs"
                     , "params:bilstm_patience", "params:bilstm_lr", "embed_matrix", "params:sentence_size"
                     , "params:bilstm_input_dim", "params:bilstm_hidden_dim", "params:bilstm_layer_dim"
                     , "params:bilstm_output_dim", "params:bilstm_feature_size", "params:bilstm_kernel_size"

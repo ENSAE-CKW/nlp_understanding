@@ -17,13 +17,13 @@ def create_embed_cnn_pipeline_ds(**kwargs):
             node(
                 func = creation_batch,
                 inputs = ["allocine_train_inter", "allocine_valid_inter","allocine_test_inter","params:device","params:batch_size"],
-                outputs = ["train_batch", "valid_batch", "test_batch"],
+                outputs = ["train_batch_embed", "valid_batch_embed", "test_batch_embed"],
                 tags=["embed_cnn", "training", "batch"],
                 name = "batch initialisation"
             ),
             node(
                 func = run_model,
-                inputs = ["model","params:embcnn_n_epochs", "params:device", "train_batch","valid_batch"],
+                inputs = ["model","params:embcnn_n_epochs", "params:device", "train_batch_embed","valid_batch_embed"],
                 outputs = "embed_cnn_model",
                 tags= ["embed_cnn", "training", "model"],
                 name= "model's run"

@@ -11,8 +11,8 @@ def create_bilstm_cnn_test(**kwargs):
                 , inputs= ["params:cnn_cuda_allow", "embed_matrix", "params:sentence_size"
                     , "params:bilstm_input_dim", "params:bilstm_hidden_dim", "params:bilstm_layer_dim"
                     , "params:bilstm_output_dim", "params:bilstm_feature_size", "params:bilstm_kernel_size"
-                    , "params:bilstm_dropout_rate", "params:bilstm_padded", "test_batch", "bilstm_cnn_model_for_save"
-                    , "vocab_bilstm", "params:bilstm_index_nothing"]
+                    , "params:bilstm_dropout_rate", "params:bilstm_padded", "test_batch_bilstm", "bilstm_cnn_model_for_save"
+                    , "vocab_bilstm", "params:bilstm_index_nothing", "params:bilstm_type_map", "params:bilstm_seuil"]
                 , outputs= None
                 , tags= ["bilstm_cnn_test", "test"]
             )
