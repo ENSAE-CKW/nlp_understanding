@@ -13,6 +13,9 @@ class LetterToToken():
         else:
             self._pattern_token_split= pattern_token_split
 
+        self.neg_words= ["apres", "assez", "importe", "moindres", "moins", "n'", "n’", "ne", "neanmoins", "ni"
+                         , "nombreuses", "nul", "sans", "sauf", "stop", "suffisant", "tellement", "pas"]
+
         self.text= text
         self.heatmap= heatmap
         self._index_sentence_token= self._get_index_split_pattern(self.text)
@@ -35,7 +38,8 @@ class LetterToToken():
 
     def _strip_accents_and_lowercase(self, token: str, all_stop_word=False) -> str:
         if all_stop_word:
-            french_stopwords = tuple([self._clean_tokens(word) for word in stopwords.words('french')])
+            french_stopwords = tuple([self._clean_tokens(word) for word in stopwords.words('french')
+                                      if word not in self.neg_words])
         else:
             french_stopwords = tuple([])
         lower_cleaned_token = self._clean_tokens(token)
