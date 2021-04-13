@@ -173,7 +173,7 @@ def save_model(model):
 
 def cnn_embed_test(model_dict, iterator
                    , embed, SENTENCE_SIZE, nb_filtre, type_filtre, nb_output, dropout, padded
-                   , vocab , class_explanation, type_map, seuil, index_nothing):
+                   , vocab , class_explanation, type_map, seuil, index_nothing, embcnn_heatmap):
 
     if index_nothing is None:
         index_nothing= np.array([155563, 155562])
@@ -224,6 +224,7 @@ def cnn_embed_test(model_dict, iterator
         # Reconstruct the sentence
         text_index = review.squeeze().numpy()
         word = np.array([vocab_reverse.get(index, "") for index in text_index])
+
         # if index word is in the list whe dont want, we capture its index
         if index_nothing != None: # generate warning but its ok dude
             index_nothing = np.array([])
@@ -239,7 +240,7 @@ def cnn_embed_test(model_dict, iterator
             explanations_class_two = model.get_heatmap(text=review
                                                        , num_class=other_class_explanation
                                                        , dim=[0, 2]
-                                                       , type_map=type_map)[-1]
+                                                       , type_map=type_map)[embcnn_heatmap]
 
             selected_explanation_two = explanations_class_two[selected_word_index]
 
@@ -267,7 +268,7 @@ def cnn_embed_test(model_dict, iterator
             explanations_class_one = model.get_heatmap(text=review
                                                        , num_class=class_explanation
                                                        , dim=[0, 2]
-                                                       , type_map=type_map)[-1]
+                                                       , type_map=type_map)[embcnn_heatmap]
 
             selected_explanation_one = explanations_class_one[selected_word_index]
 
@@ -299,6 +300,8 @@ def cnn_embed_test(model_dict, iterator
         i += 1
         if i % 1000 == 0:
             print(i)
+
+        break
 
     fpr, tpr, threshold = metrics.roc_curve(target_all, probabilities_all)
     auroc = metrics.auc(fpr, tpr)

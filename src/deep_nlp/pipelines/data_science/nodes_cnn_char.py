@@ -147,10 +147,11 @@ def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
          , "num_class": cnn_num_class, "dropout": cnn_dropout}
 
     model= CNNCharClassifier(**kwargs)
-    model= torch.nn.DataParallel(model)
 
     if cnn_cuda_allow:
         model = torch.nn.DataParallel(model).cuda()
+    else:
+        model = torch.nn.DataParallel(model)
 
     model.train()
 
@@ -188,9 +189,11 @@ def train(train_data, valid_data, cnn_freq_verbose: int, cnn_clip: int
 
             # Instance a new model, copy the parameters of the best model and then save it
             model_clone = CNNCharClassifier(**kwargs)
-            model_clone = torch.nn.DataParallel(model_clone)
+
             if cnn_cuda_allow:
                 model_clone = torch.nn.DataParallel(model_clone).cuda()
+            else:
+                model_clone = torch.nn.DataParallel(model_clone)
 
             model_clone.load_state_dict(model.state_dict())
 

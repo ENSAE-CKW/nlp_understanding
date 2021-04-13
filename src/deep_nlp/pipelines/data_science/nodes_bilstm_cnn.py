@@ -5,6 +5,10 @@ import torch.nn as nn
 # from deep_nlp.bilstm_cnn import BilstmCnn
 from deep_nlp.bilstm_cnn.bilstmcnn_gradcam import BilstmCnn
 from deep_nlp.utils.early_stopping import EarlyStopping
+from src.deep_nlp.grad_cam.utils.token import order_tokens_by_importance, find_ngram
+from src.deep_nlp.grad_cam.plot import plot_cm, plot_barplot
+from src.deep_nlp.grad_cam.utils import preprocess_before_barplot
+
 from torch.utils.data import TensorDataset, DataLoader
 from mlflow import log_metric
 import numpy as np
@@ -61,19 +65,20 @@ def evaluate(cuda_allow, model, valid_load, criterion):
 
             epoch_loss += loss_valid.item()
 
-            _, predicted = torch.max(outputs.data, 1)
+            predict = torch.max(outputs, 1)[1].view(valid_labels.size()).data
 
-            predictions_all += predicted.cpu().numpy().tolist()
-            probabilities_all += torch.exp(outputs)[:, 1].cpu().numpy().tolist()
+
+            predictions_all += predict.cpu().numpy().tolist()
+            probabilities_all += outputs[:, 1].cpu().numpy().tolist()
             target_all += valid_labels.data.cpu().numpy().tolist()
 
             total += valid_labels.size(0)
 
 
             if torch.cuda.is_available():
-                correct += (predicted.cpu() == valid_labels.cpu()).sum()
+                correct += (predict.cpu() == valid_labels.cpu()).sum()
             else:
-                correct += (predicted == valid_labels).sum()
+                correct += (predict == valid_labels).sum()
 
         avg_loss = epoch_loss / len(valid_load)
         accuracy = 100 * correct / total
@@ -180,7 +185,8 @@ def save_model(model):
 
 
 def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_dim, layer_dim, output_dim
-                , feature_size, kernel_size, dropout_rate, padded, test_load, model_saved, vocab, index_nothing):
+                , feature_size, kernel_size, dropout_rate, padded, test_load, model_saved, vocab, index_nothing
+                , type_map, seuil):
 
     if index_nothing is None:
         index_nothing= np.array([144213])
@@ -202,14 +208,18 @@ def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_d
                       , kernel_size, dropout_rate, padded)
     cpu_model.load_state_dict(state_dict)
 
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.BCELoss()
     correct, avg_loss, epoch_loss, total = 0, 0, 0, 0
     predictions_all, target_all, probabilities_all = [], [], []
+    bigram_token_two, bigram_token_one= [], []
+    results_two, results_one= [], []
+    results_wrong_two, results_wrong_one= [], []
 
     # Create a dict with all vocab used
     vocab_reverse = {y: x for x, y in vocab.items()}
 
     cpu_model.eval()
+    i= 0
     for test_reviews, test_labels in test_load:
 
         test_reviews = test_reviews.to(torch.int64)
@@ -221,25 +231,108 @@ def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_d
         loss = criterion(outputs[:,1], test_labels.float())  # , size_average= False)
 
         epoch_loss += loss.item()
-        _, predicted = torch.max(outputs.data, 1)
-        correct += (predicted == test_labels).sum()
+        predict = torch.max(outputs, 1)[1].view(test_labels.size()).data
+        correct += (predict == test_labels).sum()
 
-        predictions_all += predicted.detach().cpu().numpy().tolist()
-        probabilities_all += torch.exp(outputs)[:, 1].detach().cpu().numpy().tolist()
+        predictions_all += predict.detach().cpu().numpy().tolist()
+        probabilities_all += outputs[:, 1].detach().cpu().numpy().tolist()
         target_all += test_labels.data.detach().cpu().numpy().tolist()
 
         # Compute GradCam for gloabal interpretability
         # Proba for class 1
-        proba_1 = torch.exp(outputs)[:, 1].detach().cpu().numpy()[0]
+        proba_1 = outputs[:, 1].detach().cpu().numpy()[0]
         class_explanation = 0
         other_class_explanation = 1 if class_explanation == 0 else 0
         difference_classification = test_labels - proba_1
 
-        print(proba_1)
-        print(difference_classification[0])
-        print(outputs)
+        # GradCam part #
+        # Reconstruct the sentence
+        text_index = test_reviews.squeeze().numpy()
+        word = np.array([vocab_reverse.get(index, "") for index in text_index])
+         # TODO dont why there is black value counted at the end ?
+        print(blank_value)
+        print(word)
+        word= word[blank_value]
+        # if index word is in the list whe dont want, we capture its index
+        if index_nothing != None:  # generate warning but its ok dude
+            index_nothing = np.array([])
+        selected_word_bool = np.in1d(text_index, index_nothing)
+        # Get index of word we want
+        selected_word_index = np.where(~selected_word_bool)[0]
 
+        # Select interesting words
+        selected_word = word[selected_word_index]
+
+        if proba_1 >= 0.5: # We classified the text as a positive review
+            # So we save the gradcam for the class 1 (why the model classified it positive)
+            explanations_class_two = cpu_model.get_heatmap(text= test_reviews
+                                                       , num_class=other_class_explanation
+                                                       , dim=[0, 2]
+                                                       , type_map=type_map)[-1] # only one type of heatmap
+                                                                                # on this model
+
+            selected_explanation_two = explanations_class_two[selected_word_index]
+
+            # Find bigram pairwise index
+            best_word_explanation_index_two = np.where(explanations_class_two >= seuil)[0]
+            bigram_index = find_ngram(best_word_explanation_index_two, occurence=2)
+            # Generate all important bigram
+            bigram_token_two += [" ".join(t) for t in
+                                 [selected_word[i].tolist() for i in bigram_index]
+                                 ]
+
+            best_word_explanation_two = order_tokens_by_importance(heatmap=selected_explanation_two
+                                                                   , tokens=selected_word
+                                                                   , threshold=seuil)
+
+            explications_pour_plot_two = {"mots_expli": best_word_explanation_two
+                , "prob": proba_1}
+
+            results_two.append([explications_pour_plot_two, test_labels.data])
+
+            if np.abs(difference_classification) >= seuil:
+                results_wrong_two.append(results_two[-1])
+
+        else: # same but for the class 0
+            explanations_class_one = cpu_model.get_heatmap(text= test_reviews
+                                                       , num_class=class_explanation
+                                                       , dim=[0, 2]
+                                                       , type_map=type_map)[-1]
+
+            selected_explanation_one = explanations_class_one[selected_word_index]
+
+            # Find bigram pairwise index
+            best_word_explanation_index_one = np.where(explanations_class_one >= seuil)[0]
+            bigram_index = find_ngram(best_word_explanation_index_one, occurence=2)
+
+            # Generate all important bigram
+            bigram_token_one += [" ".join(t) for t in
+                                 [selected_word[i].tolist() for i in bigram_index]
+                                 ]
+
+            best_word_explanation_one= order_tokens_by_importance(heatmap= selected_explanation_one
+                                                                  , tokens= selected_word
+                                                                  , threshold= seuil)
+
+            explications_pour_plot_one = {"mots_expli": best_word_explanation_one
+                , "prob": proba_1}
+
+            results_one.append([explications_pour_plot_one, test_labels.data])
+
+            # If we did a big mistake (here means we predict 1 with a proba near of 1, but in fact, the true label was 0
+            # So we save the result to understand why the model made a such mistake
+            # The idea itsto look at the grad cam for the class the model thought the sentence was
+            # Here, we save the gradcam for the class 1 because the model was really sure about is classification
+            if np.abs(difference_classification) >= seuil:
+                results_wrong_one.append(results_one[-1])
+
+        # if i == 2000:
+        #     break
         break
+
+        i += 1
+        if i % 1000 == 0:
+            print(i)
 
     avg_loss = epoch_loss / len(test_load)
     accuracy = 100 * correct / total
@@ -253,5 +346,32 @@ def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_d
     log_metric(key="AUC_test", value= auroc)
 
     print('Résultat test : Loss: {} Accuracy: {}. AUC: {}'.format(avg_loss, accuracy, auroc))
+
+    # Plotting phase (saved and mlflow artifact)
+    # Confusion matrix
+    plot_cm(target_all, predictions_all, path="data/08_reporting/bilstm_cnn/confusion_matrix.png")
+
+    # Global GradCam analysis
+    _, _, _, mots_0_25 = preprocess_before_barplot(results_one)
+    mots_plus_75, _, _, _ = preprocess_before_barplot(results_two)
+
+    #
+    _, _, _, mots_0_25_wrong = preprocess_before_barplot(results_wrong_one)
+    mots_plus_75_wrong, _, _, _ = preprocess_before_barplot(results_wrong_two)
+
+    plot_barplot(mots_plus_75, path="data/08_reporting/bilstm_cnn/barplot_75.png"
+                 , title="Explication globale pour la classe 1 pour les plus grosses probabilités (>= 0.75)")
+    plot_barplot(mots_0_25, path="data/08_reporting/bilstm_cnn/barplot_25.png"
+                 , title="Explication globale pour la classe 0 pour les plus faibles probabilités (<= 0.25)")
+    plot_barplot(mots_plus_75_wrong, path="data/08_reporting/bilstm_cnn/barplot_75_wrong.png"
+                 , title="Explication globale pour la classe 1 pour les plus grosses erreurs de prédictions")
+    plot_barplot(mots_0_25_wrong, path="data/08_reporting/bilstm_cnn/barplot_25_wrong.png"
+                 , title="Explication globale pour la classe 0 pour les plus grosses erreurs de prédictions")
+
+    # COmpute bigram barplot
+    plot_barplot(bigram_token_one, path="data/08_reporting/bilstm_cnn/barplot_bigram_0.png"
+                 , title="Bigram pour la classe 0")
+    plot_barplot(bigram_token_two, path="data/08_reporting/bilstm_cnn/barplot_bigram_1.png"
+                 , title="Bigram pour la classe 1")
 
     pass
