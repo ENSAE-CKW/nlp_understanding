@@ -250,9 +250,7 @@ def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_d
         text_index = test_reviews.squeeze().numpy()
         word = np.array([vocab_reverse.get(index, "") for index in text_index])
          # TODO dont why there is black value counted at the end ?
-        print(blank_value)
-        print(word)
-        word= word[blank_value]
+
         # if index word is in the list whe dont want, we capture its index
         if index_nothing != None:  # generate warning but its ok dude
             index_nothing = np.array([])
@@ -280,12 +278,13 @@ def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_d
             bigram_token_two += [" ".join(t) for t in
                                  [selected_word[i].tolist() for i in bigram_index]
                                  ]
+            bigram_token_two= [t for t in bigram_token_two if t != " "]
 
             best_word_explanation_two = order_tokens_by_importance(heatmap=selected_explanation_two
                                                                    , tokens=selected_word
                                                                    , threshold=seuil)
 
-            explications_pour_plot_two = {"mots_expli": best_word_explanation_two
+            explications_pour_plot_two = {"mots_expli": [t for t in best_word_explanation_two if t != ""]
                 , "prob": proba_1}
 
             results_two.append([explications_pour_plot_two, test_labels.data])
@@ -305,16 +304,18 @@ def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_d
             best_word_explanation_index_one = np.where(explanations_class_one >= seuil)[0]
             bigram_index = find_ngram(best_word_explanation_index_one, occurence=2)
 
+            # TODO: delte phantom token before get_heatmap (for norm)
             # Generate all important bigram
             bigram_token_one += [" ".join(t) for t in
                                  [selected_word[i].tolist() for i in bigram_index]
                                  ]
+            bigram_token_one = [t for t in bigram_token_one if t != " "]
 
             best_word_explanation_one= order_tokens_by_importance(heatmap= selected_explanation_one
                                                                   , tokens= selected_word
                                                                   , threshold= seuil)
 
-            explications_pour_plot_one = {"mots_expli": best_word_explanation_one
+            explications_pour_plot_one = {"mots_expli": [t for t in best_word_explanation_one if t != ""]
                 , "prob": proba_1}
 
             results_one.append([explications_pour_plot_one, test_labels.data])
@@ -325,10 +326,6 @@ def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_d
             # Here, we save the gradcam for the class 1 because the model was really sure about is classification
             if np.abs(difference_classification) >= seuil:
                 results_wrong_one.append(results_one[-1])
-
-        # if i == 2000:
-        #     break
-        break
 
         i += 1
         if i % 1000 == 0:

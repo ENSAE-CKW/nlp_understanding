@@ -49,9 +49,12 @@ parameters = {"sequence_len": cnn_sequence_len, "feature_num": cnn_feature_num
 
 
 model = CNNCharClassifier(**parameters)
-model = torch.nn.DataParallel(model)
+
 if cnn_cuda_allow:
     model = torch.nn.DataParallel(model).cuda()
+else:
+    model = torch.nn.DataParallel(model)
+
 model.load_state_dict(model_saved)
 
 state_dict= model.module.module.state_dict() # delete module to allow cpu loading

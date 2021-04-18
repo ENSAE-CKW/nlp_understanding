@@ -68,7 +68,6 @@ class ProjectHooks:
         return {
             "de_cnn_char": de_cnn_char_pipeline
             , "ds_cnn_char": ds_cnn_char_pipeline
-            , "ds_cnn_char_test": ds_cnn_char_test
 
             , "de_logistic_bow": de_logistic_bow_pipeline
             , "ds_logistic_bow": ds_logistic_bow_pipeline
