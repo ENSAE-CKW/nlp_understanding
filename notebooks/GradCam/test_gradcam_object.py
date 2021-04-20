@@ -14,7 +14,7 @@ import itertools
 import re
 
 cnn_sequence_len= 1014
-cnn_feature_num= 83
+cnn_feature_num= 87
 cnn_feature_size= 256
 cnn_kernel_one= 7
 cnn_kernel_two= 3

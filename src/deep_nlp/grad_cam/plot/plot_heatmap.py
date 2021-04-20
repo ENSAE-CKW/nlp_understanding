@@ -19,7 +19,7 @@ def plot_bar_heatmap(heatmap, figsize= (8, 1), cmap= 'Greens'):
 
 
 def plot_text_and_heatmap(text, heatmap, figsize= (5, 5), cmap= 'Greens'
-                          , alpha= 0.7, word_or_letter= "letter", threshold= None):
+                          , alpha= 0.7, word_or_letter= "letter", threshold= None, fontsize_text= "xx-small"):
     # TODO: heatmap between -1 1, or 0 1 change vmin vmax imshow
     # if letter, then text is str
     # if word, text is a List[str] (tokens)
@@ -45,7 +45,10 @@ def plot_text_and_heatmap(text, heatmap, figsize= (5, 5), cmap= 'Greens'
     fig, ax = plt.subplots(figsize=figsize)
 
     # Plot heatmap grid
-    im= ax.imshow(heatmap_adjusted, cmap=color_map, alpha= alpha, vmax= 1, vmin= -1)
+    vmax= 1
+    vmin= -1 if np.min(heatmap_adjusted) < 0 else 0 # if there is neg value, put a -1
+    # else 0
+    im= ax.imshow(heatmap_adjusted, cmap=color_map, alpha= alpha, vmax= vmax, vmin= vmin)
 
     ax.set_yticks(range(heatmap_adjusted.shape[0]))  # data.shape[0]
     ax.set_xticks(range(heatmap_adjusted.shape[1]))  # data.shape[1]
@@ -84,12 +87,13 @@ def plot_text_and_heatmap(text, heatmap, figsize= (5, 5), cmap= 'Greens'
 
         for i in gridpoints:
             plt.text(x=i[1], y=i[0], s=sentence_adjusted[i[0], i[2]]
-                     , fontsize='xx-small'
+                     , fontsize= fontsize_text#'xx-small'
                      , weight="bold"
                      , verticalalignment= "center"
                      , horizontalalignment= "center")
 
-    fig.colorbar(im, aspect= 75, orientation="horizontal")
+    cbar= fig.colorbar(im, aspect= 100, orientation="horizontal")
+    cbar.ax.tick_params(labelsize=8)
     fig.tight_layout()
     plt.axis('off')
     plt.show()

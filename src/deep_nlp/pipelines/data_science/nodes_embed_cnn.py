@@ -226,7 +226,7 @@ def cnn_embed_test(model_dict, iterator
         word = np.array([vocab_reverse.get(index, "") for index in text_index])
 
         # if index word is in the list whe dont want, we capture its index
-        if index_nothing != None: # generate warning but its ok dude
+        if index_nothing is None: # generate warning but its ok dude
             index_nothing = np.array([])
         selected_word_bool = np.in1d(text_index, index_nothing)
         # Get index of word we want
