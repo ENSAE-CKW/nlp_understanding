@@ -19,8 +19,8 @@ def plot_bar_heatmap(heatmap, figsize= (8, 1), cmap= 'Greens'):
 
 
 def plot_text_and_heatmap(text, heatmap, figsize= (5, 5), cmap= 'Greens'
-                          , alpha= 0.7, word_or_letter= "letter", threshold= None, fontsize_text= "xx-small"):
-    # TODO: heatmap between -1 1, or 0 1 change vmin vmax imshow
+                          , alpha= 0.7, word_or_letter= "letter", threshold= None, fontsize_text= "xx-small"
+                          , force_color= True):
     # if letter, then text is str
     # if word, text is a List[str] (tokens)
     if word_or_letter not in ["word", "letter"]:
@@ -48,6 +48,10 @@ def plot_text_and_heatmap(text, heatmap, figsize= (5, 5), cmap= 'Greens'
     vmax= 1
     vmin= -1 if np.min(heatmap_adjusted) < 0 else 0 # if there is neg value, put a -1
     # else 0
+    if (color_map != "Greens") :
+        vmin= -1
+
+
     im= ax.imshow(heatmap_adjusted, cmap=color_map, alpha= alpha, vmax= vmax, vmin= vmin)
 
     ax.set_yticks(range(heatmap_adjusted.shape[0]))  # data.shape[0]

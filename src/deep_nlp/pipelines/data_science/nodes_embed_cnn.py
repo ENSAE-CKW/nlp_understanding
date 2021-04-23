@@ -251,12 +251,13 @@ def cnn_embed_test(model_dict, iterator
             bigram_token_two += [" ".join(t) for t in
                                  [selected_word[i].tolist() for i in bigram_index]
                                  ]
+            bigram_token_two = [t for t in bigram_token_two if t != " "]
 
             best_word_explanation_two = order_tokens_by_importance(heatmap=selected_explanation_two
                                                                    , tokens=selected_word
                                                                    , threshold=seuil)
 
-            explications_pour_plot_two = {"mots_expli": best_word_explanation_two
+            explications_pour_plot_two = {"mots_expli": [t for t in best_word_explanation_two if t != ""]
                 , "prob": proba_1}
 
             results_two.append([explications_pour_plot_two, label])
@@ -280,12 +281,13 @@ def cnn_embed_test(model_dict, iterator
             bigram_token_one += [" ".join(t) for t in
                                  [selected_word[i].tolist() for i in bigram_index]
                                  ]
+            bigram_token_one = [t for t in bigram_token_one if t != " "]
 
             best_word_explanation_one= order_tokens_by_importance(heatmap= selected_explanation_one
                                                                   , tokens= selected_word
                                                                   , threshold= seuil)
 
-            explications_pour_plot_one = {"mots_expli": best_word_explanation_one
+            explications_pour_plot_one = {"mots_expli": [t for t in best_word_explanation_one if t != ""]
                 , "prob": proba_1}
 
             results_one.append([explications_pour_plot_one, label])
