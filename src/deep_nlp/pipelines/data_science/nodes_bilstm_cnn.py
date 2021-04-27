@@ -277,14 +277,16 @@ def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_d
             # Generate all important bigram
             bigram_token_two += [" ".join(t) for t in
                                  [selected_word[i].tolist() for i in bigram_index]
+                                 if t not in [" ", ""]
                                  ]
-            bigram_token_two= [t for t in bigram_token_two if t != " "]
+            bigram_token_two= [t for t in bigram_token_two if t[-1] not in [" ", ""]] # if last char is a space
+            # delete it because it's a lonely word
 
             best_word_explanation_two = order_tokens_by_importance(heatmap=selected_explanation_two
                                                                    , tokens=selected_word
                                                                    , threshold=seuil)
 
-            explications_pour_plot_two = {"mots_expli": [t for t in best_word_explanation_two if t != ""]
+            explications_pour_plot_two = {"mots_expli": [t for t in best_word_explanation_two if t not in [" ", ""]]
                 , "prob": proba_1}
 
             results_two.append([explications_pour_plot_two, test_labels.data])
@@ -309,13 +311,13 @@ def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_d
             bigram_token_one += [" ".join(t) for t in
                                  [selected_word[i].tolist() for i in bigram_index]
                                  ]
-            bigram_token_one = [t for t in bigram_token_one if t != " "]
+            bigram_token_one = [t for t in bigram_token_one if t[-1] not in [" ", ""]]
 
             best_word_explanation_one= order_tokens_by_importance(heatmap= selected_explanation_one
                                                                   , tokens= selected_word
                                                                   , threshold= seuil)
 
-            explications_pour_plot_one = {"mots_expli": [t for t in best_word_explanation_one if t != ""]
+            explications_pour_plot_one = {"mots_expli": [t for t in best_word_explanation_one if t not in [" ", ""]]
                 , "prob": proba_1}
 
             results_one.append([explications_pour_plot_one, test_labels.data])
