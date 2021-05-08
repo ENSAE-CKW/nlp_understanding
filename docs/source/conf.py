@@ -55,8 +55,8 @@ from deep_nlp import __version__ as release
 # -- Project information -----------------------------------------------------
 
 project = "deep_nlp"
-copyright = "2020, QuantumBlack Visual Analytics Limited"
-author = "QuantumBlack"
+copyright = "2020-2021, ENSAE-CKW"
+author = "ENSAE-CKW"
 
 # The short X.Y version.
 version = re.match(r"^([0-9]+\.[0-9]+).*", release).group(1)
@@ -179,7 +179,7 @@ latex_documents = [
         master_doc,
         "deep_nlp.tex",
         "deep_nlp Documentation",
-        "QuantumBlack",
+        "ENSAE-CKW",
         "manual",
     )
 ]
