@@ -435,13 +435,13 @@ def cnn_test(test_data, cnn_cuda_allow: bool, cnn_size_batch: int
     mots_plus_75_wrong, _, _, _ = preprocess_before_barplot(results_wrong_two)
 
     plot_barplot(mots_plus_75, path="data/08_reporting/cnn_char/barplot_75.png"
-                 , title="Explication globale pour la classe 1 pour les plus grosses probabilités (>= 0.75)")
+                 , title="Explication globale pour la classe 1 pour les probabilités les plus élevées (>= 0.75)")
     plot_barplot(mots_0_25, path="data/08_reporting/cnn_char/barplot_25.png"
-                 , title="Explication globale pour la classe 0 pour les plus faibles probabilités (<= 0.25)")
+                 , title="Explication globale pour la classe 0 pour les probabilités les plus faibles (<= 0.25)")
     plot_barplot(mots_plus_75_wrong, path="data/08_reporting/cnn_char/barplot_75_wrong.png"
-                 , title="Explication globale pour la classe 1 pour les plus grosses erreurs de prédictions")
+                 , title="Explication globale pour la classe 1 pour les plus fortes erreurs de prédictions")
     plot_barplot(mots_0_25_wrong, path="data/08_reporting/cnn_char/barplot_25_wrong.png"
-                 , title="Explication globale pour la classe 0 pour les plus grosses erreurs de prédictions")
+                 , title="Explication globale pour la classe 0 pour les plus fortes erreurs de prédictions")
 
     # COmpute bigram barplot
     plot_barplot(bigram_token_one, path="data/08_reporting/cnn_char/barplot_bigram_0.png"
