@@ -113,3 +113,27 @@ class BilstmCnn(GradCamBaseModel):
 ```
 
 ### Get interpretability
+
+With `class BilstmCnn(GradCamBaseModel)`, there is a bunch of new methods to work with the GradCAM heatmap like :
+
+```python
+bilstmcnn_gradcam_model= BilstmCnn(**params) # CPU model only
+
+heatmap_= bilstmcnn_gradcam_model.get_heatmap(text= text_sentence # `text_sentence` is the input of the model
+                                    , num_class= 1 # Compute heatmap for class 1 (i.e. positive comment)
+                                    , dim= [0, 2]
+                                    , type_map= type_map)
+# Token heatmap
+plot_text_and_heatmap(text= word.tolist()
+                  , heatmap= heatmap_
+                  , figsize= (10, 4)
+                  , fontsize_text= "small"
+                  , cmap= "PiYG"
+                  , word_or_letter= "word")
+```
+Output :
+![fig1_bilstm](docs/Figure_1.png)
+
+
+With a readjustment of the input with the initial comment:
+![fig1_bilstm](docs/Figure_2.png)
