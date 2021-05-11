@@ -34,6 +34,7 @@ class GradCamBaseModel(nn.Module):
         self.gradients = None
         self._gradient_list= []
 
+        self._heatmap_non_normalized= []
         self._heatmap= []
         self._merge_heatmap = None
         self._pooled_grd= []
@@ -88,6 +89,7 @@ class GradCamBaseModel(nn.Module):
         """
         self._heatmap = []
         self._merge_heatmap = None
+        self._heatmap_non_normalized= []
         pass
 
     def get_activations(self, x):
@@ -169,6 +171,19 @@ class GradCamBaseModel(nn.Module):
         return torch.mean(gradients, dim= dim)
 
     @staticmethod
+    def get_pooled_gradient_sum(gradients, dim):
+        """
+
+        @param gradients:
+        @type gradients:
+        @param dim:
+        @type dim:
+        @return:
+        @rtype:
+        """
+        return torch.sum(gradients, dim=dim)
+
+    @staticmethod
     def get_activation_score(activations, pooled_gradient):
         """
 
@@ -210,8 +225,8 @@ class GradCamBaseModel(nn.Module):
         """
         polled_grd_element = self.get_pooled_gradient(grd, dim=dim)
         activation_score= self.get_activation_score(act.detach(), polled_grd_element)
-        heatmap = self.get_mean_activations_score(activation_score)
-        return self._heatmap_mapping(heatmap= heatmap, type_map= type_map)
+        self._heatmap_non_normalized.append(self.get_mean_activations_score(activation_score))
+        return self._heatmap_mapping(heatmap= self._heatmap_non_normalized[-1], type_map= type_map)
 
     @staticmethod
     def _heatmap_mapping(heatmap: np.ndarray, type_map):
@@ -239,10 +254,20 @@ class GradCamBaseModel(nn.Module):
             heatmap_min = np.min(heatmap)
             heatmap = (2.0 * (heatmap - heatmap_min) / np.ptp(heatmap)) - 1
 
+        elif type_map == "normalized_2":
+            val_heatmap = np.absolute(heatmap)
+            val_sign = np.sign(heatmap)
+            val_heatmap_abs_norm = (val_heatmap - np.min(val_heatmap)) / (np.max(val_heatmap) - np.min(val_heatmap))
+            heatmap = val_heatmap_abs_norm * val_sign
+
+        # elif type_map == "tanh":
+        #     heatmap= np.tanh()
+
         elif type_map == "max":  # Relu + /max => [0, 1]
             heatmap = np.maximum(heatmap, 0)
             max_heatmap_value= np.max(heatmap)
             heatmap /= max_heatmap_value
+
         return heatmap
 
     def get_heatmap(self, text, num_class, type_map= "normalized", dim= None):
@@ -262,7 +287,7 @@ class GradCamBaseModel(nn.Module):
         """
         self.reset_heatmap_value()
 
-        type_map_possible_value= ["normalized", "max"]
+        type_map_possible_value= ["normalized", "max", "normalized_2"]
         if type_map not in type_map_possible_value:
             raise ValueError(f"Wrong value for the parameter type_map.\nPossible values : {type_map_possible_value}")
 
@@ -295,15 +320,19 @@ class GradCamBaseModel(nn.Module):
         if len(self._heatmap) > 1:
             # TODO: Agregate another way (here mean)
             assert len(activations) == len(gradients)
-            activations_mean= self.get_pooled_gradient(torch.stack(activations), dim=0) # Simple mean
-            gradients_mean = self.get_pooled_gradient(torch.stack(gradients), dim=0) # Simple mean
-            assert activations_mean.size() == gradients_mean.size()
+            # activations_mean= self.get_pooled_gradient(torch.stack(activations), dim=0) # Simple mean
+            # gradients_mean = self.get_pooled_gradient(torch.stack(gradients), dim=0) # Simple mean
+            # assert activations_mean.size() == gradients_mean.size()
 
-            heatmap_merged= self._compute_heatmap(grd= gradients_mean, act= activations_mean
-                                                  , type_map= type_map, dim= dim)
+            # heatmap_merged= self._compute_heatmap(grd= gradients_mean, act= activations_mean
+            #                                       , type_map= type_map, dim= dim)
+            # Sum heatmap to create merged heatmap
+            heatmap_merged= self.get_pooled_gradient_sum(torch.as_tensor(self._heatmap_non_normalized), dim= 0)
+            heatmap_merged_mapped= self._heatmap_mapping(heatmap_merged.numpy(), type_map= type_map)
 
             # Last element for _heatmap is the merged result
-            self._heatmap.append(heatmap_merged)
+            self._heatmap.append(heatmap_merged_mapped)
+
             assert len(self._heatmap) == (len(gradients) + 1)
 
         return copy.deepcopy(self._heatmap)
