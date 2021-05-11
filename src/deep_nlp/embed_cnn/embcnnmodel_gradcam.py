@@ -42,7 +42,7 @@ class classifier3F(GradCamBaseModel):
 
         self.fc = nn.Linear(len(height_filter) * nb_filter, output_dim)
 
-        self.sm = nn.Softmax(dim=1)
+        self.sm = nn.LogSoftmax(dim=1)
 
         self.dp = nn.Dropout(p=dropout)
 

@@ -31,7 +31,7 @@ class BilstmCnn(GradCamBaseModel):
 
         self.fc = nn.Linear(self.linear_dim, output_dim)
 
-        self.softmax = nn.Softmax(dim=1)
+        self.softmax = nn.LogSoftmax(dim=1)
 
         # Fill up pipelines
         self.before_conv.add_module("conv", self.convLayer)

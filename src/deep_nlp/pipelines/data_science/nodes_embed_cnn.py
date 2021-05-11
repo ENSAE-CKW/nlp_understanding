@@ -39,7 +39,7 @@ def train(model, iterator, optimizer, criterion):
 
         # convert to 1D tensor
         predictions = model(variables_x)
-
+        predictions = torch.exp(predictions)
         # compute the loss
         loss = criterion(predictions[:,1], variables_y.float())
 
@@ -77,6 +77,7 @@ def evaluate(model, iterator, criterion):
 
             # convert to 1d tensor
             predictions = model(text).squeeze()
+            predictions = torch.exp(predictions)
 
             # compute loss and accuracy
             loss = criterion(predictions[:,1], variables_y.float())
@@ -203,6 +204,7 @@ def cnn_embed_test(model_dict, iterator
     for review, label in iterator:
 
         output = model(review)
+        output= torch.exp(output)
 
         predict = torch.max(output, 1)[1].view(label.size()).data
         corrects += (predict == label.data).sum()

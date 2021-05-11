@@ -36,6 +36,7 @@ def train(cuda_allow, model, train_load, optimizer, criterion):
         optimizer.zero_grad()
 
         outputs = model(reviews)
+        outputs= torch.exp(outputs)
 
         loss = criterion(outputs[:,1], labels.float())
         epoch_loss += loss.item()
@@ -61,6 +62,8 @@ def evaluate(cuda_allow, model, valid_load, criterion):
                 valid_labels = labels.to(torch.int64)
 
             outputs = model(valid_reviews)
+            outputs = torch.exp(outputs)
+
             loss_valid = criterion(outputs[:,1], valid_labels.float())
 
             epoch_loss += loss_valid.item()
@@ -228,6 +231,8 @@ def bilstm_test(cuda_allow, embedding_matrix, sentence_size, input_dim, hidden_d
         total += test_labels.size(0)
 
         outputs = cpu_model(test_reviews)
+        outputs = torch.exp(outputs)
+
         loss = criterion(outputs[:,1], test_labels.float())  # , size_average= False)
 
         epoch_loss += loss.item()
