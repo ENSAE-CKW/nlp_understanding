@@ -131,7 +131,7 @@ plot_text_and_heatmap(text= word.tolist()
                   , cmap= "PiYG"
                   , word_or_letter= "word")
 ```
-Output :
+Output for class 1 :
 ![fig1_bilstm](docs/Figure_1.png)
 
 
